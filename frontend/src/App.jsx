@@ -1,48 +1,103 @@
-import { useEffect, useState } from 'react'
+// import { useEffect, useState } from 'react'
+// import { tgData } from './data/data -url'
+// import medSyncLogo from './assets/images/landing-page/medsync-logo.svg'
+
+// function App() {
+//   const [user, setUser] = useState(null)
+//   useEffect(() => {
+//     const tg = window.Telegram.WebApp
+//     tg.ready()
+
+//     const userData = {
+//       queryId: tg.initDataUnsafe?.query_id,
+//       username: tg.initDataUnsafe?.user?.username,
+//       telegramId: tg.initDataUnsafe?.user?.id,
+//       authDate: tg.initDataUnsafe?.auth_date,
+//       hash: tg.initDataUnsafe?.hash
+//     }
+
+//     fetch(`${import.meta.env.VITE_API_URL}/api/auth/telegram`, {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json'
+//       },
+//       body: JSON.stringify(userData)
+//     })
+//       .then((response) => response.json())
+//       .then((data) => {
+//         setUser(data)
+//         // Обработка ответа от серверной части
+//         console.log('Authenticated:', data)
+//       })
+//       .catch((error) => {
+//         console.error('Error authenticating:', error)
+//       })
+//   }, [])
+
+//   return (
+//     <div className="landing-page">
+//       <h1>Welcome to Telegram Mini App</h1>
+//       <div className="landing-page__logo">
+//         <img className="logo" src={medSyncLogo} alt="MedSync Logo" />
+//       </div>
+//     </div>
+//   )
+// }
+
+// export default App
+
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+import medSyncLogo from './assets/images/landing-page/medsync-logo.svg'
 
 function App() {
   const [user, setUser] = useState(null)
+
   useEffect(() => {
     const tg = window.Telegram.WebApp
     tg.ready()
 
     const userData = {
+      queryId: tg.initDataUnsafe?.query_id,
       username: tg.initDataUnsafe?.user?.username,
       telegramId: tg.initDataUnsafe?.user?.id,
-      queryId: tg.initDataUnsafe?.query_id,
       authDate: tg.initDataUnsafe?.auth_date,
       hash: tg.initDataUnsafe?.hash
     }
 
-    // `${import.meta.env.VITE_API_URL}/api/${itemType}/book_slot`
-    // Отправьте эти данные на свой сервер для аутентификации пользователя.
-    fetch(`${import.meta.env.VITE_API_URL}/api/auth/telegram`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(userData)
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setUser(data)
-        // Обработка ответа от серверной части
-        console.log('Authenticated:', data)
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/api/auth/telegram`, null, {
+        headers: {
+          initdata: tg.initData
+        }
+      })
+      .then((response) => {
+        setUser(response.data)
+        console.log('Authenticated:', response.data)
       })
       .catch((error) => {
         console.error('Error authenticating:', error)
       })
   }, [])
 
-  console.log(12, user)
   return (
-    <div className="App">
+    <div className="landing-page">
       <h1>Welcome to Telegram Mini App</h1>
+      <div className="landing-page__logo">
+        <img className="logo" src={medSyncLogo} alt="MedSync Logo" />
+      </div>
+      {user && (
+        <div>
+          <h2>Hello, {user.username}</h2>
+          <p>Telegram ID: {user.telegramId}</p>
+        </div>
+      )}
     </div>
   )
 }
 
 export default App
+
 // import { useEffect, useState } from 'react'
 // import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
@@ -68,44 +123,39 @@ export default App
 //   const [isInvalidVersion, setIsInvalidVersion] = useState(false)
 
 //   useEffect(() => {
-//     if (window.Telegram && window.Telegram.WebApp) {
-//       setIsInvalidVersion(false)
-//       // В качестве альтернативы тому, что можно установить с помощью реакции-телеграммы-веб-приложения, вы можете напрямую установить следующие свойства:
-//       try {
-//         window.Telegram.WebApp.requestWriteAccess()
-//       } catch (e) {
-//         console.log(e)
+//     const tg = window.Telegram.WebApp
+//     tg.ready()
+//     if (tg.initDataUnsafe?.user?.id) {
+//       console.log(1, 'есть юзер c айди')
+//       if (window.Telegram && window.Telegram.WebApp) {
+//         if (!window.Telegram.WebApp.isVersionAtLeast('6.9')) {
+//           notificationOccurred('error')
+//           if (window.Telegram.WebApp.isVersionAtLeast('6.2')) {
+//             showPopup({
+//               message:
+//                 'Please update your Telegram app to the latest version to use this app.'
+//             })
+//           } else {
+//             console.log('the version is not supported')
+//             setIsInvalidVersion(true)
+//           }
+//         }
+//         // Alternatively to what can be set with react-telegram-web-app, you can directly set the following properties:
+//         try {
+//           window.Telegram.WebApp.requestWriteAccess()
+//         } catch (e) {
+//           console.log(e)
+//         }
+//         window.Telegram.WebApp.expand()
 //       }
-//       window.Telegram.WebApp.expand()
+//     } else {
+//       console.log(2, 'нет юзера')
 //     }
 //   }, [])
-//   // useEffect(() => {
-//   //   if (window.Telegram && window.Telegram.WebApp) {
-//   //     if (!window.Telegram.WebApp.isVersionAtLeast('6.9')) {
-//   //       notificationOccurred('error')
-//   //       if (window.Telegram.WebApp.isVersionAtLeast('6.2')) {
-//   //         showPopup({
-//   //           message:
-//   //             'Please update your Telegram app to the latest version to use this app.'
-//   //         })
-//   //       } else {
-//   //         console.log('the version is not supported')
-//   //         setIsInvalidVersion(true)
-//   //       }
-//   //     }
-//   //     // Alternatively to what can be set with react-telegram-web-app, you can directly set the following properties:
-//   //     try {
-//   //       window.Telegram.WebApp.requestWriteAccess()
-//   //     } catch (e) {
-//   //       console.log(e)
-//   //     }
-//   //     window.Telegram.WebApp.expand()
-//   //   }
-//   // }, [])
 
 //   return (
 //     <>
-//       {/* {isInvalidVersion && (
+//       {isInvalidVersion && (
 //         <div className="invalid-version">
 //           <div className="invalid-version__content">
 //             <h1>Sorry but this version is outdated!</h1>
@@ -115,7 +165,7 @@ export default App
 //             </h1>
 //           </div>
 //         </div>
-//       )} */}
+//       )}
 //       {!isInvalidVersion && (
 //         <BrowserRouter>
 //           <Routes>
