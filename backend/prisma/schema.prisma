@@ -8,12 +8,16 @@ datasource db {
 }
 
 model User {
-  id            Int       @id @default(autoincrement())
-  fullName      String
-  email         String    @unique
+  id             Int        @id @default(autoincrement())
+  telegramId     String     @unique
+  firstNname     String?
+  lastName       String?
+  userName       String
+  email          String?    @unique
   hashedPassword String
-  isActive      Boolean   @default(true)
-  bookings      Booking[] @relation("UserBookings")
+  isActive       Boolean    @default(true)
+  isAdmin        Boolean    @default(false)
+  bookings       Booking[]  @relation("UserBookings")
 }
 
 model Doctor {

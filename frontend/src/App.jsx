@@ -1,52 +1,4 @@
-// import { useEffect, useState } from 'react'
-// import { tgData } from './data/data -url'
-// import medSyncLogo from './assets/images/landing-page/medsync-logo.svg'
-
-// function App() {
-//   const [user, setUser] = useState(null)
-//   useEffect(() => {
-//     const tg = window.Telegram.WebApp
-//     tg.ready()
-
-//     const userData = {
-//       queryId: tg.initDataUnsafe?.query_id,
-//       username: tg.initDataUnsafe?.user?.username,
-//       telegramId: tg.initDataUnsafe?.user?.id,
-//       authDate: tg.initDataUnsafe?.auth_date,
-//       hash: tg.initDataUnsafe?.hash
-//     }
-
-//     fetch(`${import.meta.env.VITE_API_URL}/api/auth/telegram`, {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json'
-//       },
-//       body: JSON.stringify(userData)
-//     })
-//       .then((response) => response.json())
-//       .then((data) => {
-//         setUser(data)
-//         // Обработка ответа от серверной части
-//         console.log('Authenticated:', data)
-//       })
-//       .catch((error) => {
-//         console.error('Error authenticating:', error)
-//       })
-//   }, [])
-
-//   return (
-//     <div className="landing-page">
-//       <h1>Welcome to Telegram Mini App</h1>
-//       <div className="landing-page__logo">
-//         <img className="logo" src={medSyncLogo} alt="MedSync Logo" />
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default App
-
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 import medSyncLogo from './assets/images/landing-page/medsync-logo.svg'
 
@@ -57,16 +9,31 @@ function App() {
     const tg = window.Telegram.WebApp
     tg.ready()
 
-    const userData = {
-      queryId: tg.initDataUnsafe?.query_id,
-      username: tg.initDataUnsafe?.user?.username,
-      telegramId: tg.initDataUnsafe?.user?.id,
-      authDate: tg.initDataUnsafe?.auth_date,
-      hash: tg.initDataUnsafe?.hash
-    }
+    // const userData = {
+    //   queryId: tg.initDataUnsafe?.query_id,
+    //   username: tg.initDataUnsafe?.user?.username,
+    //   telegramId: tg.initDataUnsafe?.user?.id,
+    //   authDate: tg.initDataUnsafe?.auth_date,
+    //   hash: tg.initDataUnsafe?.hash
+    // }
+
+    //   axios
+    //     .post(`${import.meta.env.VITE_API_URL}/api/auth/telegram`, userData, {
+    //       headers: {
+    //         initdata: tg.initData
+    //       }
+    //     })
+    //     .then((response) => {
+    //       setUser(response.data)
+    //       console.log('Authenticated:', response.data)
+    //     })
+    //     .catch((error) => {
+    //       console.error('Error authenticating:', error)
+    //     })
+    // }, [])
 
     axios
-      .post(`${process.env.REACT_APP_API_URL}/api/auth/telegram`, null, {
+      .post(`${import.meta.env.VITE_API_URL}/api/auth/telegram`, null, {
         headers: {
           initdata: tg.initData
         }

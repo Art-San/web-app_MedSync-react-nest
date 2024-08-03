@@ -1,3 +1,13 @@
+import { Injectable } from '@nestjs/common'
+
+@Injectable()
+export class AuthService {
+	processUser(user: any): any {
+		// Логика обработки пользователя
+		return { message: 'User processed successfully', user }
+	}
+}
+/*TODO: ВОЗМОЖНО что Когда ни быть разберу проблема была что СТРОКА  построена неправильно*/
 // import { Injectable } from '@nestjs/common'
 // import { CreateAuthDto } from './dto/create-auth.dto'
 // import { UpdateAuthDto } from './dto/update-auth.dto'
@@ -11,6 +21,15 @@
 // 	async authenticate(data: AuthDto) {
 // 		// Проверьте данные с помощью хеша
 // 		const { queryId, telegramId, username, authDate } = data
+
+//
+// 		/*FIXME:*/
+// 		/*
+// 		вот такя должна быть initData
+// 		auth_date=1722680552
+//     query_id=AAHMWgYrAAAAAMxaBiuT0Fnn
+//     user={"id":721836748,"first_name":"Александр","last_name":"А","username":"gruzz70tomsk","language_code":"ru","allows_write_to_pm":true}
+// 		*/
 // 		const initData = `user={"id":${telegramId},"username":"${username}"}&query_id=${queryId}`
 // 		const secret = crypto
 // 			.createHash('sha256')
@@ -40,7 +59,6 @@
 // 		// Заменяем фактической логикой поиска/создания пользователя
 // 		return { id: telegramId, username: 'vf' }
 // 	}
-
 // }
 
 // import { Injectable } from '@nestjs/common'
@@ -60,6 +78,13 @@
 // 		const { username, telegramId, queryId, authDate, hash } = data
 
 // 		// Строим строку для проверки данных
+// 		/*FIXME:*/
+// 		/*
+// 		вот такя должна быть initData
+// 		auth_date=1722680552
+//     query_id=AAHMWgYrAAAAAMxaBiuT0Fnn
+//     user={"id":721836748,"first_name":"Александр","last_name":"А","username":"gruzz70tomsk","language_code":"ru","allows_write_to_pm":true}
+// 		*/
 // 		const dataCheckString = `auth_date=${authDate}&query_id=${queryId}&user={"id":${telegramId},"username":"${username}"}`
 
 // 		// Создаем HMAC-SHA256 хэш с использованием токена бота
@@ -124,64 +149,4 @@
 // 		// Далее можно выполнить необходимые действия с аутентифицированным пользователем
 // 		return { message: 'Authenticated successfully' }
 // 	}
-// }
-
-import { Injectable } from '@nestjs/common'
-
-@Injectable()
-export class AuthService {
-	processUser(user: any): any {
-		// Логика обработки пользователя
-		return { message: 'User processed successfully', user }
-	}
-}
-
-// import { Injectable, NestMiddleware } from '@nestjs/common';
-// import { Request, Response, NextFunction } from 'express';
-// import crypto from 'crypto';
-// import TelegramBot from 'node-telegram-bot-api';
-
-// function verifyInitData(telegramInitData: string, botToken: string): { isVerified: boolean, urlParams: URLSearchParams } {
-//   const urlParams: URLSearchParams = new URLSearchParams(telegramInitData);
-
-//   const hash = urlParams.get('hash');
-//   urlParams.delete('hash');
-//   urlParams.sort();
-
-//   let dataCheckString = '';
-//   for (const [key, value] of urlParams.entries()) {
-//     dataCheckString += `${key}=${value}\n`;
-//   }
-//   dataCheckString = dataCheckString.slice(0, -1);
-
-//   const secret = crypto.createHmac('sha256', 'WebAppData').update(botToken);
-//   const calculatedHash = crypto.createHmac('sha256', secret.digest()).update(dataCheckString).digest('hex');
-
-//   const isVerified = calculatedHash === hash;
-
-//   return { isVerified, urlParams };
-// }
-
-// @Injectable()
-// export class ValidateTelegramDataMiddleware implements NestMiddleware {
-//   use(req: Request & { user: any }, res: Response, next: NextFunction) {
-//     const telegramInitData = ((req.headers.initdata ?? req.query.initData ?? req.query.initdata) as string);
-//     const botToken = process.env.TELEGRAM_TOKEN;
-
-//     if (!telegramInitData || !botToken) {
-//       return res.status(400).send('Invalid request');
-//     }
-
-//     const { urlParams, isVerified } = verifyInitData(telegramInitData, botToken);
-
-//     if (!isVerified) {
-//       return res.status(403).send('Unauthorized request');
-//     }
-
-//     const user: TelegramBot.User = typeof urlParams.get('user') === 'string' ? JSON.parse(urlParams.get('user')) : urlParams.get('user');
-
-//     req.user = user;
-
-//     next();
-//   }
 // }

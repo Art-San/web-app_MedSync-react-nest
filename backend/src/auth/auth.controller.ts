@@ -21,7 +21,7 @@ export class AuthController {
 	@Post('telegram')
 	async telegramAuth(@Req() req: any): Promise<any> {
 		const user = req.user
-		console.log(1, user)
+
 		if (!user) {
 			throw new UnauthorizedException('User not found')
 		}
@@ -41,29 +41,5 @@ export class AuthController {
 	// 	} catch (error) {
 	// 		throw new UnauthorizedException('Аутентификация не удалась')
 	// 	}
-	// }
-	// @Post()
-	// create(@Body() createAuthDto: CreateAuthDto) {
-	//   return this.authService.create(createAuthDto);
-	// }
-
-	// @Get()
-	// findAll() {
-	//   return this.authService.findAll();
-	// }
-
-	// @Get(':id')
-	// findOne(@Param('id') id: string) {
-	//   return this.authService.findOne(+id);
-	// }
-
-	// @Patch(':id')
-	// update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
-	//   return this.authService.update(+id, updateAuthDto);
-	// }
-
-	// @Delete(':id')
-	// remove(@Param('id') id: string) {
-	//   return this.authService.remove(+id);
 	// }
 }
