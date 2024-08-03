@@ -19,8 +19,8 @@ function verifyInitData(
 	}
 	dataCheckString = dataCheckString.slice(0, -1)
 
-	console.log(1, dataCheckString)
-	console.log(1, 'verifyInitData', typeof dataCheckString)
+	// console.log(1, dataCheckString)
+	// console.log(1, 'verifyInitData', typeof dataCheckString)
 	const secret = crypto.createHmac('sha256', 'WebAppData').update(botToken)
 	const calculatedHash = crypto
 		.createHmac('sha256', secret.digest())

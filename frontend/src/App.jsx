@@ -17,25 +17,13 @@ function App() {
     //   hash: tg.initDataUnsafe?.hash
     // }
 
-    //   axios
-    //     .post(`${import.meta.env.VITE_API_URL}/api/auth/telegram`, userData, {
-    //       headers: {
-    //         initdata: tg.initData
-    //       }
-    //     })
-    //     .then((response) => {
-    //       setUser(response.data)
-    //       console.log('Authenticated:', response.data)
-    //     })
-    //     .catch((error) => {
-    //       console.error('Error authenticating:', error)
-    //     })
-    // }, [])
-
+    console.log(12, import.meta.env.VITE_TG_INIT_DATA)
+    console.log(13, import.meta.env.VITE_API_URL)
     axios
       .post(`${import.meta.env.VITE_API_URL}/api/auth/telegram`, null, {
         headers: {
-          initdata: tg.initData
+          initdata: import.meta.env.VITE_TG_INIT_DATA
+          // initdata: tg.initData
         }
       })
       .then((response) => {
