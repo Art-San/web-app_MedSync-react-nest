@@ -10,9 +10,13 @@ import { BotModule } from './both/bot.module'
 import { ValidateTelegramDataMiddleware } from './middleware/validate-telegram-data.middleware'
 import { AdminModule } from './admin/admin.module'
 import { RoleMiddleware } from './middleware/role.middleware'
+import { DoctorModule } from './doctor/doctor.module';
+import { DiagnosticModule } from './diagnostic/diagnostic.module';
+import { BookingModule } from './booking/booking.module';
+import { SpecialtyModule } from './specialty/specialty.module';
 
 @Module({
-	imports: [DbModule, AuthModule, BotModule, UserModule, AdminModule],
+	imports: [DbModule, AuthModule, BotModule, UserModule, AdminModule, DoctorModule, DiagnosticModule, BookingModule, SpecialtyModule],
 	controllers: [AppController],
 	providers: [AppService],
 })

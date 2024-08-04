@@ -13,26 +13,26 @@ export class UsersService {
 		})
 	}
 
-	async findAll() {
-		return this.prisma.user.findMany()
-	}
+	// async findAll() {
+	// 	return this.prisma.user.findMany()
+	// }
 
-	async findOne(id: number) {
-		return this.prisma.user.findUnique({
-			where: { id },
-		})
-	}
+	// async findOne(id: number) {
+	// 	return this.prisma.user.findUnique({
+	// 		where: { id },
+	// 	})
+	// }
 
-	async update(id: number, updateUserDto: CreateUserDto) {
-		return this.prisma.user.update({
-			where: { id },
-			data: updateUserDto,
-		})
-	}
+	// async update(id: number, updateUserDto: CreateUserDto) {
+	// 	return this.prisma.user.update({
+	// 		where: { id },
+	// 		data: updateUserDto,
+	// 	})
+	// }
 
-	async remove(id: number) {
-		return this.prisma.user.delete({
-			where: { id },
-		})
-	}
+	// async remove(id: number) {
+	// 	return this.prisma.user.delete({
+	// 		where: { id },
+	// 	})
+	// }
 }

@@ -1,18 +1,10 @@
 import { IsOptional, IsString, Length } from 'class-validator'
 
-export class CreateUserDto {
-	@IsOptional()
-	@IsString()
-	telegramId?: string
-
+export class UpdateUserDto {
 	@IsOptional()
 	@IsString()
 	@Length(1, 128)
 	username?: string
-
-	@IsString()
-	@Length(1, 128)
-	fullName: string
 
 	@IsOptional()
 	@IsString()
@@ -24,15 +16,6 @@ export class CreateUserDto {
 	@Length(1, 128)
 	lastName?: String
 }
-
-// export class CreateUserDto {
-// 	userId: number
-// 	telegramId: string
-// 	userName?: string
-// 	fullName: string
-// 	firstName?: String
-// 	lastName?: String
-// }
 
 // id: 721836748,
 // firstName: 'Александр',

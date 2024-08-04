@@ -1,0 +1,98 @@
+project-root/
+├── src/
+│   ├── app.module.ts
+│   ├── main.ts
+│   ├── doctor/
+│   │   ├── controllers/
+│   │   │   ├── doctor.controller.ts
+│   │   ├── services/
+│   │   │   ├── doctor.service.ts
+│   │   ├── dto/
+│   │   │   ├── create-doctor.dto.ts
+│   │   │   ├── update-doctor.dto.ts
+│   │   ├── doctor.module.ts
+│   ├── specialty/
+│   │   ├── controllers/
+│   │   │   ├── specialty.controller.ts
+│   │   ├── services/
+│   │   │   ├── specialty.service.ts
+│   │   ├── dto/
+│   │   │   ├── create-specialty.dto.ts
+│   │   │   ├── update-specialty.dto.ts
+│   │   ├── specialty.module.ts
+│   ├── doctor-rating/
+│   │   ├── controllers/
+│   │   │   ├── doctor-rating.controller.ts
+│   │   ├── services/
+│   │   │   ├── doctor-rating.service.ts
+│   │   ├── dto/
+│   │   │   ├── create-doctor-rating.dto.ts
+│   │   │   ├── update-doctor-rating.dto.ts
+│   │   ├── doctor-rating.module.ts
+│   ├── diagnostic/
+│   │   ├── controllers/
+│   │   │   ├── diagnostic.controller.ts
+│   │   ├── services/
+│   │   │   ├── diagnostic.service.ts
+│   │   ├── dto/
+│   │   │   ├── create-diagnostic.dto.ts
+│   │   │   ├── update-diagnostic.dto.ts
+│   │   ├── diagnostic.module.ts
+│   ├── diagnostic-location/
+│   │   ├── controllers/
+│   │   │   ├── diagnostic-location.controller.ts
+│   │   ├── services/
+│   │   │   ├── diagnostic-location.service.ts
+│   │   ├── dto/
+│   │   │   ├── create-diagnostic-location.dto.ts
+│   │   │   ├── update-diagnostic-location.dto.ts
+│   │   ├── diagnostic-location.module.ts
+│   ├── diagnostic-result/
+│   │   ├── controllers/
+│   │   │   ├── diagnostic-result.controller.ts
+│   │   ├── services/
+│   │   │   ├── diagnostic-result.service.ts
+│   │   ├── dto/
+│   │   │   ├── create-diagnostic-result.dto.ts
+│   │   │   ├── update-diagnostic-result.dto.ts
+│   │   ├── diagnostic-result.module.ts
+│   ├── location/
+│   │   ├── controllers/
+│   │   │   ├── location.controller.ts
+│   │   ├── services/
+│   │   │   ├── location.service.ts
+│   │   ├── dto/
+│   │   │   ├── create-location.dto.ts
+│   │   │   ├── update-location.dto.ts
+│   │   ├── location.module.ts
+│   ├── working-hour/
+│   │   ├── controllers/
+│   │   │   ├── working-hour.controller.ts
+│   │   ├── services/
+│   │   │   ├── working-hour.service.ts
+│   │   ├── dto/
+│   │   │   ├── create-working-hour.dto.ts
+│   │   │   ├── update-working-hour.dto.ts
+│   │   ├── working-hour.module.ts
+│   ├── booking/
+│   │   ├── controllers/
+│   │   │   ├── booking.controller.ts
+│   │   ├── services/
+│   │   │   ├── booking.service.ts
+│   │   ├── dto/
+│   │   │   ├── create-booking.dto.ts
+│   │   │   ├── update-booking.dto.ts
+│   │   ├── booking.module.ts
+│   ├── user/
+│   │   ├── controllers/
+│   │   │   ├── user.controller.ts
+│   │   ├── services/
+│   │   │   ├── user.service.ts
+│   │   ├── dto/
+│   │   │   ├── create-user.dto.ts
+│   │   │   ├── update-user.dto.ts
+│   │   ├── user.module.ts
+├── prisma/
+│   ├── schema.prisma
+├── package.json
+├── tsconfig.json

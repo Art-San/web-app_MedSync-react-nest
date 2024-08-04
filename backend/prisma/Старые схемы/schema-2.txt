@@ -1,0 +1,287 @@
+// datasource db {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL")
+// }
+
+// generator client {
+//   provider = "prisma-client-js"
+// }
+
+// model Doctor {
+//   doctor_id     Int       @id @default(autoincrement())
+//   location_id   Int
+//   full_name     String
+//   specialty_id  Int
+//   price         Decimal    @db.Decimal(10, 2)
+//   photo_url     String
+//   experience    String?
+//   certificates  String?
+//   services      String?
+
+//   location      Location   @relation(fields: [location_id], references: [location_id])
+//   specialty     Specialty  @relation(fields: [specialty_id], references: [specialty_id])
+//   ratings       DoctorRating[]
+//   bookings      Booking[]  // Добавлено поле обратного отношения
+
+//   @@map("doctors")
+// }
+
+// model Specialty {
+//   specialty_id   Int       @id @default(autoincrement())
+//   specialty_name String
+
+//   doctors        Doctor[]
+
+//   @@map("specialties")
+// }
+
+// model DoctorRating {
+//   rating_id  Int   @id @default(autoincrement())
+//   doctor_id  Int
+//   rating     Int   @default(0)
+
+//   doctor     Doctor @relation(fields: [doctor_id], references: [doctor_id])
+
+//   @@map("doctor_ratings")
+// }
+
+// model Diagnostic {
+//   diagnostic_id  Int      @id @default(autoincrement())
+//   type_name      String
+//   description    String
+//   price          Decimal  @db.Decimal(10, 2)
+//   photo_url      String
+
+//   locations      DiagnosticLocation[]
+//   results        DiagnosticResult[]
+//   bookings       Booking[]  // Добавлено поле обратного отношения
+
+//   @@map("diagnostics")
+// }
+
+// model DiagnosticLocation {
+//   diagnostic_location_id  Int      @id @default(autoincrement())
+//   diagnostic_id           Int
+//   location_id             Int
+
+//   diagnostic              Diagnostic @relation(fields: [diagnostic_id], references: [diagnostic_id])
+//   location                Location   @relation(fields: [location_id], references: [location_id])
+
+//   @@map("diagnostic_locations")
+// }
+
+// model DiagnosticResult {
+//   diagnostic_result_id  Int      @id @default(autoincrement())
+//   booking_id            Int
+//   file_path             String
+//   file_id               String?
+
+//   booking               Booking   @relation(fields: [booking_id], references: [booking_id])
+
+//   @@map("diagnostic_results")
+// }
+
+// model Location {
+//   location_id  Int      @id @default(autoincrement())
+//   name         String
+//   address      String
+
+//   doctors              Doctor[]
+//   diagnosticLocations  DiagnosticLocation[]
+//   bookings             Booking[]
+//   workingHours         WorkingHour[]
+
+//   @@map("locations")
+// }
+
+// model WorkingHour {
+//   working_hour_id  Int  @id @default(autoincrement())
+//   location_id      Int
+//   start_time       Int
+//   end_time         Int
+//   weekday_index    Int
+
+//   location         Location @relation(fields: [location_id], references: [location_id])
+
+//   @@map("working_hours")
+// }
+
+// model Booking {
+//   booking_id       Int      @id @default(autoincrement())
+//   user_id          Int?
+//   user_full_name   String
+//   user_email       String
+//   user_phone_number String
+//   user_message     String?
+//   doctor_id        Int?
+//   diagnostic_id    Int?
+//   location_id      Int
+//   booking_time     DateTime @db.Timestamptz
+
+//   user             User?     @relation(fields: [user_id], references: [user_id])
+//   doctor           Doctor?   @relation(fields: [doctor_id], references: [doctor_id])
+//   diagnostic       Diagnostic? @relation(fields: [diagnostic_id], references: [diagnostic_id])
+//   location         Location  @relation(fields: [location_id], references: [location_id])
+//   results          DiagnosticResult[]  // Добавлено поле обратного отношения
+
+//   @@unique([doctor_id, location_id, booking_time], name: "unique_doctor_location_time")
+//   @@unique([diagnostic_id, location_id, booking_time], name: "unique_diagnostic_location_time")
+
+//   @@map("bookings")
+// }
+
+// model User {
+//   user_id   Int     @id @default(autoincrement())
+//   username  String?
+//   full_name String
+
+//   bookings  Booking[]
+
+//   @@map("users")
+// }
+
+
+// datasource db {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL")
+// }
+
+// generator client {
+//   provider = "prisma-client-js"
+// }
+
+// model Doctor {
+//   doctor_id     Int       @id @default(autoincrement())
+//   location_id   Int
+//   full_name     String
+//   specialty_id  Int
+//   price         Decimal    @db.Decimal(10, 2)
+//   photo_url     String
+//   experience    String?
+//   certificates  String?
+//   services      String?
+
+//   location      Location   @relation(fields: [location_id], references: [location_id])
+//   specialty     Specialty  @relation(fields: [specialty_id], references: [specialty_id])
+//   ratings       DoctorRating[]
+//   bookings      Booking[]  // Добавлено поле обратного отношения
+
+//   @@map("doctors")
+// }
+
+// model Specialty {
+//   specialty_id   Int       @id @default(autoincrement())
+//   specialty_name String
+
+//   doctors        Doctor[]
+
+//   @@map("specialties")
+// }
+
+// model DoctorRating {
+//   rating_id  Int   @id @default(autoincrement())
+//   doctor_id  Int
+//   rating     Int   @default(0)
+
+//   doctor     Doctor @relation(fields: [doctor_id], references: [doctor_id])
+
+//   @@map("doctor_ratings")
+// }
+
+// model Diagnostic {
+//   diagnostic_id  Int      @id @default(autoincrement())
+//   type_name      String
+//   description    String
+//   price          Decimal  @db.Decimal(10, 2)
+//   photo_url      String
+
+//   locations      DiagnosticLocation[]
+//   results        DiagnosticResult[]  @relation(fields: [diagnostic_id], references: [diagnostic_id])
+//   bookings       Booking[]  // Добавлено поле обратного отношения
+
+//   @@map("diagnostics")
+// }
+
+// model DiagnosticLocation {
+//   diagnostic_location_id  Int      @id @default(autoincrement())
+//   diagnostic_id           Int
+//   location_id             Int
+
+//   diagnostic              Diagnostic @relation(fields: [diagnostic_id], references: [diagnostic_id])
+//   location                Location   @relation(fields: [location_id], references: [location_id])
+
+//   @@map("diagnostic_locations")
+// }
+
+// model DiagnosticResult {
+//   diagnostic_result_id  Int      @id @default(autoincrement())
+//   booking_id            Int
+//   diagnostic_id         Int
+//   file_path             String
+//   file_id               String?
+
+//   booking               Booking     @relation(fields: [booking_id], references: [booking_id])
+//   diagnostic            Diagnostic  @relation(fields: [diagnostic_id], references: [diagnostic_id])
+
+//   @@map("diagnostic_results")
+// }
+
+// model Location {
+//   location_id  Int      @id @default(autoincrement())
+//   name         String
+//   address      String
+
+//   doctors              Doctor[]
+//   diagnosticLocations  DiagnosticLocation[]
+//   bookings             Booking[]
+//   workingHours         WorkingHour[]
+
+//   @@map("locations")
+// }
+
+// model WorkingHour {
+//   working_hour_id  Int  @id @default(autoincrement())
+//   location_id      Int
+//   start_time       Int
+//   end_time         Int
+//   weekday_index    Int
+
+//   location         Location @relation(fields: [location_id], references: [location_id])
+
+//   @@map("working_hours")
+// }
+
+// model Booking {
+//   booking_id       Int      @id @default(autoincrement())
+//   user_id          Int?
+//   user_full_name   String
+//   user_email       String
+//   user_phone_number String
+//   user_message     String?
+//   doctor_id        Int?
+//   diagnostic_id    Int?
+//   location_id      Int
+//   booking_time     DateTime @db.Timestamptz
+
+//   user             User?     @relation(fields: [user_id], references: [user_id])
+//   doctor           Doctor?   @relation(fields: [doctor_id], references: [doctor_id])
+//   diagnostic       Diagnostic? @relation(fields: [diagnostic_id], references: [diagnostic_id])
+//   location         Location  @relation(fields: [location_id], references: [location_id])
+//   results          DiagnosticResult[]  // Добавлено поле обратного отношения
+
+//   @@unique([doctor_id, location_id, booking_time], name: "unique_doctor_location_time")
+//   @@unique([diagnostic_id, location_id, booking_time], name: "unique_diagnostic_location_time")
+
+//   @@map("bookings")
+// }
+
+// model User {
+//   user_id   Int     @id @default(autoincrement())
+//   username  String?
+//   full_name String
+
+//   bookings  Booking[]
+
+//   @@map("users")
+// }
+

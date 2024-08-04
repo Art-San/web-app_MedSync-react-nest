@@ -6,55 +6,140 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-
-model User {
-  id             Int        @id @default(autoincrement())
-  telegramId     String     @unique
-  firstName      String?
-  lastName       String?
-  userName       String
-  email          String?    @unique
-  hashedPassword String
-  isActive       Boolean    @default(true)
-  isAdmin        Boolean    @default(false)
-  bookings       Booking[]  @relation("UserBookings")
-}
-
 model Doctor {
-  id             Int       @id @default(autoincrement())
-  fullName       String
-  specialization String
-  bookings       Booking[] @relation("DoctorBookings")
+  doctorId     Int       @id @default(autoincrement())
+  locationId   Int
+  fullName     String
+  specialtyId  Int
+  price         Decimal    @db.Decimal(10, 2)
+  photoUrl      String
+  experience    String?
+  certificates  String?
+  services      String?
+
+  location      Location   @relation(fields: [locationId], references: [locationId])
+  specialty     Specialty  @relation(fields: [specialtyId], references: [specialtyId])
+  ratings       DoctorRating[]
+  bookings      Booking[]
+
+  @@map("doctors")
 }
 
-model Booking {
-  id          Int         @id @default(autoincrement())
-  bookingTime DateTime
-  userId      Int
-  doctorId    Int
-  diagnosticId Int?       // This field is optional since a booking may not always have a diagnostic
-  user        User        @relation(fields: [userId], references: [id], name: "UserBookings")
-  doctor      Doctor      @relation(fields: [doctorId], references: [id], name: "DoctorBookings")
-  diagnostic  Diagnostic? @relation(fields: [diagnosticId], references: [id], name: "DiagnosticBookings")
+model Specialty {
+  specialtyId   Int       @id @default(autoincrement())
+  specialtyName String
+
+  doctors        Doctor[]
+
+  @@map("specialties")
+}
+
+model DoctorRating {
+  ratingId  Int   @id @default(autoincrement())
+  doctorId  Int
+  rating    Int   @default(0)
+
+  doctor     Doctor @relation(fields: [doctorId], references: [doctorId])
+
+  @@map("doctor_ratings")
 }
 
 model Diagnostic {
-  id        Int       @id @default(autoincrement())
-  typeName  String
-  bookings  Booking[] @relation("DiagnosticBookings")
+  diagnosticId   Int      @id @default(autoincrement())
+  typeName       String
+  description    String
+  price          Decimal  @db.Decimal(10, 2)
+  photoUrl       String
+
+  locations      DiagnosticLocation[]
+  results        DiagnosticResult[]
+  bookings       Booking[]
+
+  @@map("diagnostics")
+}
+
+model DiagnosticLocation {
+  diagnosticLocationId   Int      @id @default(autoincrement())
+  diagnosticId           Int
+  locationId             Int
+
+  diagnostic              Diagnostic @relation(fields: [diagnosticId], references: [diagnosticId])
+  location                Location   @relation(fields: [locationId], references: [locationId])
+
+  @@map("diagnostic_locations")
+}
+
+model DiagnosticResult {
+  diagnosticResultId    Int      @id @default(autoincrement())
+  bookingId             Int
+  diagnosticId          Int
+  filePath             String
+  fileId               String?
+
+  booking               Booking     @relation(fields: [bookingId], references: [bookingId])
+  diagnostic            Diagnostic  @relation(fields: [diagnosticId], references: [diagnosticId])
+
+  @@map("diagnostic_results")
 }
 
 model Location {
-  id        Int      @id @default(autoincrement())
-  name      String
-  address   String
-  slots     Slot[]
+  locationId   Int      @id @default(autoincrement())
+  name         String
+  address      String
+
+  doctors              Doctor[]
+  diagnosticLocations  DiagnosticLocation[]
+  bookings             Booking[]
+  workingHours         WorkingHour[]
+
+  @@map("locations")
 }
 
-model Slot {
-  id        Int      @id @default(autoincrement())
-  startTime DateTime
-  endTime   DateTime
-  locationId Int
-  location  Location @relation(fields: [locationId], references: [id])
+model WorkingHour {
+  workingHourId   Int  @id @default(autoincrement())
+  locationId      Int
+  startTime       Int
+  endTime         Int
+  weekdayIndex    Int
+
+  location         Location @relation(fields: [locationId], references: [locationId])
+
+  @@map("working_hours")
+}
+
+model Booking {
+  bookingId         Int      @id @default(autoincrement())
+  userId            Int?
+  userFullName      String
+  userEmail        String
+  userPhoneNumber String
+  userMessage      String?
+  doctorId          Int?
+  diagnosticId      Int?
+  locationId        Int
+  bookingTime      DateTime @db.Timestamptz
+
+  user             User?     @relation(fields: [userId], references: [userId])
+  doctor           Doctor?   @relation(fields: [doctorId], references: [doctorId])
+  diagnostic       Diagnostic? @relation(fields: [diagnosticId], references: [diagnosticId])
+  location         Location  @relation(fields: [locationId], references: [locationId])
+  results          DiagnosticResult[]
+
+  @@unique([doctorId, locationId, bookingTime], name: "unique_doctor_location_time")
+  @@unique([diagnosticId, locationId, bookingTime], name: "unique_diagnostic_location_time")
+
+  @@map("bookings")
+}
+
+model User {
+  userId       Int     @id @default(autoincrement())
+  telegramId   String?   @unique
+  username     String?
+  fullName     String
+  firstNname   String?
+  lastNname    String?
+
+  bookings  Booking[]
+
+  @@map("users")
 }
