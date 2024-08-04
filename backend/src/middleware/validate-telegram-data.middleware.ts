@@ -54,7 +54,9 @@ export class ValidateTelegramDataMiddleware implements NestMiddleware {
 			typeof urlParams.get('user') === 'string'
 				? JSON.parse(urlParams.get('user'))
 				: urlParams.get('user')
-		// console.log(1, 'ValidateTelegramDataMiddleware', user)
+
+		console.log(1, 'ValidateTelegramDataMiddleware', user)
+
 		req.user = user
 
 		next()

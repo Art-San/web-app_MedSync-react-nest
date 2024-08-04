@@ -1,28 +1,24 @@
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import medSyncLogo from './assets/images/landing-page/medsync-logo.svg'
+import HomePage from './pages/Test/HomePage'
 
 function App() {
   const [user, setUser] = useState(null)
-
+  console.log('user, ', user)
   useEffect(() => {
     const tg = window.Telegram.WebApp
+    console.log(1, tg)
+
     tg.ready()
-
-    // const userData = {
-    //   queryId: tg.initDataUnsafe?.query_id,
-    //   username: tg.initDataUnsafe?.user?.username,
-    //   telegramId: tg.initDataUnsafe?.user?.id,
-    //   authDate: tg.initDataUnsafe?.auth_date,
-    //   hash: tg.initDataUnsafe?.hash
-    // }
-
-    console.log(12, import.meta.env.VITE_TG_INIT_DATA)
-    console.log(13, import.meta.env.VITE_API_URL)
     axios
       .post(`${import.meta.env.VITE_API_URL}/api/auth/telegram`, null, {
         headers: {
-          initdata: import.meta.env.VITE_TG_INIT_DATA
+          initdata: tg.initData
+            ? tg.initData
+            : import.meta.env.VITE_TG_INIT_DATA
+          // initdata: import.meta.env.VITE_TG_INIT_DATA
           // initdata: tg.initData
         }
       })
@@ -36,6 +32,14 @@ function App() {
   }, [])
 
   return (
+    // <BrowserRouter>
+    //   <Routes>
+    //     <Route
+    //       path="/"
+    //       element={<HomePage isInvalidVersion={true} user={user} />}
+    //     />
+    //   </Routes>
+    // </BrowserRouter>
     <div className="landing-page">
       <h1>Welcome to Telegram Mini App</h1>
       <div className="landing-page__logo">
@@ -43,8 +47,8 @@ function App() {
       </div>
       {user && (
         <div>
-          <h2>Hello, {user.username}</h2>
-          <p>Telegram ID: {user.telegramId}</p>
+          <h2>Hello, {user.user.username}</h2>
+          <p>Telegram ID: {user.user.id}</p>
         </div>
       )}
     </div>
