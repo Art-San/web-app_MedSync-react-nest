@@ -28,6 +28,7 @@ model Doctor {
 model Specialty {
   specialtyId   Int       @id @default(autoincrement())
   specialtyName String
+  slag          String
 
   doctors        Doctor[]
 

@@ -17,6 +17,7 @@ CREATE TABLE "doctors" (
 CREATE TABLE "specialties" (
     "specialtyId" SERIAL NOT NULL,
     "specialtyName" TEXT NOT NULL,
+    "slag" TEXT NOT NULL,
 
     CONSTRAINT "specialties_pkey" PRIMARY KEY ("specialtyId")
 );

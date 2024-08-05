@@ -41,7 +41,9 @@ export class ValidateTelegramDataMiddleware implements NestMiddleware {
 		const botToken = process.env.TELEGRAM_BOT_TOKEN
 
 		if (!telegramInitData || !botToken) {
-			return res.status(400).json({ message: 'Invalid request' })
+			return res
+				.status(400)
+				.json({ message: 'Invalid request in ValidateTelegramDataMiddleware' })
 		}
 
 		const { urlParams, isVerified } = verifyInitData(telegramInitData, botToken)

@@ -10,24 +10,33 @@ import { BotModule } from './both/bot.module'
 import { ValidateTelegramDataMiddleware } from './middleware/validate-telegram-data.middleware'
 import { AdminModule } from './admin/admin.module'
 import { RoleMiddleware } from './middleware/role.middleware'
-import { DoctorModule } from './doctor/doctor.module';
-import { DiagnosticModule } from './diagnostic/diagnostic.module';
-import { BookingModule } from './booking/booking.module';
-import { SpecialtyModule } from './specialty/specialty.module';
+import { DoctorModule } from './doctor/doctor.module'
+import { DiagnosticModule } from './diagnostic/diagnostic.module'
+import { BookingModule } from './booking/booking.module'
+import { SpecialtyModule } from './specialty/specialty.module'
 
 @Module({
-	imports: [DbModule, AuthModule, BotModule, UserModule, AdminModule, DoctorModule, DiagnosticModule, BookingModule, SpecialtyModule],
+	imports: [
+		DbModule,
+		AuthModule,
+		BotModule,
+		UserModule,
+		AdminModule,
+		DoctorModule,
+		DiagnosticModule,
+		BookingModule,
+		SpecialtyModule,
+	],
 	controllers: [AppController],
 	providers: [AppService],
 })
 export class AppModule {
-	configure(consumer: MiddlewareConsumer) {
-		consumer
-			.apply(ValidateTelegramDataMiddleware)
-			.forRoutes({ path: '*', method: RequestMethod.ALL }) // Или конкретные пути, если требуется
-
-		consumer
-			.apply(RoleMiddleware)
-			.forRoutes({ path: '*', method: RequestMethod.ALL })
-	}
+	// configure(consumer: MiddlewareConsumer) {
+	// 	consumer
+	// 		.apply(ValidateTelegramDataMiddleware)
+	// 		.forRoutes({ path: '*', method: RequestMethod.ALL }) // Или конкретные пути, если требуется
+	// 	consumer
+	// 		.apply(RoleMiddleware)
+	// 		.forRoutes({ path: '*', method: RequestMethod.ALL })
+	// }
 }
