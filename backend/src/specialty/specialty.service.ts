@@ -1,29 +1,31 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable, Logger } from '@nestjs/common'
 import { CreateSpecialtyDto } from './dto/create-specialty.dto'
 import { UpdateSpecialtyDto } from './dto/update-specialty.dto'
 import { DbService } from 'src/db/db.service'
 import { error } from 'console'
+import { BaseService } from 'src/common/base.service'
 
 @Injectable()
-export class SpecialtyService {
-	constructor(private readonly dbService: DbService) {}
+export class SpecialtyService extends BaseService {
+	constructor(private readonly dbService: DbService) {
+		super(SpecialtyService.name)
+	}
 
 	async findAll() {
 		try {
 			const specialties = await this.dbService.specialty.findMany()
 			return specialties
 		} catch (error) {
-			console.log('Ошибка в findAll Specialty', error.message)
-			throw error
+			this.handleException(error, 'findAll Specialty')
 		}
 	}
 
 	async create(createSpecialtyDto: CreateSpecialtyDto) {
 		try {
-			const specialty = await this.bySlug(createSpecialtyDto.slag)
+			const specialty = await this.bySlug(createSpecialtyDto.slug)
 			if (specialty) {
 				throw new BadRequestException(
-					`Cпециальность с таким слагом уже есть в БД ${specialty.slag}`
+					`Cпециальность с таким слагом уже есть в БД ${specialty.slug}`
 				)
 			}
 			const newSpecialty = await this.dbService.specialty.create({
@@ -32,22 +34,21 @@ export class SpecialtyService {
 
 			return newSpecialty
 		} catch (error) {
-			console.log('Ошибка в create Specialty', error.message)
-			throw error
+			this.handleException(error, 'create Specialty')
 		}
 	}
 
-	async bySlug(slag: string) {
+	async bySlug(slug: string) {
 		try {
 			const specialty = await this.dbService.specialty.findFirst({
 				where: {
-					slag,
+					slug,
 				},
 			})
 
 			return specialty
 		} catch (error) {
-			console.log('Ошибка в bySlug Specialty', error.message)
+			this.logger.error('Ошибка в bySlug Specialty', error.message)
 			throw error
 		}
 	}
@@ -66,26 +67,24 @@ export class SpecialtyService {
 
 			return specialty
 		} catch (error) {
-			console.log('Ошибка в byId Specialty', error.message)
-			throw error
+			this.handleException(error, 'byId Specialty')
 		}
 	}
 
 	async update(specialtyId: number, updateSpecialtyDto: UpdateSpecialtyDto) {
 		try {
 			const specialty = await this.byId(specialtyId)
-			if (!specialty) {
-				throw error
-				// throw new BadRequestException(
-				// 	`Cпециальность с таким ID: ${specialtyId} нет в БД `
-				// )
-			}
+			// if (!specialty) {
+			// 	throw new BadRequestException(
+			// 		`Cпециальность с таким ID: ${specialtyId} нет в БД `
+			// 	)
+			// }
 
-			const existSlagSpecialty = await this.bySlug(updateSpecialtyDto.slag)
+			const existSlugSpecialty = await this.bySlug(updateSpecialtyDto.slug)
 
-			if (existSlagSpecialty) {
+			if (existSlugSpecialty) {
 				throw new BadRequestException(
-					`Cпециальность с таким слагом уже есть в БД ${updateSpecialtyDto.slag}`
+					`Cпециальность с таким слагом уже есть в БД ${updateSpecialtyDto.slug}`
 				)
 			}
 
@@ -96,17 +95,18 @@ export class SpecialtyService {
 
 			return updatedSpecialty
 		} catch (error) {
-			console.log('Ошибка в update Specialty', error.message)
-			throw error
+			this.handleException(error, 'update Specialty')
 		}
 	}
 
 	async delete(specialtyId: number) {
 		try {
 			const specialty = await this.byId(specialtyId)
-			if (!specialty) {
-				throw error
-			}
+			// if (!specialty) {
+			// 	throw new BadRequestException(
+			// 		`Cпециальность с таким ID: ${specialtyId} нет в БД`
+			// 	)
+			// }
 
 			await this.dbService.specialty.delete({
 				where: { specialtyId },
@@ -114,8 +114,7 @@ export class SpecialtyService {
 
 			return { msg: `Cпециальность с таким ID: ${specialtyId} удалена` }
 		} catch (error) {
-			console.log('Ошибка в delete Specialty', error.message)
-			throw error
+			this.handleException(error, 'delete Specialty')
 		}
 	}
 }

@@ -6,21 +6,22 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 model Doctor {
   doctorId     Int       @id @default(autoincrement())
   locationId   Int
   fullName     String
   specialtyId  Int
-  price         Decimal    @db.Decimal(10, 2)
-  photoUrl      String
-  experience    String?
-  certificates  String?
-  services      String?
+  price        Decimal    @db.Decimal(10, 2)
+  photoUrl     String // Указать формат: полный URL или путь к файлу
+  experience   String?
+  certificates String?
+  services     String?
 
-  location      Location   @relation(fields: [locationId], references: [locationId])
-  specialty     Specialty  @relation(fields: [specialtyId], references: [specialtyId])
-  ratings       DoctorRating[]
-  bookings      Booking[]
+  location     Location   @relation(fields: [locationId], references: [locationId])
+  specialty    Specialty  @relation(fields: [specialtyId], references: [specialtyId])
+  ratings      DoctorRating[]
+  bookings     Booking[]
 
   @@map("doctors")
 }
@@ -28,7 +29,7 @@ model Doctor {
 model Specialty {
   specialtyId   Int       @id @default(autoincrement())
   specialtyName String
-  slag          String
+  slug          String
 
   doctors        Doctor[]
 
@@ -74,14 +75,15 @@ model DiagnosticResult {
   diagnosticResultId    Int      @id @default(autoincrement())
   bookingId             Int
   diagnosticId          Int
-  filePath             String
-  fileId               String?
+  filePath              String
+  fileId                String
 
   booking               Booking     @relation(fields: [bookingId], references: [bookingId])
   diagnostic            Diagnostic  @relation(fields: [diagnosticId], references: [diagnosticId])
 
   @@map("diagnostic_results")
 }
+
 
 model Location {
   locationId   Int      @id @default(autoincrement())
@@ -99,26 +101,31 @@ model Location {
 model WorkingHour {
   workingHourId   Int  @id @default(autoincrement())
   locationId      Int
-  startTime       Int
-  endTime         Int
+  startTime       String // Изменить на String или Time в зависимости от вашего предпочтения
+  endTime         String // Изменить на String или Time в зависимости от вашего предпочтения
   weekdayIndex    Int
 
-  location         Location @relation(fields: [locationId], references: [locationId])
+  location        Location @relation(fields: [locationId], references: [locationId])
 
   @@map("working_hours")
 }
 
+
 model Booking {
-  bookingId         Int      @id @default(autoincrement())
-  userId            Int?
-  userFullName      String
+  bookingId        Int      @id @default(autoincrement())
+  userId           Int?
+  userFullName     String
   userEmail        String
-  userPhoneNumber String
+  userPhoneNumber  String
   userMessage      String?
-  doctorId          Int?
-  diagnosticId      Int?
-  locationId        Int
+  doctorId         Int?
+  diagnosticId     Int?
+  locationId       Int
   bookingTime      DateTime @db.Timestamptz
+  status           String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  deletedAt        DateTime?
 
   user             User?     @relation(fields: [userId], references: [userId])
   doctor           Doctor?   @relation(fields: [doctorId], references: [doctorId])
@@ -132,15 +139,16 @@ model Booking {
   @@map("bookings")
 }
 
-model User {
-  userId       Int     @id @default(autoincrement())
-  telegramId   String?   @unique
-  username     String?
-  fullName     String
-  firstNname   String?
-  lastNname    String?
 
-  bookings  Booking[]
+model User {
+  userId      Int     @id @default(autoincrement())
+  telegramId  String? @unique
+  username    String?
+  fullName    String
+  firstName   String?
+  lastName    String?
+
+  bookings    Booking[]
 
   @@map("users")
 }

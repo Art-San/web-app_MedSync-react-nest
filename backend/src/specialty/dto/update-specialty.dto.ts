@@ -11,5 +11,5 @@ export class UpdateSpecialtyDto {
 	@IsOptional()
 	@IsString()
 	@Length(1, 128)
-	slag?: string
+	slug?: string
 }

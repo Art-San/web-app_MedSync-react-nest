@@ -17,7 +17,7 @@ CREATE TABLE "doctors" (
 CREATE TABLE "specialties" (
     "specialtyId" SERIAL NOT NULL,
     "specialtyName" TEXT NOT NULL,
-    "slag" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,
 
     CONSTRAINT "specialties_pkey" PRIMARY KEY ("specialtyId")
 );
@@ -57,7 +57,7 @@ CREATE TABLE "diagnostic_results" (
     "bookingId" INTEGER NOT NULL,
     "diagnosticId" INTEGER NOT NULL,
     "filePath" TEXT NOT NULL,
-    "fileId" TEXT,
+    "fileId" TEXT NOT NULL,
 
     CONSTRAINT "diagnostic_results_pkey" PRIMARY KEY ("diagnosticResultId")
 );
@@ -75,8 +75,8 @@ CREATE TABLE "locations" (
 CREATE TABLE "working_hours" (
     "workingHourId" SERIAL NOT NULL,
     "locationId" INTEGER NOT NULL,
-    "startTime" INTEGER NOT NULL,
-    "endTime" INTEGER NOT NULL,
+    "startTime" TEXT NOT NULL,
+    "endTime" TEXT NOT NULL,
     "weekdayIndex" INTEGER NOT NULL,
 
     CONSTRAINT "working_hours_pkey" PRIMARY KEY ("workingHourId")
@@ -94,6 +94,10 @@ CREATE TABLE "bookings" (
     "diagnosticId" INTEGER,
     "locationId" INTEGER NOT NULL,
     "bookingTime" TIMESTAMPTZ NOT NULL,
+    "status" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "deletedAt" TIMESTAMP(3),
 
     CONSTRAINT "bookings_pkey" PRIMARY KEY ("bookingId")
 );
@@ -104,8 +108,8 @@ CREATE TABLE "users" (
     "telegramId" TEXT,
     "username" TEXT,
     "fullName" TEXT NOT NULL,
-    "firstNname" TEXT,
-    "lastNname" TEXT,
+    "firstName" TEXT,
+    "lastName" TEXT,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("userId")
 );

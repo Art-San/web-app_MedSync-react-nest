@@ -17,12 +17,12 @@ export class CreateUserDto {
 	@IsOptional()
 	@IsString()
 	@Length(1, 128)
-	firstName?: String
+	firstName?: string
 
 	@IsOptional()
 	@IsString()
 	@Length(1, 128)
-	lastName?: String
+	lastName?: string
 }
 
 // export class CreateUserDto {

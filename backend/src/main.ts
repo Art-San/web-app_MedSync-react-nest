@@ -17,7 +17,7 @@ async function bootstrap() {
 
 	// app.use(new ValidateTelegramDataMiddleware().use)
 
-	// app.useGlobalPipes(new ValidationPipe()) // глобальный ValidationPipe не надо в контроллерах так писать @UsePipes(new ValidationPipe())
+	app.useGlobalPipes(new ValidationPipe()) // глобальный ValidationPipe не надо в контроллерах так писать @UsePipes(new ValidationPipe())
 
 	await app.listen(process.env.PORT || 3001)
 	console.log(`Сервер запущен на порту ${process.env.PORT}`)

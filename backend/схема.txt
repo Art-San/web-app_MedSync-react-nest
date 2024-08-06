@@ -1,133 +1,68 @@
-nestjs-app/
-├── src/
-│   ├── modules/
-│   │   ├── doctor/
-│   │   │   ├── controllers/
-│   │   │   │   └── doctor.controller.ts
-│   │   │   ├── dto/
-│   │   │   │   ├── create-doctor.dto.ts
-│   │   │   │   ├── update-doctor.dto.ts
-│   │   │   ├── entities/
-│   │   │   │   └── doctor.entity.ts
-│   │   │   ├── services/
-│   │   │   │   └── doctor.service.ts
-│   │   │   └── doctor.module.ts
-│   │   │
-│   │   ├── specialty/
-│   │   │   ├── controllers/
-│   │   │   │   └── specialty.controller.ts
-│   │   │   ├── dto/
-│   │   │   │   ├── create-specialty.dto.ts
-│   │   │   │   ├── update-specialty.dto.ts
-│   │   │   ├── entities/
-│   │   │   │   └── specialty.entity.ts
-│   │   │   ├── services/
-│   │   │   │   └── specialty.service.ts
-│   │   │   └── specialty.module.ts
-│   │   │
-│   │   ├── doctor-rating/
-│   │   │   ├── controllers/
-│   │   │   │   └── doctor-rating.controller.ts
-│   │   │   ├── dto/
-│   │   │   │   ├── create-doctor-rating.dto.ts
-│   │   │   │   ├── update-doctor-rating.dto.ts
-│   │   │   ├── entities/
-│   │   │   │   └── doctor-rating.entity.ts
-│   │   │   ├── services/
-│   │   │   │   └── doctor-rating.service.ts
-│   │   │   └── doctor-rating.module.ts
-│   │   │
-│   │   ├── diagnostic/
-│   │   │   ├── controllers/
-│   │   │   │   └── diagnostic.controller.ts
-│   │   │   ├── dto/
-│   │   │   │   ├── create-diagnostic.dto.ts
-│   │   │   │   ├── update-diagnostic.dto.ts
-│   │   │   ├── entities/
-│   │   │   │   └── diagnostic.entity.ts
-│   │   │   ├── services/
-│   │   │   │   └── diagnostic.service.ts
-│   │   │   └── diagnostic.module.ts
-│   │   │
-│   │   ├── diagnostic-location/
-│   │   │   ├── controllers/
-│   │   │   │   └── diagnostic-location.controller.ts
-│   │   │   ├── dto/
-│   │   │   │   ├── create-diagnostic-location.dto.ts
-│   │   │   │   ├── update-diagnostic-location.dto.ts
-│   │   │   ├── entities/
-│   │   │   │   └── diagnostic-location.entity.ts
-│   │   │   ├── services/
-│   │   │   │   └── diagnostic-location.service.ts
-│   │   │   └── diagnostic-location.module.ts
-│   │   │
-│   │   ├── diagnostic-result/
-│   │   │   ├── controllers/
-│   │   │   │   └── diagnostic-result.controller.ts
-│   │   │   ├── dto/
-│   │   │   │   ├── create-diagnostic-result.dto.ts
-│   │   │   │   ├── update-diagnostic-result.dto.ts
-│   │   │   ├── entities/
-│   │   │   │   └── diagnostic-result.entity.ts
-│   │   │   ├── services/
-│   │   │   │   └── diagnostic-result.service.ts
-│   │   │   └── diagnostic-result.module.ts
-│   │   │
-│   │   ├── location/
-│   │   │   ├── controllers/
-│   │   │   │   └── location.controller.ts
-│   │   │   ├── dto/
-│   │   │   │   ├── create-location.dto.ts
-│   │   │   │   ├── update-location.dto.ts
-│   │   │   ├── entities/
-│   │   │   │   └── location.entity.ts
-│   │   │   ├── services/
-│   │   │   │   └── location.service.ts
-│   │   │   └── location.module.ts
-│   │   │
-│   │   ├── working-hour/
-│   │   │   ├── controllers/
-│   │   │   │   └── working-hour.controller.ts
-│   │   │   ├── dto/
-│   │   │   │   ├── create-working-hour.dto.ts
-│   │   │   │   ├── update-working-hour.dto.ts
-│   │   │   ├── entities/
-│   │   │   │   └── working-hour.entity.ts
-│   │   │   ├── services/
-│   │   │   │   └── working-hour.service.ts
-│   │   │   └── working-hour.module.ts
-│   │   │
-│   │   ├── booking/
-│   │   │   ├── controllers/
-│   │   │   │   └── booking.controller.ts
-│   │   │   ├── dto/
-│   │   │   │   ├── create-booking.dto.ts
-│   │   │   │   ├── update-booking.dto.ts
-│   │   │   ├── entities/
-│   │   │   │   └── booking.entity.ts
-│   │   │   ├── services/
-│   │   │   │   └── booking.service.ts
-│   │   │   └── booking.module.ts
-│   │   │
-│   │   ├── user/
-│   │   │   ├── controllers/
-│   │   │   │   └── user.controller.ts
-│   │   │   ├── dto/
-│   │   │   │   ├── create-user.dto.ts
-│   │   │   │   ├── update-user.dto.ts
-│   │   │   ├── entities/
-│   │   │   │   └── user.entity.ts
-│   │   │   ├── services/
-│   │   │   │   └── user.service.ts
-│   │   │   └── user.module.ts
-│   │   │
-│   ├── prisma/
-│   │   └── prisma.service.ts
-│   ├── app.module.ts
-│   ├── main.ts
-├── prisma/
-│   ├── schema.prisma
-├── .env
-├── package.json
-├── tsconfig.json
-└── ... (другие конфигурационные файлы и директории)
+src
+├── common
+│   ├── base.service.ts
+│   └── ...
+├── db
+│   ├── db.service.ts
+│   └── ...
+├── dto
+│   ├── create-location.dto.ts
+│   ├── create-specialty.dto.ts
+│   ├── update-location.dto.ts
+│   ├── update-specialty.dto.ts
+│   └── ...
+├── location
+│   ├── location.service.ts
+│   ├── location.controller.ts
+│   └── ...
+├── specialty
+│   ├── specialty.service.ts
+│   ├── specialty.controller.ts
+│   └── ...
+└── ...
+
++----------------------------------+
+|          BaseService             |
+|----------------------------------|
+| + logger: Logger                 |
+| + constructor(serviceName: string)|
+| + handleException(error: any,    |
+|   context: string): void         |
++----------------------------------+
+                ^
+                |
+                |
++---------------|------------------+
+|               |                  |
+|               |                  |
+|               |                  |
+|        +-------------------------+-------------------------+
+|        |                       SpecialtyService            |
+|        |---------------------------------------------------|
+|        | + constructor(dbService: DbService)               |
+|        | + findAll(): Promise<Specialty[]>                 |
+|        | + create(createSpecialtyDto: CreateSpecialtyDto): |
+|        |   Promise<Specialty>                              |
+|        | + bySlug(slug: string): Promise<Specialty>        |
+|        | + byId(specialtyId: number): Promise<Specialty>   |
+|        | + update(specialtyId: number,                     |
+|        |   updateSpecialtyDto: UpdateSpecialtyDto):        |
+|        |   Promise<Specialty>                              |
+|        | + delete(specialtyId: number): Promise<{ msg:     |
+|        |   string }>                                       |
+|        +---------------------------------------------------+
+|               |                  
+|        +-------------------------+-------------------------+
+|        |                       LocationService             |
+|        |---------------------------------------------------|
+|        | + constructor(dbService: DbService)               |
+|        | + findAll(): Promise<Location[]>                  |
+|        | + create(createLocationDto: CreateLocationDto):   |
+|        |   Promise<Location>                               |
+|        | + byId(locationId: number): Promise<Location>     |
+|        | + update(locationId: number,                      |
+|        |   updateLocationDto: UpdateLocationDto):          |
+|        |   Promise<Location>                               |
+|        | + delete(locationId: number): Promise<{ msg:      |
+|        |   string }>                                       |
+|        +---------------------------------------------------+

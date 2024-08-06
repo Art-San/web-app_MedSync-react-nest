@@ -8,6 +8,10 @@
 // 1. Specialty
 // Эта сущность не имеет внешних ключей и должна быть заполнена первой.
 // {Кардиология, Неврология, Гастроэнтерология, Эндокринология, Педиатрия, Ортопедия, Офтальмология, Урология, Гинекология, Отоларингология]
+// [kardiologiya, nevrologiya, gastroenterologiya, endokrinologiya, pediatriya, ortopediya, oftalmologiya, urologiya, ginekologiya, otolaringologiya]
+
+// POST /specialties
+// Content-Type: application/json
 // {
 //   "specialtyName": "Кардиология",
 //   "slag": "kardiologiya"
@@ -15,6 +19,13 @@
 
 // 2. Location
 // Эта сущность также не имеет внешних ключей и может быть заполнена на раннем этапе.
+// POST /locations
+// Content-Type: application/json
+
+// {
+//   "name": "Медицинский центр №1",
+//   "address": "ул. Медицинская, д. 1"
+// }
 
 // 3. User
 // Поскольку User не зависит от других сущностей, можно заполнять следующим шагом.

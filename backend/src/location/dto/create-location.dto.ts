@@ -1,11 +1,11 @@
 import { IsString, Length } from 'class-validator'
 
-export class CreateSpecialtyDto {
+export class CreateLocationDto {
 	@IsString()
 	@Length(1, 128)
-	specialtyName: string
+	name: string
 
 	@IsString()
-	@Length(1, 128)
-	slug: string
+	@Length(1, 256)
+	address: string
 }
