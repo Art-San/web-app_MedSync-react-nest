@@ -78,11 +78,11 @@
 // Content-Type: application/json
 
 // {
-//   "fullName": "Иван Иванов",
 //   "telegramId": "ivanov_bot",
 //   "username": "ivanov",
-//   "firstNname": "Иван",
-//   "lastNname": "Иванов"
+//   "fullName": "Иван Иванов",
+//   "firstName": "Иван",
+//   "lastName": "Иванов"
 // }
 
 //=================================

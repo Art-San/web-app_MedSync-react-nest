@@ -9,7 +9,8 @@ export class UpdateLocationDto extends PartialType(CreateLocationDto) {}
 // 	'address',
 // ] as const) {}
 
-// Мы можем создать производный тип, который имеет все свойства, кроме имени, как показано ниже. В этой конструкции вторым аргументом OmitType является массив имен свойств.
+// Мы можем создать производный тип, который имеет все свойства, кроме имени, как показано ниже.
+// В этой конструкции вторым аргументом OmitType является массив имен свойств.
 // export class UpdateLocationDto extends OmitType(CreateLocationDto, [
 // 	'name',
 // ] as const) {}
