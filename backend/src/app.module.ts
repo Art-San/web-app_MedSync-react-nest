@@ -10,11 +10,12 @@ import { BotModule } from './both/bot.module'
 import { ValidateTelegramDataMiddleware } from './middleware/validate-telegram-data.middleware'
 import { AdminModule } from './admin/admin.module'
 import { RoleMiddleware } from './middleware/role.middleware'
-import { DoctorModule } from './doctor/doctor.module'
+
 import { DiagnosticModule } from './diagnostic/diagnostic.module'
 import { BookingModule } from './booking/booking.module'
 import { SpecialtyModule } from './specialty/specialty.module'
-import { LocationModule } from './location/location.module';
+import { LocationModule } from './location/location.module'
+import { DoctorModule } from './doctor/doctor.module'
 
 @Module({
 	imports: [

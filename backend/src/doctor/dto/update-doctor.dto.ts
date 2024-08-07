@@ -1,35 +1,40 @@
-import { IsNumber, IsString, IsOptional, IsDecimal } from 'class-validator'
+import { PartialType, PickType, OmitType } from '@nestjs/mapped-types'
+import { CreateDoctorDto } from './create-doctor.dto'
 
-export class UpdateDoctorDto {
-	@IsOptional()
-	@IsNumber()
-	locationId?: number
+export class UpdateDoctorDto extends PartialType(CreateDoctorDto) {}
 
-	@IsOptional()
-	@IsString()
-	fullName?: string
+// import { IsNumber, IsString, IsOptional, IsDecimal } from 'class-validator'
 
-	@IsOptional()
-	@IsNumber()
-	specialtyId?: number
+// export class UpdateDoctorDto {
+// 	@IsOptional()
+// 	@IsNumber()
+// 	locationId?: number
 
-	@IsOptional()
-	@IsDecimal()
-	price?: number
+// 	@IsOptional()
+// 	@IsString()
+// 	fullName?: string
 
-	@IsOptional()
-	@IsString()
-	photoUrl?: string
+// 	@IsOptional()
+// 	@IsNumber()
+// 	specialtyId?: number
 
-	@IsOptional()
-	@IsString()
-	experience?: string
+// 	@IsOptional()
+// 	@IsDecimal()
+// 	price?: number
 
-	@IsOptional()
-	@IsString()
-	certificates?: string
+// 	@IsOptional()
+// 	@IsString()
+// 	photoUrl?: string
 
-	@IsOptional()
-	@IsString()
-	services?: string
-}
+// 	@IsOptional()
+// 	@IsString()
+// 	experience?: string
+
+// 	@IsOptional()
+// 	@IsString()
+// 	certificates?: string
+
+// 	@IsOptional()
+// 	@IsString()
+// 	services?: string
+// }
