@@ -21,6 +21,7 @@ const DoctorSelection = () => {
   const [search, setSearch] = useState('')
   const [allDoctors, setAllDoctors] = useState([])
   const [displayedDoctors, setDisplayedDoctors] = useState([])
+  console.log(13, displayedDoctors[0]?.photoUrl)
   const [specialty, setSpecialty] = useState('')
   const [selectedDoctor, setSelectedDoctor] = useState(null)
 
@@ -60,7 +61,7 @@ const DoctorSelection = () => {
   }
 
   const handleDoctorClick = async (doctor) => {
-    if (selectedDoctor?.doctor_id === doctor.doctor_id) {
+    if (selectedDoctor?.doctorId === doctor.doctorId) {
       setSelectedDoctor(null)
       selectionChanged()
       await storage.removeItem('selectedDoctor')
@@ -99,7 +100,7 @@ const DoctorSelection = () => {
       const searchLower = search.toLowerCase()
       filteredDoctors = filteredDoctors.filter(
         (doctor) =>
-          doctor.full_name.toLowerCase().includes(searchLower) ||
+          doctor.fullName.toLowerCase().includes(searchLower) ||
           doctor.specialty_name.toLowerCase().includes(searchLower)
       )
     }
@@ -125,39 +126,38 @@ const DoctorSelection = () => {
             {displayedDoctors.map((doctor) => (
               <DoctorCard
                 className={
-                  selectedDoctor &&
-                  selectedDoctor.doctor_id === doctor.doctor_id
+                  selectedDoctor && selectedDoctor.doctorId === doctor.doctorId
                     ? 'card card--active'
                     : 'card'
                 }
-                key={doctor.doctor_id}
-                name={doctor.full_name}
-                title={doctor.specialty_name}
-                address={doctor.address}
-                price={doctor.price}
-                avg_rating={doctor.avg_rating ? doctor.avg_rating : 0}
-                reviews={doctor.reviews ? doctor.reviews : 0}
-                doctorImage={doctor.photo_url}
+                key={doctor?.doctorId}
+                name={doctor?.fullName}
+                title={doctor?.specialty?.specialtyName}
+                address={doctor?.location?.address}
+                price={Number(doctor?.price)}
+                avg_rating={doctor?.rating ? doctor?.rating : 5}
+                reviews={doctor?.reviews ? doctor?.reviews : 7}
+                doctorImage={doctor?.photoUrl}
                 onClick={() => handleDoctorClick(doctor)}
               />
             ))}
           </main>
         )}
       </div>
-      {selectedDoctor && (
+      {/* {selectedDoctor && (
         <MainButton
           textColor="#FFF"
-          text={`Book with ${selectedDoctor.full_name}`}
+          text={`Book with ${selectedDoctor.fullName}`}
           onClick={async () => {
             notificationOccurred('success')
             await storage.setItem(
               'selectedDoctor',
               JSON.stringify(selectedDoctor)
             )
-            navigate(`/doctor/${selectedDoctor.doctor_id}`)
+            navigate(`/doctor/${selectedDoctor.doctorId}`)
           }}
         />
-      )}
+      )} */}
     </>
   )
 }

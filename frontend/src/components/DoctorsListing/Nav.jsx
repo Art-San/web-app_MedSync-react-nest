@@ -1,26 +1,26 @@
-const Nav = ({specialties, selectedSpecialty, onSpecialtyClick}) => {
-  const handleClick = (specialty_id) => {
-    if (specialty_id === selectedSpecialty) {
+const Nav = ({ specialties, selectedSpecialty, onSpecialtyClick }) => {
+  const handleClick = (specialtyId) => {
+    if (specialtyId === selectedSpecialty) {
       // reset selected specialty
-      specialty_id = null
+      specialtyId = null
     }
-    onSpecialtyClick(specialty_id)
+    onSpecialtyClick(specialtyId)
   }
-
 
   return (
     <div className="nav">
       <ul className="nav__list">
         {specialties.map((specialty) => (
-          <li
-            className="nav__item"
-            key={specialty.specialty_id}
-          >
+          <li className="nav__item" key={specialty.specialtyId}>
             <button
-              className={`nav__button button ${selectedSpecialty === specialty.specialty_id ? "nav__button--active" : ""}`}
-              onClick={() => handleClick(specialty.specialty_id)}
+              className={`nav__button button ${
+                selectedSpecialty === specialty.specialtyId
+                  ? 'nav__button--active'
+                  : ''
+              }`}
+              onClick={() => handleClick(specialty.specialtyId)}
             >
-              {specialty.specialty_name}
+              {specialty.specialtyName}
             </button>
           </li>
         ))}
@@ -28,6 +28,5 @@ const Nav = ({specialties, selectedSpecialty, onSpecialtyClick}) => {
     </div>
   )
 }
-
 
 export default Nav

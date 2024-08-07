@@ -12,7 +12,7 @@ import { SpecialtyService } from './specialty.service'
 import { CreateSpecialtyDto } from './dto/create-specialty.dto'
 import { UpdateSpecialtyDto } from './dto/update-specialty.dto'
 
-@Controller('specialty')
+@Controller('specialties')
 export class SpecialtyController {
 	constructor(private readonly specialtyService: SpecialtyService) {}
 

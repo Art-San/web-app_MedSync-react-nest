@@ -1,5 +1,5 @@
 .html {
-  font-family: "Josefin Sans", sans-serif;
+  font-family: 'Josefin Sans', sans-serif;
   font-size: 12px;
   font-weight: $font-weight-regular;
   color: $tg-theme-text;
@@ -14,6 +14,25 @@
   background-attachment: fixed;
 }
 
+// .body {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   text-align: center; // Для центрирования текста внутри блоков p и h1
+
+//   p,
+//   h1 {
+//     margin: 0;
+//     padding: 0;
+//   }
+
+//   // Убедитесь, что у вас есть контент внутри .body, который будет занимать пространство
+//   // Например, если у вас есть div с классом .content внутри .body, то это может выглядеть так:
+//   .content {
+//     width: 80%; // или любой другой процент от ширины родителя
+//     max-width: 800px; // ограничивает максимальную ширину контента
+//   }
+// }
 .body {
   padding: 0;
   margin: 0;
@@ -24,5 +43,3 @@
     padding: 0;
   }
 }
-
-
