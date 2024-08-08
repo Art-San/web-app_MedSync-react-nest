@@ -3,6 +3,7 @@ export const VITE_URL_API = `${import.meta.env.VITE_API_URL}/api`
 
 export const getDoctorsUrl = (string) => `/doctors${string}`
 export const getSpecialtiesUrl = (string) => `/specialties${string}`
+export const getLocationsUrl = (string) => `/locations${string}`
 
 // Orders
 // export const getOrderUrl = (string: string) => `/orders${string}`

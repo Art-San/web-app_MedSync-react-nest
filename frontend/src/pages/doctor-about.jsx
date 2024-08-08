@@ -7,19 +7,23 @@ import axios from 'axios'
 import { BackButton } from '@vkruglikov/react-telegram-web-app'
 import WorkingHours from '../components/Resume/WorkingHours.jsx'
 import { useEffect, useState } from 'react'
+import { doctorService } from '../services/doctor/doctor.service.js'
 
 const About = () => {
-  const { doctor_id } = useParams()
+  const { doctorId } = useParams()
+  console.log(333, doctorId)
   const [doctor, setDoctor] = useState(null)
-  const [workingHours, setWorkingHours] = useState([])
+  // const [workingHours, setWorkingHours] = useState([])
   let navigate = useNavigate()
 
   useEffect(() => {
     const fetchDoctorInfo = async () => {
       try {
-        const doctor = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/doctors/${doctor_id}`
-        )
+        const doctor = await doctorService.getDoctorById(doctorId)
+        // console.log(123, doctor)
+        // const doctor = await axios.get(
+        //   `${import.meta.env.VITE_API_URL}/api/doctors/${doctorId}`
+        // )
         const workingHours = await axios.get(
           `${import.meta.env.VITE_API_URL}/api/working_hours/${
             doctor.data.location_id
@@ -33,20 +37,21 @@ const About = () => {
     }
 
     fetchDoctorInfo()
-  }, [doctor_id])
+  }, [doctorId])
 
   return (
     <>
+      <button onClick={() => navigate(-1)}>назад</button>
       <BackButton onClick={() => navigate(-1)} />
       {doctor && (
         <div className="about">
           <header className="header">
             <TopBar title="About" />
             <DoctorInfo
-              name={doctor.full_name}
-              specialty={doctor.specialty_name}
+              name={doctor.fullName}
+              specialty={doctor.specialty.specialtyName}
               status="Available"
-              imageSrc={doctor.photo_url}
+              imageSrc={doctor.photoUrl}
             />
           </header>
           <main className="about__main">
@@ -64,9 +69,9 @@ const About = () => {
             </Section>
             <Section title="Location" tag="location">
               <div className="location">
-                <p className="about__section__title">{doctor.location_name}</p>
+                <p className="about__section__title">{doctor.location.name}</p>
                 <p className="about__section__text">
-                  {doctor.location_address}
+                  {doctor.location.address}
                 </p>
               </div>
             </Section>

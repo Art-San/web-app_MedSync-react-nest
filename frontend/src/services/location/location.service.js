@@ -1,16 +1,17 @@
 import { axiosClassic } from '../../api/interceptors'
-import { getDoctorsUrl } from '../../configs/api.config'
+import { getLocationsUrl } from '../../configs/api.config'
 
-export const doctorService = {
-  async getDoctors() {
-    return axiosClassic.get(getDoctorsUrl(``))
-  },
-  async getDoctorById(id) {
-    return axiosClassic.get(getDoctorsUrl(`/${id}`))
+// location
+// Location
+// locations
+// Locations
+
+export const locationService = {
+  async getLocations(locationId) {
+    return axiosClassic.get(getLocationsUrl(`/${locationId}`))
   }
-
-  // async searchDoctors1(searchTerm?: string) {
-  //   return axiosClassic.get<IDoctor[]>(getDoctorsUrl(``), {
+  // async searchLocations1(searchTerm?: string) {
+  //   return axiosClassic.get<IDoctor[]>(getLocationsUrl(``), {
   //     params: searchTerm
   //       ? {
   //           searchTerm
@@ -19,13 +20,13 @@ export const doctorService = {
   //   })
   // },
 
-  // async searchDoctors(
+  // async searchLocations(
   //   page: string,
   //   pageSize: string,
   //   searchTerm?: string
   // ): Promise<IPaginationResult<IDoctor>> {
   //   const response = await axiosClassic.get<IPaginationResult<IDoctor>>(
-  //     getDoctorsUrl(``),
+  //     getLocationsUrl(``),
   //     {
   //       params: { page, pageSize, searchTerm }
   //     }
@@ -34,7 +35,7 @@ export const doctorService = {
   // },
 
   // async getCurrentDoctor(id: string) {
-  //   const response = await axiosClassic.get<any>(getDoctorsUrl(`/${id}`))
+  //   const response = await axiosClassic.get<any>(getLocationsUrl(`/${id}`))
   //   return response
   // },
 
@@ -43,27 +44,27 @@ export const doctorService = {
   // }
 
   // async updateProfile(data: IProfileInput) {
-  // 	return axios.put<string>(getDoctorsUrl('/profile'), data)
+  // 	return axios.put<string>(getLocationsUrl('/profile'), data)
   // },
 
   // async getById(_id: string) {
-  // 	return axios.get<IDoctor>(getDoctorsUrl(`/${_id}`))
+  // 	return axios.get<IDoctor>(getLocationsUrl(`/${_id}`))
   // },
 
   // async updateDoctor(_id: string, data: IProfileInput) {
-  // 	return axios.put<string>(getDoctorsUrl(`/${_id}`), data)
+  // 	return axios.put<string>(getLocationsUrl(`/${_id}`), data)
   // },
 
   // async deleteDoctor(_id: string) {
-  // 	return axios.delete<string>(getDoctorsUrl(`/${_id}`))
+  // 	return axios.delete<string>(getLocationsUrl(`/${_id}`))
   // },
 
   // async getFavorites() {
-  // 	return axios.get<IMovie[]>(getDoctorsUrl('/profile/favorites'))
+  // 	return axios.get<IMovie[]>(getLocationsUrl('/profile/favorites'))
   // },
 
   // async toggleFavorite(movieId: string) {
-  // 	return axios.put(getDoctorsUrl('/profile/favorites'), {
+  // 	return axios.put(getLocationsUrl('/profile/favorites'), {
   // 		movieId,
   // 	})
   // },
