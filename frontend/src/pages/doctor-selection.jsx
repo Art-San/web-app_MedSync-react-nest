@@ -11,6 +11,7 @@ import SearchBar from '../components/DoctorsListing/SearchBar.jsx'
 import Nav from '../components/DoctorsListing/Nav.jsx'
 import { useEffect, useState } from 'react'
 import Header from '../components/Header.jsx'
+import { doctorService } from '../services/doctor/doctor.service.js'
 
 const DoctorSelection = () => {
   const navigate = useNavigate()
@@ -18,10 +19,11 @@ const DoctorSelection = () => {
   const [impactOccurred, notificationOccurred, selectionChanged] =
     useHapticFeedback()
   const [specialties, setSpecialties] = useState([])
+  console.log(123, 'DoctorSelection', specialties)
   const [search, setSearch] = useState('')
   const [allDoctors, setAllDoctors] = useState([])
   const [displayedDoctors, setDisplayedDoctors] = useState([])
-  console.log(13, displayedDoctors[0]?.photoUrl)
+  // console.log(13, displayedDoctors[0]?.photoUrl)
   const [specialty, setSpecialty] = useState('')
   const [selectedDoctor, setSelectedDoctor] = useState(null)
 
@@ -39,9 +41,11 @@ const DoctorSelection = () => {
   }
   const fetchAllDoctors = async () => {
     try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/doctors/`
-      )
+      const response = await doctorService.getDoctors()
+      console.log(123, 'fetchAllDoctors', response)
+      // const response = await axios.get(
+      //   `${import.meta.env.VITE_API_URL}/api/doctors/`
+      // )
       setAllDoctors(response.data)
       setDisplayedDoctors(response.data) // Initially display all doctors
     } catch (error) {
@@ -114,14 +118,14 @@ const DoctorSelection = () => {
       <div className="doctor-selection">
         <Header title="Select a Doctor" className="header doctor-selection" />
         <SearchBar search={search} setSearch={setSearch} />
-        {specialties && (
+        {/* {specialties && (
           <Nav
             specialties={specialties}
             onSpecialtyClick={setSpecialty}
             selectedSpecialty={specialty}
           />
-        )}
-        {displayedDoctors && (
+        )} */}
+        {/* {displayedDoctors && (
           <main className="main">
             {displayedDoctors.map((doctor) => (
               <DoctorCard
@@ -142,7 +146,7 @@ const DoctorSelection = () => {
               />
             ))}
           </main>
-        )}
+        )} */}
       </div>
       {/* {selectedDoctor && (
         <MainButton

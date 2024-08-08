@@ -8,6 +8,7 @@
 // }
 
 // ----------------------------------------
+const var1 = 'ЭТОТ вариант работает разработке'
 export const corsConfig = {
 	origin: '*',
 	methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
