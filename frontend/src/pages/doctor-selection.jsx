@@ -157,17 +157,17 @@ const DoctorSelection = () => {
         <button
           onClick={async () => {
             notificationOccurred('success')
-            await storage.setItem(
-              'selectedDoctor',
-              JSON.stringify(selectedDoctor)
-            )
+            // await storage.setItem(
+            //   'selectedDoctor',
+            //   JSON.stringify(selectedDoctor)
+            // )
             navigate(`/doctor/${selectedDoctor.doctorId}`)
           }}
         >
           Book with {selectedDoctor.fullName}
         </button>
       )}
-      {selectedDoctor && (
+      {/* {selectedDoctor && (
         <MainButton
           textColor="#FFF"
           text={`Book with ${selectedDoctor.fullName}`}
@@ -180,7 +180,7 @@ const DoctorSelection = () => {
             navigate(`/doctor/${selectedDoctor.doctorId}`)
           }}
         />
-      )}
+      )} */}
     </>
   )
 }

@@ -11,24 +11,31 @@ import { doctorService } from '../services/doctor/doctor.service.js'
 
 const About = () => {
   const { doctorId } = useParams()
-  console.log(333, doctorId)
+  console.log(333, 'doctorId', doctorId)
   const [doctor, setDoctor] = useState(null)
-  // const [workingHours, setWorkingHours] = useState([])
+  console.log(123, 'doctor.locationId', doctor?.location?.locationId)
+  const [workingHours, setWorkingHours] = useState([])
+
+  console.log(222, 'workingHours', workingHours)
   let navigate = useNavigate()
 
   useEffect(() => {
     const fetchDoctorInfo = async () => {
       try {
         const doctor = await doctorService.getDoctorById(doctorId)
-        // console.log(123, doctor)
+
         // const doctor = await axios.get(
         //   `${import.meta.env.VITE_API_URL}/api/doctors/${doctorId}`
         // )
         const workingHours = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/working_hours/${
-            doctor.data.location_id
-          }`
+          `${import.meta.env.VITE_API_URL}/api/working-hours/location/1`
         )
+        // const workingHours = await axios.get(
+        //   `${import.meta.env.VITE_API_URL}/api/working-hours/location/${
+        //     doctor.location.locationId
+        //   }`
+        // )
+
         setWorkingHours(workingHours.data)
         setDoctor(doctor.data)
       } catch (err) {
@@ -65,6 +72,7 @@ const About = () => {
               {doctor.certificates}
             </Section>
             <Section title="Working Time" tag="working-time">
+              {/* <WorkingHours /> */}
               <WorkingHours hoursArray={workingHours} />
             </Section>
             <Section title="Location" tag="location">

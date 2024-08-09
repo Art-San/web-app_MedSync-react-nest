@@ -16,6 +16,7 @@ import { BookingModule } from './booking/booking.module'
 import { SpecialtyModule } from './specialty/specialty.module'
 import { LocationModule } from './location/location.module'
 import { DoctorModule } from './doctor/doctor.module'
+import { WorkingHoursModule } from './working_hours/working_hours.module';
 
 @Module({
 	imports: [
@@ -29,6 +30,7 @@ import { DoctorModule } from './doctor/doctor.module'
 		BookingModule,
 		SpecialtyModule,
 		LocationModule,
+		WorkingHoursModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],
