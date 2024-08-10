@@ -3,41 +3,31 @@ import TopBar from '../components/DoctorAbout/TopBar.jsx'
 import DoctorInfo from '../components/DoctorAbout/DoctorInfo.jsx'
 import Section from '../components/DoctorAbout/Section.jsx'
 import ServicesList from '../components/DoctorAbout/ServicesList.jsx'
-import axios from 'axios'
 import { BackButton } from '@vkruglikov/react-telegram-web-app'
 import WorkingHours from '../components/Resume/WorkingHours.jsx'
 import { useEffect, useState } from 'react'
 import { doctorService } from '../services/doctor/doctor.service.js'
+import { workingHoursService } from '../services/working-hours/working-hours.service.js'
 
 const About = () => {
   const { doctorId } = useParams()
-  console.log(333, 'doctorId', doctorId)
   const [doctor, setDoctor] = useState(null)
-  console.log(123, 'doctor.locationId', doctor?.location?.locationId)
   const [workingHours, setWorkingHours] = useState([])
 
-  console.log(222, 'workingHours', workingHours)
-  let navigate = useNavigate()
+  const navigate = useNavigate()
+  // let navigate = useNavigate()
 
   useEffect(() => {
     const fetchDoctorInfo = async () => {
       try {
-        const doctor = await doctorService.getDoctorById(doctorId)
+        const doc = await doctorService.getDoctorById(doctorId)
 
-        // const doctor = await axios.get(
-        //   `${import.meta.env.VITE_API_URL}/api/doctors/${doctorId}`
-        // )
-        const workingHours = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/working-hours/location/1`
+        const workingHours = await workingHoursService.getWorkingHours(
+          doc.data.locationId
         )
-        // const workingHours = await axios.get(
-        //   `${import.meta.env.VITE_API_URL}/api/working-hours/location/${
-        //     doctor.location.locationId
-        //   }`
-        // )
 
+        setDoctor(doc.data)
         setWorkingHours(workingHours.data)
-        setDoctor(doctor.data)
       } catch (err) {
         console.error(err)
       }
@@ -72,7 +62,6 @@ const About = () => {
               {doctor.certificates}
             </Section>
             <Section title="Working Time" tag="working-time">
-              {/* <WorkingHours /> */}
               <WorkingHours hoursArray={workingHours} />
             </Section>
             <Section title="Location" tag="location">
