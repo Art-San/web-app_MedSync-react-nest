@@ -6,7 +6,11 @@ export const useWorkingHours = (locationId) => {
   useEffect(() => {
     if (locationId) {
       axios
-        .get(`${import.meta.env.VITE_API_URL}/api/working_hours/${locationId}`)
+        .get(
+          `${
+            import.meta.env.VITE_API_URL
+          }/api/working-hours/location/${locationId}`
+        )
         .then((response) => {
           setWorkingHours(response.data)
         })

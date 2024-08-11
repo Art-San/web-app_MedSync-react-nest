@@ -11,30 +11,33 @@ import { useSlots } from '../hooks/useSlots.js'
 import TimeSlot from '../components/Booking/TimeSlot.jsx'
 import Calendar from '../components/Booking/Calendar.jsx'
 import Header from '../components/Header.jsx'
+import storage from '../utils/localStorage.js'
 
 const SlotSelection = ({ storageKey, itemType }) => {
   const navigate = useNavigate()
   const [selectedItem, setParsedItem] = useState(null)
   const [selectedDate, setSelectedDate] = useState(new Date())
-  console.log(123, selectedDate)
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(null)
   const [impactOccurred, notificationOccurred, selectionChanged] =
     useHapticFeedback()
-  const storage = useCloudStorage()
+  // const storage = useCloudStorage()
   const [selectedLocation, setSelectedLocation] = useState(null)
-
+  // console.log(234, 'selectedLocation', selectedLocation) ++++
   useEffect(() => {
     storage.getItem(storageKey).then((storedItem) => {
       setParsedItem(JSON.parse(storedItem))
     })
     storage.getItem('selectedLocation').then((storedLocation) => {
       if (storedLocation) {
+        // console.log('456474848 сработало') +++
         setSelectedLocation(JSON.parse(storedLocation))
       }
     })
   }, [storage])
 
-  const workingHours = useWorkingHours(selectedLocation?.location_id)
+  const workingHours = useWorkingHours(selectedLocation?.location_id) // Тут айди надо поправить
+
+  console.log(44566, workingHours)
 
   // const endpoint1 = `/api/slots/doctors/itemId/locationId/electedDate.getMonth()`
   const { slots, availableDays } = useSlots(
@@ -83,6 +86,7 @@ const SlotSelection = ({ storageKey, itemType }) => {
               selectedDate={selectedDate}
             />
           )}
+          {selectedTimeSlot && <button onClick={handleNext}>Жми</button>}
           {selectedTimeSlot && <MainButton onClick={handleNext}></MainButton>}
         </main>
       </div>

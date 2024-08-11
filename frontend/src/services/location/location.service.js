@@ -7,7 +7,7 @@ import { getLocationsUrl } from '../../configs/api.config'
 // Locations
 
 export const locationService = {
-  async getLocations(locationId) {
+  async getLocation(locationId) {
     return axiosClassic.get(getLocationsUrl(`/${locationId}`))
   }
   // async searchLocations1(searchTerm?: string) {

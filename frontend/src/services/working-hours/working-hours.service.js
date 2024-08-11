@@ -8,7 +8,7 @@ import { getWorkingHoursUrl } from '../../configs/api.config'
 export const workingHoursService = {
   async getWorkingHours(id) {
     const res = await axiosClassic.get(getWorkingHoursUrl(`/location/${id}`))
-    console.log(777, 'res', res)
+    // console.log(777, 'res', res)
     return res
   }
 

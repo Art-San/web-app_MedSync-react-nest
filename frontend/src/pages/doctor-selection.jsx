@@ -14,10 +14,11 @@ import Header from '../components/Header.jsx'
 import { doctorService } from '../services/doctor/doctor.service.js'
 import { specialtyService } from '../services/specialty/specialty.service.js'
 import { locationService } from '../services/location/location.service.js'
+import storage from '../utils/localStorage.js'
 
 const DoctorSelection = () => {
   const navigate = useNavigate()
-  const storage = useCloudStorage()
+  // const storage = useCloudStorage()
   const [impactOccurred, notificationOccurred, selectionChanged] =
     useHapticFeedback()
   const [specialties, setSpecialties] = useState([])
@@ -47,9 +48,6 @@ const DoctorSelection = () => {
     try {
       const response = await doctorService.getDoctors()
 
-      // const response = await axios.get(
-      //   `${import.meta.env.VITE_API_URL}/api/doctors/`
-      // )
       setAllDoctors(response.data)
       setDisplayedDoctors(response.data) // Initially display all doctors
     } catch (error) {
@@ -57,14 +55,13 @@ const DoctorSelection = () => {
     }
   }
 
-  const fetchLocationInfo = async (locationId) => {
+  const fetchLocationInfo = async (locationId = 1) => {
     try {
-      const response = await locationService(locationId)
-      // const response = await axios.get(
-      //   `${import.meta.env.VITE_API_URL}/api/locations/${locationId}`
-      // )
+      const response = await locationService.getLocation(locationId)
+      console.log(12, 'response', response)
       await storage.setItem('selectedLocation', JSON.stringify(response.data))
     } catch (error) {
+      console.log('Ошибка', error.message)
       console.error(error.message)
     }
   }
@@ -90,6 +87,7 @@ const DoctorSelection = () => {
     fetchAllDoctors()
     fetchSpecialties()
     storage.getItem('selectedDoctor').then((value) => {
+      console.log(444, 'electedDoctor', value)
       if (value) {
         setSelectedDoctor(JSON.parse(value))
       }
@@ -157,10 +155,10 @@ const DoctorSelection = () => {
         <button
           onClick={async () => {
             notificationOccurred('success')
-            // await storage.setItem(
-            //   'selectedDoctor',
-            //   JSON.stringify(selectedDoctor)
-            // )
+            await storage.setItem(
+              'selectedDoctor',
+              JSON.stringify(selectedDoctor)
+            )
             navigate(`/doctor/${selectedDoctor.doctorId}`)
           }}
         >
