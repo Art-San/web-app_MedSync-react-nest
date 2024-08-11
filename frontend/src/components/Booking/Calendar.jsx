@@ -15,7 +15,7 @@ const Calendar = ({ onDateChange, availableDays }) => {
   const [selectedMonth, setSelectedMonth] = useState(startOfMonth(now))
   const [selectedDay, setSelectedDay] = useState(now)
   const [days, setDays] = useState([])
-
+  console.log(12, selectedDay)
   useEffect(() => {
     const start = startOfMonth(selectedMonth)
     const end = endOfMonth(selectedMonth)

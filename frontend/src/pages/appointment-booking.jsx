@@ -16,6 +16,7 @@ const SlotSelection = ({ storageKey, itemType }) => {
   const navigate = useNavigate()
   const [selectedItem, setParsedItem] = useState(null)
   const [selectedDate, setSelectedDate] = useState(new Date())
+  console.log(123, selectedDate)
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(null)
   const [impactOccurred, notificationOccurred, selectionChanged] =
     useHapticFeedback()
@@ -35,6 +36,7 @@ const SlotSelection = ({ storageKey, itemType }) => {
 
   const workingHours = useWorkingHours(selectedLocation?.location_id)
 
+  // const endpoint1 = `/api/slots/doctors/itemId/locationId/electedDate.getMonth()`
   const { slots, availableDays } = useSlots(
     itemType === 'doctors'
       ? selectedItem?.doctor_id
@@ -64,6 +66,7 @@ const SlotSelection = ({ storageKey, itemType }) => {
   return (
     <>
       <button onClick={() => navigate(-1)}>назад</button>
+      <button onClick={() => navigate('/')}>дом</button>
       <BackButton onClick={() => navigate(-1)} />
       <div className="time-details">
         <Header className="time-details" title="Time Details" />

@@ -11,7 +11,8 @@ export const useSlots = (
 ) => {
   const [slots, setSlots] = useState(null)
   const [availableDays, setAvailableDays] = useState([])
-  const endpoint = `/api/slots/${itemType}`
+  // const endpoint = `/api/slots/${itemType}`
+  const endpoint = `/api/slots/doctors`
   useEffect(() => {
     if (itemId && locationId && selectedDate && workingHours.length > 0) {
       axios

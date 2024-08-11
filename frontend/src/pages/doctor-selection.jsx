@@ -167,7 +167,7 @@ const DoctorSelection = () => {
           Book with {selectedDoctor.fullName}
         </button>
       )}
-      {/* {selectedDoctor && (
+      {selectedDoctor && (
         <MainButton
           textColor="#FFF"
           text={`Book with ${selectedDoctor.fullName}`}
@@ -180,7 +180,7 @@ const DoctorSelection = () => {
             navigate(`/doctor/${selectedDoctor.doctorId}`)
           }}
         />
-      )} */}
+      )}
     </>
   )
 }

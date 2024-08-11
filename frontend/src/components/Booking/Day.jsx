@@ -1,12 +1,11 @@
+import { format, isSameDay } from 'date-fns'
 
-import {format, isSameDay} from "date-fns"
-
-const Day = ({day, selectedDay, availableDays, handleDayClick}) => {
-  const dayStr = day ? day.toDateString() : ""
+const Day = ({ day, selectedDay, availableDays, handleDayClick }) => {
+  const dayStr = day ? day.toDateString() : ''
   const isAvailable = availableDays.includes(dayStr)
   const isActive = day ? isSameDay(selectedDay, day) : false
 
-  const baseClass = "days-selector__day"
+  const baseClass = 'days-selector__day'
   let dayClass = baseClass
 
   if (isActive) {
@@ -20,11 +19,8 @@ const Day = ({day, selectedDay, availableDays, handleDayClick}) => {
   }
 
   return (
-    <li
-      className={dayClass}
-      onClick={() => isAvailable && handleDayClick(day)}
-    >
-      {day ? format(day, "d") : ""}
+    <li className={dayClass} onClick={() => isAvailable && handleDayClick(day)}>
+      {day ? format(day, 'd') : ''}
     </li>
   )
 }

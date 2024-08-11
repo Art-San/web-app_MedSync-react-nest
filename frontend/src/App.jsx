@@ -17,7 +17,6 @@ import {
 } from '@vkruglikov/react-telegram-web-app'
 
 const App = () => {
-  const vite = `${import.meta.env.VITE_API_URL}/api/specialties/`
   const showPopup = useShowPopup()
   const [impactOccurred, notificationOccurred, selectionChanged] =
     useHapticFeedback()

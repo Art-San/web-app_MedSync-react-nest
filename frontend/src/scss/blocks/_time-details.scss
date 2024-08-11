@@ -44,7 +44,8 @@
     }
 
     &__button {
-      background: $tg-theme-bg;
+      background: blue;
+      // background: $tg-theme-bg;
       border: solid $tg-theme-text;
       border-width: 0 3px 3px 0;
       padding: 4px;
@@ -75,7 +76,7 @@
       text-align: center;
       list-style: none;
       color: $tg-theme-text;
-      font-family: "Inter", sans-serif;
+      font-family: 'Inter', sans-serif;
       font-size: 14px;
       font-weight: $font-weight-bold;
       line-height: normal;
@@ -94,7 +95,7 @@
       text-align: center;
       list-style: none;
       color: $tg-theme-text;
-      font-family: "Inter", sans-serif;
+      font-family: 'Inter', sans-serif;
       font-size: 14px;
       font-weight: $font-weight-regular;
       width: 28px;
@@ -160,7 +161,7 @@
       border: none;
       border-radius: 26px;
       cursor: pointer;
-      font-family: "Inter", sans-serif;
+      font-family: 'Inter', sans-serif;
       font-size: 12px;
       font-weight: $font-weight-bold;
       text-align: center;
