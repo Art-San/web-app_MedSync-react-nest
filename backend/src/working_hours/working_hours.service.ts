@@ -107,6 +107,10 @@ export class WorkingHoursService extends BaseService {
 			where: {
 				locationId,
 			},
+			orderBy: {
+				// workingHourId: 'asc',
+				weekdayIndex: 'asc',
+			},
 		})
 		return allHoursForLocation
 	}

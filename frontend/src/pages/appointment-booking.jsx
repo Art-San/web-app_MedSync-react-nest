@@ -16,6 +16,7 @@ import storage from '../utils/localStorage.js'
 const SlotSelection = ({ storageKey, itemType }) => {
   const navigate = useNavigate()
   const [selectedItem, setParsedItem] = useState(null)
+  // console.log(44566, 'selectedItem', selectedItem) // +++
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(null)
   const [impactOccurred, notificationOccurred, selectionChanged] =
@@ -35,21 +36,23 @@ const SlotSelection = ({ storageKey, itemType }) => {
     })
   }, [storage])
 
-  const workingHours = useWorkingHours(selectedLocation?.location_id) // Тут айди надо поправить
+  const workingHours = useWorkingHours(selectedLocation?.locationId) // Тут айди надо поправить
 
-  console.log(44566, workingHours)
+  // console.log(44566, workingHours) ++++
 
   // const endpoint1 = `/api/slots/doctors/itemId/locationId/electedDate.getMonth()`
   const { slots, availableDays } = useSlots(
     itemType === 'doctors'
-      ? selectedItem?.doctor_id
-      : selectedItem?.diagnostic_id,
-    selectedLocation?.location_id,
+      ? selectedItem?.doctorId
+      : selectedItem?.diagnosticId,
+    selectedLocation?.locationId,
     selectedDate,
     workingHours,
     itemType
   )
 
+  console.log('1-? - slots', slots) // -----
+  console.log('2-? - availableDays', availableDays) // ----
   const handleDateChange = (date) => {
     selectionChanged()
     setSelectedDate(date)
