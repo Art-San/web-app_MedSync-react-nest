@@ -83,6 +83,23 @@ CREATE TABLE "working_hours" (
 );
 
 -- CreateTable
+CREATE TABLE "slots" (
+    "slotId" SERIAL NOT NULL,
+    "doctorId" INTEGER,
+    "diagnosticId" INTEGER,
+    "locationId" INTEGER NOT NULL,
+    "startTime" TEXT NOT NULL,
+    "endTime" TEXT NOT NULL,
+    "dayNumber" INTEGER NOT NULL,
+    "monthNumber" INTEGER NOT NULL,
+    "isBooked" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "slots_pkey" PRIMARY KEY ("slotId")
+);
+
+-- CreateTable
 CREATE TABLE "bookings" (
     "bookingId" SERIAL NOT NULL,
     "userId" INTEGER,
@@ -93,6 +110,7 @@ CREATE TABLE "bookings" (
     "doctorId" INTEGER,
     "diagnosticId" INTEGER,
     "locationId" INTEGER NOT NULL,
+    "slotId" INTEGER,
     "bookingTime" TIMESTAMPTZ NOT NULL,
     "status" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -113,6 +131,9 @@ CREATE TABLE "users" (
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("userId")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "bookings_slotId_key" ON "bookings"("slotId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "bookings_doctorId_locationId_bookingTime_key" ON "bookings"("doctorId", "locationId", "bookingTime");
@@ -148,6 +169,15 @@ ALTER TABLE "diagnostic_results" ADD CONSTRAINT "diagnostic_results_diagnosticId
 ALTER TABLE "working_hours" ADD CONSTRAINT "working_hours_locationId_fkey" FOREIGN KEY ("locationId") REFERENCES "locations"("locationId") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "slots" ADD CONSTRAINT "slots_doctorId_fkey" FOREIGN KEY ("doctorId") REFERENCES "doctors"("doctorId") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "slots" ADD CONSTRAINT "slots_diagnosticId_fkey" FOREIGN KEY ("diagnosticId") REFERENCES "diagnostics"("diagnosticId") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "slots" ADD CONSTRAINT "slots_locationId_fkey" FOREIGN KEY ("locationId") REFERENCES "locations"("locationId") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "bookings" ADD CONSTRAINT "bookings_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("userId") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -158,3 +188,6 @@ ALTER TABLE "bookings" ADD CONSTRAINT "bookings_diagnosticId_fkey" FOREIGN KEY (
 
 -- AddForeignKey
 ALTER TABLE "bookings" ADD CONSTRAINT "bookings_locationId_fkey" FOREIGN KEY ("locationId") REFERENCES "locations"("locationId") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "bookings" ADD CONSTRAINT "bookings_slotId_fkey" FOREIGN KEY ("slotId") REFERENCES "slots"("slotId") ON DELETE SET NULL ON UPDATE CASCADE;

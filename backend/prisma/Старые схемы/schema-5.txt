@@ -22,7 +22,6 @@ model Doctor {
   specialty    Specialty  @relation(fields: [specialtyId], references: [specialtyId])
   ratings      DoctorRating[]
   bookings     Booking[]
-  slots        Slot[]      // Связь с моделью Slot
 
   @@map("doctors")
 }
@@ -50,7 +49,6 @@ model DoctorRating {
 model Diagnostic {
   diagnosticId   Int      @id @default(autoincrement())
   typeName       String
-  slug           String
   description    String
   price          Decimal  @db.Decimal(10, 2)
   photoUrl       String
@@ -58,7 +56,6 @@ model Diagnostic {
   locations      DiagnosticLocation[]
   results        DiagnosticResult[]
   bookings       Booking[]
-  slots          Slot[]
 
   @@map("diagnostics")
 }
@@ -97,7 +94,6 @@ model Location {
   diagnosticLocations  DiagnosticLocation[]
   bookings             Booking[]
   workingHours         WorkingHour[]
-  slots                Slot[]
 
   @@map("locations")
 }
@@ -115,28 +111,6 @@ model WorkingHour {
 }
 
 
-model Slot {
-  slotId       Int      @id @default(autoincrement())
-  doctorId     Int?     // Слот может быть привязан к доктору
-  diagnosticId Int?     // Или к диагностике
-  locationId   Int      // И обязательно привязан к локации
-  startTime    String // Время начала слота
-  endTime      String // Время окончания слота
-  dayNumber    Int
-  monthNumber  Int      // Номер месяца (1-12) для фильтрации
-  isBooked     Boolean  @default(false) // Флаг занятости слота
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  doctor       Doctor?     @relation(fields: [doctorId], references: [doctorId])
-  diagnostic   Diagnostic? @relation(fields: [diagnosticId], references: [diagnosticId])
-  location     Location    @relation(fields: [locationId], references: [locationId])
-  booking      Booking?    // Ссылка на бронирование, если слот занят
-
-  @@map("slots")
-}
-
-
 model Booking {
   bookingId        Int      @id @default(autoincrement())
   userId           Int?
@@ -147,7 +121,6 @@ model Booking {
   doctorId         Int?
   diagnosticId     Int?
   locationId       Int
-  slotId           Int?     @unique
   bookingTime      DateTime @db.Timestamptz
   status           String
   createdAt        DateTime @default(now())
@@ -158,7 +131,6 @@ model Booking {
   doctor           Doctor?   @relation(fields: [doctorId], references: [doctorId])
   diagnostic       Diagnostic? @relation(fields: [diagnosticId], references: [diagnosticId])
   location         Location  @relation(fields: [locationId], references: [locationId])
-  slot             Slot?    @relation(fields: [slotId], references: [slotId])
   results          DiagnosticResult[]
 
   @@unique([doctorId, locationId, bookingTime], name: "unique_doctor_location_time")
@@ -166,7 +138,6 @@ model Booking {
 
   @@map("bookings")
 }
-
 
 model User {
   userId      Int     @id @default(autoincrement())
