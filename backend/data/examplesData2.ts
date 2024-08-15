@@ -7,6 +7,8 @@
 // }
 
 // 2. Specialty: Добавление специализаций докторов.
+// [Кардиолог, Невролог, Гастроэнтеролог, Эндокринолог, Педиатр, Ортопед, Офтальмолог, Уролог, Гинеколог, Отоларинголог]
+// [kardiolog, nevrolog, gastroenterolog, endokrinolog, pediatr, ortoped, oftalmolog, urolog, ginekolog, otolaringolog]
 // {
 //   "specialtyId": 1,
 //   "specialtyName": "Cardiology",
@@ -26,22 +28,22 @@
 //   "services": "Consultation, ECG, Stress Test"
 // }
 
-// 4. Diagnostic: Добавление диагностических типов, которые могут быть привязаны к локациям.
-// {
-//   "diagnosticId": 1,
-//   "typeName": "MRI",
-//   "description": "Magnetic Resonance Imaging",
-//   "price": 300.00,
-//   "photoUrl": "https://example.com/images/mri.jpg"
-// }
-
-// 5. WorkingHour: Добавление рабочих часов для каждой локации.
+// 4. WorkingHour: Добавление рабочих часов для каждой локации.
 // {
 //   "workingHourId": 1,
 //   "locationId": 1,
 //   "startTime": "08:00",
 //   "endTime": "17:00",
 //   "weekdayIndex": 1
+// }
+
+// 5. Diagnostic: Добавление диагностических типов, которые могут быть привязаны к локациям.
+// {
+//   "diagnosticId": 1,
+//   "typeName": "MRI",
+//   "description": "Magnetic Resonance Imaging",
+//   "price": 300.00,
+//   "photoUrl": "https://example.com/images/mri.jpg"
 // }
 
 // 6. Slot: Добавление временных слотов, которые привязываются к докторам или диагностическим типам и локациям.

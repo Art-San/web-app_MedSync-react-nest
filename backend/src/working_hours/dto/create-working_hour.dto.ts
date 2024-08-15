@@ -1,16 +1,18 @@
-import { IsNumber, IsString, Length } from 'class-validator'
+import { IsNumber, IsOptional, IsString, MaxLength } from 'class-validator'
 
 export class CreateWorkingHourDto {
 	@IsNumber()
 	locationId: number
 
+	@IsOptional()
 	@IsString()
-	@Length(1, 128)
-	startTime: string
+	@MaxLength(2)
+	startTime?: string
 
+	@IsOptional()
 	@IsString()
-	@Length(1, 128)
-	endTime: string
+	@MaxLength(2)
+	endTime?: string
 
 	@IsNumber()
 	weekdayIndex: number

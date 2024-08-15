@@ -105,8 +105,8 @@ model Location {
 model WorkingHour {
   workingHourId   Int  @id @default(autoincrement())
   locationId      Int
-  startTime       String // Изменить на String или Time в зависимости от вашего предпочтения
-  endTime         String // Изменить на String или Time в зависимости от вашего предпочтения
+  startTime       String?
+  endTime         String?
   weekdayIndex    Int
 
   location        Location @relation(fields: [locationId], references: [locationId])
