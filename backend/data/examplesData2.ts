@@ -32,29 +32,29 @@
 // {
 //   "workingHourId": 1,
 //   "locationId": 1,
-//   "startTime": "08:00",
-//   "endTime": "17:00",
+//   "startTime": "08",
+//   "endTime": "17",
 //   "weekdayIndex": 1
 // }
 
-// 5. Diagnostic: Добавление диагностических типов, которые могут быть привязаны к локациям.
+// 5. Slot: Добавление временных слотов, которые привязываются к докторам или диагностическим типам и локациям.
+// {
+//   "doctorId": 1,
+//   "locationId": 1,
+//   "startTime": "15",
+//   "endTime": "16",
+//   "dayNumber": 16,
+//   "monthNumber": 8,
+//   "isBooked": false
+// }
+
+// 6. Diagnostic: Добавление диагностических типов, которые могут быть привязаны к локациям.
 // {
 //   "diagnosticId": 1,
 //   "typeName": "MRI",
 //   "description": "Magnetic Resonance Imaging",
 //   "price": 300.00,
 //   "photoUrl": "https://example.com/images/mri.jpg"
-// }
-
-// 6. Slot: Добавление временных слотов, которые привязываются к докторам или диагностическим типам и локациям.
-// {
-//   "slotId": 1,
-//   "doctorId": 1,
-//   "locationId": 1,
-//   "startTime": "2024-08-15T09:00:00Z",
-//   "endTime": "2024-08-15T09:30:00Z",
-//   "monthNumber": 8,
-//   "isBooked": false
 // }
 
 // 7. Booking: Добавление бронирований, которые связываются с пользователями и слотами.

@@ -107,8 +107,10 @@
       margin-bottom: 4px;
 
       &--active {
-        background: $tg-theme-button;
-        color: $tg-theme-button-text;
+        background: black;
+        // background: $tg-theme-button;
+        color: white;
+        // color: $tg-theme-button-text;
       }
       &--unavailable {
         color: $tg-theme-hint;

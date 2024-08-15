@@ -17,6 +17,7 @@ import { SpecialtyModule } from './specialty/specialty.module'
 import { LocationModule } from './location/location.module'
 import { DoctorModule } from './doctor/doctor.module'
 import { WorkingHoursModule } from './working_hours/working_hours.module';
+import { SlotsModule } from './slots/slots.module';
 
 @Module({
 	imports: [
@@ -31,6 +32,7 @@ import { WorkingHoursModule } from './working_hours/working_hours.module';
 		SpecialtyModule,
 		LocationModule,
 		WorkingHoursModule,
+		SlotsModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],

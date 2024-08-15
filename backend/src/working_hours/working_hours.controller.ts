@@ -17,8 +17,8 @@ export class WorkingHoursController {
 	constructor(private readonly workingHoursService: WorkingHoursService) {}
 
 	@Post()
-	create(@Body() createWorkingHourDto: CreateWorkingHourDto) {
-		return this.workingHoursService.create(createWorkingHourDto)
+	create(@Body() dto: CreateWorkingHourDto) {
+		return this.workingHoursService.create(dto)
 	}
 
 	@Get()
