@@ -13,8 +13,14 @@ export const useSlots = (
   const [availableDays, setAvailableDays] = useState([])
   // const endpoint = `/api/slots/${itemType}`
   const endpoint = `/api/slots/doctors`
+  // https://medsync.botfather.dev/api/slots/doctors/1/2/7
+  // console.log(12, itemId)
+  // console.log(13, locationId)
+  console.log(14, selectedDate.getMonth())
+  // console.log(15, workingHours)
   useEffect(() => {
     if (itemId && locationId && selectedDate && workingHours.length > 0) {
+      console.log(1, 'useEffect')
       axios
         .get(
           `${
@@ -23,6 +29,7 @@ export const useSlots = (
         )
         .then((response) => {
           let bookedSlots = response.data
+          console.log(16, bookedSlots)
           const allPossibleSlots = generateAllSlotsForMonth(
             workingHours,
             selectedDate.getMonth(),

@@ -18,7 +18,7 @@ const SlotSelection = ({ storageKey, itemType }) => {
   const [selectedItem, setParsedItem] = useState(null)
   // console.log(44566, 'selectedItem', selectedItem) // +++
   const [selectedDate, setSelectedDate] = useState(new Date())
-  console.log(678, 'selectedDate', selectedDate)
+  // console.log(678, 'selectedDate', selectedDate)
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(null)
   const [impactOccurred, notificationOccurred, selectionChanged] =
     useHapticFeedback()

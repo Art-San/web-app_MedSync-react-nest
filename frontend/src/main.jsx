@@ -4,9 +4,9 @@ import App from './App.jsx'
 import './scss/main.scss'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <App />
+  // <App />
 
-  //   <React.StrictMode>
-  //     <App />
-  //   </React.StrictMode>
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
 )

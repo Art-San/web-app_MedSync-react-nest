@@ -120,8 +120,8 @@ model Slot {
   doctorId     Int?     // Слот может быть привязан к доктору
   diagnosticId Int?     // Или к диагностике
   locationId   Int      // И обязательно привязан к локации
-  startTime    String // Время начала слота
-  endTime      String // Время окончания слота
+  startTime    DateTime // Время начала слота в формате ISO 8601
+  endTime      DateTime // Время окончания слота в формате ISO 8601
   dayNumber    Int
   monthNumber  Int      // Номер месяца (1-12) для фильтрации
   isBooked     Boolean  @default(false) // Флаг занятости слота

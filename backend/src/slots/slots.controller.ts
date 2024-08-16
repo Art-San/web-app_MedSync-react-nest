@@ -16,6 +16,29 @@ import { UpdateSlotDto } from './dto/update-slot.dto'
 export class SlotsController {
 	constructor(private readonly slotsService: SlotsService) {}
 
+	// doctors/1/1/8
+	@Get('doctors/:doctorId/:locationId/:monthNumber')
+	async getAvailableSlots(
+		@Param('doctorId') doctorId: number,
+		@Param('locationId') locationId: number,
+		@Param('monthNumber') monthNumber: number
+	) {
+		return this.slotsService.getAvailableSlotsForDoctor(
+			+doctorId,
+			+locationId,
+			+monthNumber
+		)
+	}
+
+	// @Get('diagnostics/:diagnosticId/:locationId/:monthNumber')
+	// async getAvailableSlotsForDiagnostic(
+	//   @Param('diagnosticId') diagnosticId: number,
+	//   @Param('locationId') locationId: number,
+	//   @Param('monthNumber') monthNumber: number,
+	// ) {
+	//   return this.slotsService.getAvailableSlotsForDiagnostic(diagnosticId, locationId, monthNumber);
+	// }
+
 	@Post()
 	create(@Body() dto: CreateSlotDto) {
 		return this.slotsService.create(dto)

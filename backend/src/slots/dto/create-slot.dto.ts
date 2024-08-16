@@ -33,6 +33,7 @@ export class CreateSlotDto {
 	@IsNumber()
 	monthNumber: number
 
+	@IsOptional()
 	@IsBoolean()
 	isBooked: boolean
 

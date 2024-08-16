@@ -16,6 +16,12 @@ import { UpdateWorkingHourDto } from './dto/update-working_hour.dto'
 export class WorkingHoursController {
 	constructor(private readonly workingHoursService: WorkingHoursService) {}
 
+	@Get(':locationId')
+	async getWorkingHours(@Param('locationId') locationId: number) {
+		console.log(12, 'locationId:', locationId)
+		return this.workingHoursService.getWorkingHours(+locationId)
+	}
+
 	@Post()
 	create(@Body() dto: CreateWorkingHourDto) {
 		return this.workingHoursService.create(dto)

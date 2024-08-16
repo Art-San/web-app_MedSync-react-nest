@@ -3,11 +3,31 @@ import { CreateSlotDto } from './dto/create-slot.dto'
 import { UpdateSlotDto } from './dto/update-slot.dto'
 import { DbService } from 'src/db/db.service'
 import { BaseService } from 'src/common/base.service'
+import { format } from 'date-fns'
 
 @Injectable()
 export class SlotsService extends BaseService {
 	constructor(private readonly dbService: DbService) {
 		super(SlotsService.name)
+	}
+
+	async getAvailableSlotsForDoctor(
+		doctorId: number,
+		locationId: number,
+		monthNumber: number
+	) {
+		const slots = await this.dbService.slot.findMany({
+			where: {
+				doctorId,
+				locationId,
+				monthNumber,
+				isBooked: false,
+			},
+			select: {
+				startTime: true,
+			},
+		})
+		return slots.map((slot) => slot.startTime)
 	}
 
 	async checkingTimeAvailability(dto: UpdateSlotDto) {
@@ -112,3 +132,12 @@ export class SlotsService extends BaseService {
 		return `This action removes a #${id} slot`
 	}
 }
+// {
+//   "doctorId": 1,
+//   "locationId": 1,
+//   "startTime": "2024-08-17T12:00:00Z",
+//   "endTime": "2024-08-17T13:00:00Z",
+//   "dayNumber": 17,
+//   "monthNumber": 8,
+//   "isBooked": false
+// }

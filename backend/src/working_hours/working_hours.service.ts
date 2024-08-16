@@ -11,6 +11,20 @@ export class WorkingHoursService extends BaseService {
 		super(WorkingHoursService.name)
 	}
 
+	async getWorkingHours(locationId: number) {
+		const workingHours = await this.dbService.workingHour.findMany({
+			where: {
+				locationId,
+			},
+			select: {
+				startTime: true,
+				endTime: true,
+				weekdayIndex: true,
+			},
+		})
+		return workingHours
+	}
+
 	async byId(workingHourId: number) {
 		try {
 			const workingHour = await this.dbService.workingHour.findUnique({
