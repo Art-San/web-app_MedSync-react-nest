@@ -16,11 +16,17 @@ export const useSlots = (
   // https://medsync.botfather.dev/api/slots/doctors/1/2/7
   // console.log(12, itemId)
   // console.log(13, locationId)
-  console.log(14, selectedDate.getMonth())
+  // console.log(14, selectedDate.getMonth())
   // console.log(15, workingHours)
+
+  const data = [
+    '2024-08-21T07:00:00+00:00',
+    '2024-08-22T10:00:00+00:00',
+    '2024-08-28T06:00:00+00:00',
+    '2024-08-30T09:00:00+00:00'
+  ]
   useEffect(() => {
     if (itemId && locationId && selectedDate && workingHours.length > 0) {
-      console.log(1, 'useEffect')
       axios
         .get(
           `${
@@ -28,13 +34,15 @@ export const useSlots = (
           }${endpoint}/${itemId}/${locationId}/${selectedDate.getMonth()}`
         )
         .then((response) => {
-          let bookedSlots = response.data
-          console.log(16, bookedSlots)
+          let bookedSlots = data
+          // let bookedSlots = response.data
+
           const allPossibleSlots = generateAllSlotsForMonth(
             workingHours,
             selectedDate.getMonth(),
             selectedDate.getFullYear()
           )
+          // console.log(16, allPossibleSlots)
           const availableSlots = allPossibleSlots.filter(
             (slot) => !isSlotBooked(slot, bookedSlots)
           )
@@ -51,3 +59,17 @@ export const useSlots = (
   }, [itemId, locationId, selectedDate, workingHours, endpoint])
   return { slots, availableDays }
 }
+// ;[
+//   '2024-08-21T07:00:00+00:00',
+//   '2024-08-22T10:00:00+00:00',
+//   '2024-08-28T06:00:00+00:00',
+//   '2024-08-30T09:00:00+00:00'
+// ][
+//   ('2024-08-19T06:00:00.000Z',
+//   '2024-08-19T07:00:00.000Z',
+//   '2024-08-19T08:00:00.000Z',
+//   '2024-08-19T06:00:00.000Z',
+//   '2024-08-19T07:00:00.000Z',
+//   '2024-08-19T08:00:00.000Z',
+//   '2024-08-19T10:00:00.000Z')
+// ]

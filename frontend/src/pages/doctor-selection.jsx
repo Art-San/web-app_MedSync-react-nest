@@ -55,10 +55,10 @@ const DoctorSelection = () => {
     }
   }
 
-  const fetchLocationInfo = async (locationId = 1) => {
+  const fetchLocationInfo = async (locationId) => {
     try {
       const response = await locationService.getLocation(locationId)
-      console.log(12, 'response', response)
+      // console.log(12, 'response', response)
       await storage.setItem('selectedLocation', JSON.stringify(response.data))
     } catch (error) {
       console.log('Ошибка', error.message)
@@ -87,7 +87,6 @@ const DoctorSelection = () => {
     fetchAllDoctors()
     fetchSpecialties()
     storage.getItem('selectedDoctor').then((value) => {
-      console.log(444, 'electedDoctor', value)
       if (value) {
         setSelectedDoctor(JSON.parse(value))
       }

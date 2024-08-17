@@ -52,8 +52,8 @@ const SlotSelection = ({ storageKey, itemType }) => {
     itemType
   )
 
-  // console.log('1-? - slots', slots) // -----
-  // console.log('2-? - availableDays', availableDays) // ----
+  console.log('1-? - slots', slots) // -----
+  console.log('2-? - availableDays', availableDays) // ----
   const handleDateChange = (date) => {
     console.log(456, 'handleDateChange data', data)
     selectionChanged()
