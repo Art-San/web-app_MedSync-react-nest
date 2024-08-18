@@ -18,7 +18,7 @@ const SlotSelection = ({ storageKey, itemType }) => {
   const [selectedItem, setParsedItem] = useState(null)
   // console.log(44566, 'selectedItem', selectedItem) // +++
   const [selectedDate, setSelectedDate] = useState(new Date())
-  // console.log(678, 'selectedDate', selectedDate)
+  console.log(678, 'selectedDate', selectedDate)
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(null)
   const [impactOccurred, notificationOccurred, selectionChanged] =
     useHapticFeedback()
@@ -52,10 +52,10 @@ const SlotSelection = ({ storageKey, itemType }) => {
     itemType
   )
 
-  console.log('1-? - slots', slots) // -----
+  // console.log('1-? - slots', slots) // -----
   console.log('2-? - availableDays', availableDays) // ----
   const handleDateChange = (date) => {
-    console.log(456, 'handleDateChange data', data)
+    // console.log(456, 'handleDateChange data', data)
     selectionChanged()
     setSelectedDate(date)
   }

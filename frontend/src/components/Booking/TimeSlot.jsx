@@ -13,10 +13,14 @@ const TimeSlot = ({
 
   // Фильтруйте, чтобы получить только сегодняшние слоты
   const todaySlots = availableSlots.filter((slot) => {
+    // console.log(1456, 'slot', slot)
     return isSameDay(slot, selectedDate)
   })
 
-  console.log(1456, todaySlots)
+  // console.log(1456, 'slot', slot)
+  console.log(1456, 'selectedDate', selectedDate)
+
+  console.log(1456, 'todaySlots', todaySlots)
   if (todaySlots.length === 0) {
     notificationOccurred('warning')
   }

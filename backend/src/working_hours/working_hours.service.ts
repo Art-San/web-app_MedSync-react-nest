@@ -120,6 +120,10 @@ export class WorkingHoursService extends BaseService {
 		const allHoursForLocation = await this.dbService.workingHour.findMany({
 			where: {
 				locationId,
+				startTime: {
+					// Условие для проверки, что startTime не равно null
+					not: null,
+				},
 			},
 			orderBy: {
 				// workingHourId: 'asc',

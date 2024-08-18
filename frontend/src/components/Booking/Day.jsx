@@ -19,7 +19,12 @@ const Day = ({ day, selectedDay, availableDays, handleDayClick }) => {
   }
 
   return (
-    <li className={dayClass} onClick={() => isAvailable && handleDayClick(day)}>
+    <li
+      className={dayClass}
+      onClick={() => {
+        isAvailable && handleDayClick(day)
+      }}
+    >
       {day ? format(day, 'd') : ''}
     </li>
   )
