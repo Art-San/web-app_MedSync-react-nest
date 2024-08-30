@@ -18,9 +18,9 @@ const TimeSlot = ({
   })
 
   // console.log(1456, 'slot', slot)
-  console.log(1456, 'selectedDate', selectedDate)
+  // console.log(1456, 'selectedDate', selectedDate)
 
-  console.log(1456, 'todaySlots', todaySlots)
+  // console.log(1456, 'todaySlots', todaySlots)
   if (todaySlots.length === 0) {
     notificationOccurred('warning')
   }

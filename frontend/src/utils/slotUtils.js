@@ -44,9 +44,34 @@ export const generateAllSlotsForMonth = (
   return allSlots
 }
 
-export const isSlotBooked = (slot, bookedSlots) => {
-  return bookedSlots.some((bookedSlot) => {
-    let bookedSlotDateWithHours = new Date(bookedSlot)
-    return slot.getTime() === bookedSlotDateWithHours.getTime()
-  })
+// export const isSlotBooked = (slot, bookedSlots) => {
+//   return bookedSlots.some((bookedSlot) => {
+//     let bookedSlotDateWithHours = new Date(bookedSlot)
+//     return slot.getTime() === bookedSlotDateWithHours.getTime()
+//   })
+// }
+
+// export const isSlotBooked = (slot, bookedSlots) => {
+//   return bookedSlots.some((bookedSlot) => {
+//     const bookedSlotDate = new Date(bookedSlot).getTime()
+//     return slot.getTime() === bookedSlotDate
+//   })
+// }
+
+export const convertToUTCOffsetFormat = (isoDate) => {
+  const date = new Date(isoDate)
+  const pad = (num) => (num < 10 ? '0' : '') + num
+
+  const year = date.getUTCFullYear()
+  const month = pad(date.getUTCMonth() + 1)
+  const day = pad(date.getUTCDate())
+  const hours = pad(date.getUTCHours())
+  const minutes = pad(date.getUTCMinutes())
+  const seconds = pad(date.getUTCSeconds())
+
+  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}+00:00`
 }
+
+// Пример использования
+// const formattedDate = convertToUTCOffsetFormat('2024-09-01T07:00:00.000Z')
+// console.log(formattedDate) // '2024-09-01T07:00:00+00:00'
