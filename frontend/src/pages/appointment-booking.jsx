@@ -14,24 +14,22 @@ import Header from '../components/Header.jsx'
 import storage from '../utils/localStorage.js'
 
 const SlotSelection = ({ storageKey, itemType }) => {
+  // const storage = useCloudStorage()
   const navigate = useNavigate()
   const [selectedItem, setParsedItem] = useState(null)
-  // console.log(44566, 'selectedItem', selectedItem) // +++
   const [selectedDate, setSelectedDate] = useState(new Date())
-  // console.log(678, 'selectedDate', selectedDate)
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(null)
   const [impactOccurred, notificationOccurred, selectionChanged] =
     useHapticFeedback()
-  // const storage = useCloudStorage()
+
   const [selectedLocation, setSelectedLocation] = useState(null)
-  // console.log(234, 'selectedLocation', selectedLocation) ++++
+
   useEffect(() => {
     storage.getItem(storageKey).then((storedItem) => {
       setParsedItem(JSON.parse(storedItem))
     })
     storage.getItem('selectedLocation').then((storedLocation) => {
       if (storedLocation) {
-        // console.log('456474848 сработало') +++
         setSelectedLocation(JSON.parse(storedLocation))
       }
     })
@@ -40,8 +38,8 @@ const SlotSelection = ({ storageKey, itemType }) => {
   const workingHours = useWorkingHours(selectedLocation?.locationId) // Тут айди надо поправить
 
   // console.log(44566, workingHours)
-
   // const endpoint1 = `/api/slots/doctors/itemId/locationId/electedDate.getMonth()`
+
   const { slots, availableDays } = useSlots(
     itemType === 'doctors'
       ? selectedItem?.doctorId
@@ -67,6 +65,7 @@ const SlotSelection = ({ storageKey, itemType }) => {
 
   const handleNext = async () => {
     notificationOccurred('success')
+    console.log('selectedTimeSlot', selectedTimeSlot)
     await storage.setItem('selectedTimeSlot', JSON.stringify(selectedTimeSlot))
     navigate(`/booking/patient-info-form/${itemType}`)
   }

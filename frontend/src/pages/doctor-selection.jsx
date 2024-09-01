@@ -17,8 +17,8 @@ import { locationService } from '../services/location/location.service.js'
 import storage from '../utils/localStorage.js'
 
 const DoctorSelection = () => {
-  const navigate = useNavigate()
   // const storage = useCloudStorage()
+  const navigate = useNavigate()
   const [impactOccurred, notificationOccurred, selectionChanged] =
     useHapticFeedback()
   const [specialties, setSpecialties] = useState([])

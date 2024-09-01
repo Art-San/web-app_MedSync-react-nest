@@ -22,6 +22,8 @@ export const generateAllSlotsForMonth = (
     const weekdayIndex = getDay(day)
 
     // Find the working hours for this weekday
+    console.log('find error', 'weekdayIndex', weekdayIndex)
+    console.log('find error', 'workingHour', workingHours)
     const workingHour = workingHours.find(
       (wh) => wh.weekdayIndex === weekdayIndex
     )
@@ -44,20 +46,14 @@ export const generateAllSlotsForMonth = (
   return allSlots
 }
 
-// export const isSlotBooked = (slot, bookedSlots) => {
-//   return bookedSlots.some((bookedSlot) => {
-//     let bookedSlotDateWithHours = new Date(bookedSlot)
-//     return slot.getTime() === bookedSlotDateWithHours.getTime()
-//   })
-// }
+export const isSlotBooked = (slot, bookedSlots) => {
+  return bookedSlots.some((bookedSlot) => {
+    let bookedSlotDateWithHours = new Date(bookedSlot)
+    return slot.getTime() === bookedSlotDateWithHours.getTime()
+  })
+}
 
-// export const isSlotBooked = (slot, bookedSlots) => {
-//   return bookedSlots.some((bookedSlot) => {
-//     const bookedSlotDate = new Date(bookedSlot).getTime()
-//     return slot.getTime() === bookedSlotDate
-//   })
-// }
-
+// для конвертации из 2024-09-01T07:00:00.000Z
 export const convertToUTCOffsetFormat = (isoDate) => {
   const date = new Date(isoDate)
   const pad = (num) => (num < 10 ? '0' : '') + num

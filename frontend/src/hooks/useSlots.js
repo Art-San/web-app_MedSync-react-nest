@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import {
-  convertToUTCOffsetFormat,
-  generateAllSlotsForMonth
-} from '../utils/slotUtils'
-// import { generateAllSlotsForMonth, isSlotBooked } from '../utils/slotUtils'
+
+import { generateAllSlotsForMonth, isSlotBooked } from '../utils/slotUtils'
 
 export const useSlots = (
   itemId,
@@ -15,23 +12,21 @@ export const useSlots = (
 ) => {
   const [slots, setSlots] = useState(null)
   const [availableDays, setAvailableDays] = useState([])
-  // const endpoint = `/api/slots/${itemType}`
-  const endpoint = `/api/slots/doctors`
+  const endpoint = `/api/slots/${itemType}`
+  // const endpoint = `/api/slots/doctors`
   // https://medsync.botfather.dev/api/slots/doctors/1/2/7
-  // console.log(12, itemId)
-  // console.log(13, locationId)
-  // console.log(14, selectedDate.getMonth())
-  // console.log(15, workingHours)
 
-  // const data = []
-  const data = ['2024-09-01T01:00:00+00:00', '2024-09-01T07:00:00+00:00']
+  console.log(9991, itemId)
+  console.log(9992, locationId)
+  console.log(9993, selectedDate)
+  console.log(9994, workingHours)
+  // const data = ['2024-09-01T01:00:00+00:00', '2024-09-01T07:00:00+00:00']
+  // const data = [
+  //   '2024-09-02T01:00:00.000Z',
+  //   '2024-09-02T07:00:00.000Z',
+  //   '2024-09-02T08:00:00.000Z'
+  // ]
 
-  const isSlotBooked = (slot, bookedSlots) => {
-    return bookedSlots.some((bookedSlot) => {
-      const bookedSlotDate = new Date(bookedSlot).getTime()
-      return slot.getTime() === bookedSlotDate
-    })
-  }
   useEffect(() => {
     if (itemId && locationId && selectedDate && workingHours.length > 0) {
       axios
@@ -39,16 +34,15 @@ export const useSlots = (
           `${
             import.meta.env.VITE_API_URL
           }${endpoint}/${itemId}/${locationId}/${selectedDate.getMonth()}`
+          // {
+          //   headers: {
+          //     'ngrok-skip-browser-warning': '69420'
+          //   }
+          // }
         )
         .then((response) => {
           // let bookedSlots = data
           let bookedSlots = response.data
-          console.log(123, 'bookedSlots', bookedSlots)
-
-          var res = bookedSlots.map((el) => {
-            return convertToUTCOffsetFormat(el)
-          })
-          // console.log(11, 'res', res)
 
           const allPossibleSlots = generateAllSlotsForMonth(
             workingHours,
@@ -57,7 +51,7 @@ export const useSlots = (
           )
 
           const availableSlots = allPossibleSlots.filter(
-            (slot) => !isSlotBooked(slot, res)
+            (slot) => !isSlotBooked(slot, bookedSlots)
           )
 
           // console.log(16, availableSlots)
@@ -68,6 +62,7 @@ export const useSlots = (
           setSlots(availableSlots)
         })
         .catch((error) => {
+          console.log('error', error)
           console.error('Error fetching slots:', error)
         })
     }

@@ -29,7 +29,7 @@ const Calendar = ({ onDateChange, availableDays }) => {
   }, [selectedMonth])
 
   const handleDayClick = (day) => {
-    // console.log(345, day)
+    console.log(345, day)
     if (day) {
       setSelectedDay(day)
       onDateChange(day) // Вызов функции обратного вызова с выбранным днем
