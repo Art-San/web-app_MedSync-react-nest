@@ -130,6 +130,8 @@ const PatientInformation = () => {
   return (
     <>
       <BackButton onClick={() => navigate(-1)} />
+      <button onClick={() => navigate(-1)}>назад</button>
+      <button onClick={() => navigate('/')}>дом</button>
       <div className="patient-information">
         <Header className="patient-information" title="Patient Information" />
         <div className="patient-information__form">
@@ -210,6 +212,7 @@ const PatientInformation = () => {
                   maxLength={1024}
                 ></textarea>
               </label>
+              {isFormValid && <button onClick={handleSubmit}>Жми</button>}
               {isFormValid && (
                 <MainButton title="Next" onClick={handleSubmit} />
               )}

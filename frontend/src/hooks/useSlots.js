@@ -16,10 +16,10 @@ export const useSlots = (
   // const endpoint = `/api/slots/doctors`
   // https://medsync.botfather.dev/api/slots/doctors/1/2/7
 
-  console.log(9991, itemId)
-  console.log(9992, locationId)
-  console.log(9993, selectedDate)
-  console.log(9994, workingHours)
+  // console.log(9991, itemId)
+  // console.log(9992, locationId)
+  // console.log(9993, selectedDate)
+  // console.log(9994, workingHours)
   // const data = ['2024-09-01T01:00:00+00:00', '2024-09-01T07:00:00+00:00']
   // const data = [
   //   '2024-09-02T01:00:00.000Z',

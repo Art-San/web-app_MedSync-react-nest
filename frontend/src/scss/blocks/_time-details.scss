@@ -107,7 +107,7 @@
       margin-bottom: 4px;
 
       &--active {
-        background: black;
+        background: rgb(35, 157, 13);
         // background: $tg-theme-button;
         color: white;
         // color: $tg-theme-button-text;
@@ -172,7 +172,8 @@
       color: $tg-theme-text;
 
       &--active {
-        background: $tg-theme-button;
+        background: rgb(35, 157, 13);
+        // background: $tg-theme-button;
         color: $tg-theme-button-text;
         box-shadow: $color-box-shadow;
       }

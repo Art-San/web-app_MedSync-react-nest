@@ -117,6 +117,8 @@ const DoctorSelection = () => {
   return (
     <>
       <BackButton onClick={() => navigate('/')} />
+      <button onClick={() => navigate(-1)}>назад</button>
+      <button onClick={() => navigate('/')}>дом</button>
       <div className="doctor-selection">
         <Header title="Select a Doctor" className="header doctor-selection" />
         <SearchBar search={search} setSearch={setSearch} />

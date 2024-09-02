@@ -39,6 +39,7 @@ const About = () => {
   return (
     <>
       <button onClick={() => navigate(-1)}>назад</button>
+      <button onClick={() => navigate('/')}>дом</button>
       <BackButton onClick={() => navigate(-1)} />
       {doctor && (
         <div className="about">

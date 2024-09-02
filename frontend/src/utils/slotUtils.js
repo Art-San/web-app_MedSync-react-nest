@@ -22,8 +22,6 @@ export const generateAllSlotsForMonth = (
     const weekdayIndex = getDay(day)
 
     // Find the working hours for this weekday
-    console.log('find error', 'weekdayIndex', weekdayIndex)
-    console.log('find error', 'workingHour', workingHours)
     const workingHour = workingHours.find(
       (wh) => wh.weekdayIndex === weekdayIndex
     )
