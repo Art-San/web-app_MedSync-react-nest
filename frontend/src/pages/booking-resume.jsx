@@ -13,8 +13,10 @@ import axios from 'axios'
 import { ResumeBlock } from '../components/Resume/ResumeBlock.jsx'
 import fetchUserDataAndLocationInfo from '../utils/summaryData.js'
 import Resume from '../components/Resume/SummaryInfo.jsx'
+// import storage from '../utils/localStorage.js'
 
 const FullSummary = () => {
+  const storage = useCloudStorage()
   const webApp = window.Telegram?.WebApp
   const [impactOccurred, notificationOccurred, selectionChanged] =
     useHapticFeedback()
@@ -25,7 +27,7 @@ const FullSummary = () => {
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(null)
   const [workingHours, setWorkingHours] = useState(null)
   const [selectedLocation, setSelectedLocation] = useState(null)
-  const storage = useCloudStorage()
+
   const showPopup = useShowPopup()
   const navigate = useNavigate()
   const { itemType } = useParams()

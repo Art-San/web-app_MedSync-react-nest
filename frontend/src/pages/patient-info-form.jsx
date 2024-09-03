@@ -9,10 +9,10 @@ import {
   useShowPopup
 } from '@vkruglikov/react-telegram-web-app'
 import { useNavigate, useParams } from 'react-router-dom'
-import storage from '../utils/localStorage.js'
+// import storage from '../utils/localStorage.js'
 
 const PatientInformation = () => {
-  // const storage = useCloudStorage()
+  const storage = useCloudStorage()
   const [formData, setFormData] = useState({
     userName: '',
     userSurname: '',
@@ -89,42 +89,46 @@ const PatientInformation = () => {
   }, [formData])
 
   const handleSubmit = async () => {
-    storage.getItem('save_data_forever').then((toSave) => {
-      if (!toSave || !JSON.parse(toSave)) {
-        showPopup({
-          message: 'Do you want to save your data for later?',
-          buttons: [
-            {
-              text: 'Yes',
-              id: 'yes',
-              type: 'ok'
-            },
-            {
-              text: 'No',
-              id: 'no',
-              type: 'destructive'
-            },
-            {
-              text: "Save and don't ask again",
-              id: 'save',
-              type: 'default'
-            }
-          ]
-        }).then((buttonId) => {
-          if (buttonId === 'yes') {
-            storage.setItem('save_data', JSON.stringify(true))
-          } else if (buttonId === 'save') {
-            storage.setItem('save_data_forever', JSON.stringify(true))
-            storage.setItem('save_data', JSON.stringify(true))
-          } else {
-            storage.setItem('save_data', JSON.stringify(false))
-          }
-        })
-      }
-      storage.setItem('user_data', JSON.stringify(formData))
-      navigate(`/booking/confirmation/${itemType}`)
-      notificationOccurred('success')
-    })
+    // storage.getItem('save_data_forever').then((toSave) => {
+    //   if (!toSave || !JSON.parse(toSave)) {
+    //     showPopup({
+    //       message: 'Хотите сохранить свои данные на будущее?',
+    //       buttons: [
+    //         {
+    //           text: 'Yes',
+    //           id: 'yes',
+    //           type: 'ok'
+    //         },
+    //         {
+    //           text: 'No',
+    //           id: 'no',
+    //           type: 'destructive'
+    //         },
+    //         {
+    //           text: 'Сохрани и больше не спрашивай',
+    //           id: 'save',
+    //           type: 'default'
+    //         }
+    //       ]
+    //     }).then((buttonId) => {
+    //       if (buttonId === 'yes') {
+    //         storage.setItem('save_data', JSON.stringify(true))
+    //       } else if (buttonId === 'save') {
+    //         storage.setItem('save_data_forever', JSON.stringify(true))
+    //         storage.setItem('save_data', JSON.stringify(true))
+    //       } else {
+    //         storage.setItem('save_data', JSON.stringify(false))
+    //       }
+    //     })
+    //   }
+    //   storage.setItem('user_data', JSON.stringify(formData))
+    //   navigate(`/booking/confirmation/${itemType}`)
+    //   notificationOccurred('success')
+    // })
+    storage.setItem('user_data', JSON.stringify(formData))
+    navigate('/')
+    // navigate(`/booking/confirmation/${itemType}`)
+    notificationOccurred('success')
   }
 
   return (
