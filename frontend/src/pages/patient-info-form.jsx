@@ -9,10 +9,10 @@ import {
   useShowPopup
 } from '@vkruglikov/react-telegram-web-app'
 import { useNavigate, useParams } from 'react-router-dom'
-// import storage from '../utils/localStorage.js'
+import storage from '../utils/localStorage.js'
 
 const PatientInformation = () => {
-  const storage = useCloudStorage()
+  // const storage = useCloudStorage()
   const [formData, setFormData] = useState({
     userName: '',
     userSurname: '',
@@ -21,12 +21,11 @@ const PatientInformation = () => {
     userMessage: ''
   })
 
-  console.log(123, 'formData', formData)
-
   const navigate = useNavigate()
   const { itemType } = useParams()
+
   const [initDataUnsafe, initData] = useInitData()
-  console.log('initDataUnsafe', initDataUnsafe)
+
   const [impactOccurred, notificationOccurred, selectionChanged] =
     useHapticFeedback()
   const [isFormValid, setIsFormValid] = useState(false)
@@ -54,7 +53,7 @@ const PatientInformation = () => {
   useEffect(() => {
     storage.getItem('user_data').then((data) => {
       const savedUserDataObject = data ? JSON.parse(data) : null
-      console.log(124, 'savedUserDataObject', savedUserDataObject)
+
       const savedEmail = savedUserDataObject
         ? savedUserDataObject.userEmail
         : null
@@ -126,8 +125,8 @@ const PatientInformation = () => {
     //   notificationOccurred('success')
     // })
     storage.setItem('user_data', JSON.stringify(formData))
-    navigate('/')
-    // navigate(`/booking/confirmation/${itemType}`)
+    // navigate('/')
+    navigate(`/booking/confirmation/${itemType}`)
     notificationOccurred('success')
   }
 

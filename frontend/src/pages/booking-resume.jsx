@@ -13,15 +13,16 @@ import axios from 'axios'
 import { ResumeBlock } from '../components/Resume/ResumeBlock.jsx'
 import fetchUserDataAndLocationInfo from '../utils/summaryData.js'
 import Resume from '../components/Resume/SummaryInfo.jsx'
-// import storage from '../utils/localStorage.js'
+import storage from '../utils/localStorage.js'
 
 const FullSummary = () => {
-  const storage = useCloudStorage()
+  // const storage = useCloudStorage()
   const webApp = window.Telegram?.WebApp
   const [impactOccurred, notificationOccurred, selectionChanged] =
     useHapticFeedback()
   const [InitDataUnsafe, InitData] = useInitData()
   const [doctorData, setDoctorData] = useState(null)
+  console.log(23, 'doctorData', doctorData)
   const [diagnosticData, setDiagnosticData] = useState(null)
   const [userData, setUserData] = useState(null)
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(null)
@@ -31,6 +32,19 @@ const FullSummary = () => {
   const showPopup = useShowPopup()
   const navigate = useNavigate()
   const { itemType } = useParams()
+
+  // const fetchDoctorData = async (storage) => {
+  //   try {
+  //     const doctor = JSON.parse(await storage.getItem('selectedDoctor'))
+  //     if (!doctor) {
+  //       throw new Error('Данные врача отсутствуют')
+  //     }
+  //     return doctor
+  //   } catch (err) {
+  //     console.error('Ошибка в fetchDoctorData:', err)
+  //     return null
+  //   }
+  // }
 
   const fetchDoctorData = async () => {
     const doctor = JSON.parse(await storage.getItem('selectedDoctor'))
@@ -48,10 +62,13 @@ const FullSummary = () => {
       fetchDoctorData().then((doctor) => {
         fetchUserDataAndLocationInfo(storage).then((data) => {
           if (data.error) {
-            showPopup({ message: 'Sorry, some data is missing!' }).then(() =>
-              navigate(-1)
-            )
+            console.log(9999, 'Извините, некоторые данные отсутствуют!')
           }
+          // if (data.error) {
+          //   showPopup({ message: 'Sorry, some data is missing!' }).then(() =>
+          //     navigate(-1)
+          //   )
+          // }
           setUserData(data.userData)
           setSelectedTimeSlot(data.selectedTimeSlot)
           setDoctorData(doctor)
@@ -90,6 +107,39 @@ const FullSummary = () => {
     }
   }, [])
 
+  /*TODO: от GPT с обработкой ошибок*/
+  // useEffect(() => {
+  //   fetchDoctorData(storage).then((doctor) => {
+  //     if (!doctor) {
+  //       showPopup({ message: 'Sorry, doctor data is missing!' }).then(() =>
+  //         navigate(-1)
+  //       )
+  //       return
+  //     }
+
+  //     fetchUserDataAndLocationInfo(storage).then((data) => {
+  //       if (data.error) {
+  //         showPopup({ message: 'Sorry, some data is missing!' }).then(() =>
+  //           navigate(-1)
+  //         )
+  //         return
+  //       }
+
+  //       setUserData(data.userData)
+  //       setSelectedTimeSlot(data.selectedTimeSlot)
+  //       setDoctorData(doctor)
+  //       setWorkingHours(data.hoursArray)
+  //       setSelectedLocation(data.selectedLocation)
+
+  //       storage.getItem('save_data').then((toSave) => {
+  //         if (!JSON.parse(toSave)) {
+  //           storage.removeItem('user_data')
+  //         }
+  //       })
+  //     })
+  //   })
+  // }, [])
+
   const handleSubmit = async () => {
     try {
       const response = await axios.post(
@@ -126,10 +176,18 @@ const FullSummary = () => {
   return (
     <>
       <BackButton onClick={() => navigate(-1)} />
+      {!userData && (
+        <div className="">
+          <button onClick={() => navigate(-1)}>назад</button>
+          <button onClick={() => navigate('/')}>дом</button>
+          <div className="">некоторые данные отсутствуют вернись назад</div>
+        </div>
+      )}
+
       <div className="resume">
         {userData && (
           <div className="resume__blocks">
-            <Header className="resume" title="Summary" />
+            <Header className="resume" title="Краткое содержание" />
             <Resume
               userData={userData}
               selectedTimeSlot={selectedTimeSlot}
@@ -138,19 +196,19 @@ const FullSummary = () => {
             />
 
             {doctorData && (
-              <ResumeBlock title="Your Doctor">
+              <ResumeBlock title="Ваш доктор">
                 <div className="resume__doctor">
                   <img
                     className="resume__doctor__image"
-                    src={doctorData.photo_url}
+                    src={doctorData.photoUrl}
                     alt="Doctor"
                   />
                   <div className="resume__doctor__info">
                     <div className="resume__block__title">
-                      {doctorData.full_name}
+                      {doctorData.fullName}
                     </div>
                     <div className="resume__block__text--color-dark">
-                      {doctorData.specialty_name}
+                      {doctorData.specialty.specialtyName}
                     </div>
                   </div>
                 </div>
@@ -180,6 +238,7 @@ const FullSummary = () => {
             )}
           </div>
         )}
+        {/* {userData && <button onClick={handleSubmit}>Жми</button>} */}
         {userData && <MainButton onClick={handleSubmit} text="Confirm" />}
       </div>
     </>
