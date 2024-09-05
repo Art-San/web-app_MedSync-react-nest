@@ -14,13 +14,18 @@ import { ResumeBlock } from '../components/Resume/ResumeBlock.jsx'
 import fetchUserDataAndLocationInfo from '../utils/summaryData.js'
 import Resume from '../components/Resume/SummaryInfo.jsx'
 import storage from '../utils/localStorage.js'
+import { toast } from 'sonner'
 
 const FullSummary = () => {
   // const storage = useCloudStorage()
   const webApp = window.Telegram?.WebApp
   const [impactOccurred, notificationOccurred, selectionChanged] =
     useHapticFeedback()
-  const [InitDataUnsafe, InitData] = useInitData()
+  // const [InitDataUnsafe, InitData] = useInitData()
+  var InitData =
+    'query_id=AAHMWgYrAAAAAMxaBiuJKfOE&user=%7B%22id%22%3A721836748%2C%22first_name%22%3A%22%D0%90%D0%BB%D0%B5%D0%BA%D1%81%D0%B0%D0%BD%D0%B4%D1%80%22%2C%22last_name%22%3A%22%D0%90%22%2C%22username%22%3A%22gruzz70tomsk%22%2C%22language_code%22%3A%22ru%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1725548886&hash=cbeaa9674db6fa974784fa15e7297892baa1e8609a354ff9ea47cce7637a7a27'
+  console.log(888, 'FullSummary InitData', InitData)
+  // console.log(889, 'FullSummary InitDataUnsafe', InitDataUnsafe)
   const [doctorData, setDoctorData] = useState(null)
   console.log(23, 'doctorData', doctorData)
   const [diagnosticData, setDiagnosticData] = useState(null)
@@ -142,33 +147,37 @@ const FullSummary = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/${itemType}/book_slot`,
-        {
-          doctor_id: doctorData?.doctor_id,
-          diagnostic_id: diagnosticData?.diagnostic_id,
-          booking_date_time: selectedTimeSlot,
-          location_id: selectedLocation?.location_id,
-          user_name: userData.userName,
-          user_surname: userData.userSurname,
-          user_phone: userData.userPhone,
-          user_email: userData.userEmail,
-          user_message: userData.userMessage,
-          userInitData: InitData
-        }
-      )
+      // const response = await axios.post(
+      //   `${import.meta.env.VITE_API_URL}/api/booking/${itemType}`,
+      //   // `${import.meta.env.VITE_API_URL}/api/${itemType}/book_slot`,
+      //   {
+      //     doctor_id: doctorData?.doctor_id,
+      //     diagnostic_id: diagnosticData?.diagnostic_id,
+      //     booking_date_time: selectedTimeSlot,
+      //     location_id: selectedLocation?.location_id,
+      //     user_name: userData.userName,
+      //     user_surname: userData.userSurname,
+      //     user_phone: userData.userPhone,
+      //     user_email: userData.userEmail,
+      //     user_message: userData.userMessage,
+      //     userInitData: InitData
+      //   }
+      // )
       notificationOccurred('success')
-      await showPopup({ message: 'Your appointment has been confirmed!' })
-      await webApp.sendData(
-        JSON.stringify({
-          action: 'booking_confirmed',
-          booking_id: response.data.booking_id
-        })
-      )
-      navigate('/successful_booking')
+      toast.success('Ваша запись подтверждена!')
+      // await showPopup({ message: 'Ваша запись подтверждена!' })
+      // await webApp.sendData(
+      //   JSON.stringify({
+      //     action: 'booking_confirmed',
+      //     booking_id: response.data.booking_id
+      //   })
+      // )
+      navigate('/')
+      // navigate('/successful_booking')
     } catch (err) {
+      toast.error('Ваша запись подтверждена!')
       notificationOccurred('error')
-      await showPopup({ message: 'Sorry, something went wrong!' })
+      // await showPopup({ message: 'Извините, что-то пошло не так!' })
       console.error(err)
     }
   }
@@ -238,7 +247,7 @@ const FullSummary = () => {
             )}
           </div>
         )}
-        {/* {userData && <button onClick={handleSubmit}>Жми</button>} */}
+        {userData && <button onClick={handleSubmit}>Жми</button>}
         {userData && <MainButton onClick={handleSubmit} text="Confirm" />}
       </div>
     </>
