@@ -120,9 +120,9 @@ model Slot {
   doctorId     Int?     // Слот может быть привязан к доктору
   diagnosticId Int?     // Или к диагностике
   locationId   Int      // И обязательно привязан к локации
-  startTime    DateTime // Время начала слота в формате ISO 8601
-  endTime      DateTime // Время окончания слота в формате ISO 8601
-  dayNumber    Int
+  startTime    DateTime  // Время начала слота в формате ISO 8601
+  endTime      DateTime? // Время окончания слота в формате ISO 8601
+  dayNumber    Int?
   monthNumber  Int      // Номер месяца (1-12) для фильтрации
   isBooked     Boolean  @default(false) // Флаг занятости слота
   createdAt    DateTime @default(now())
@@ -140,16 +140,18 @@ model Slot {
 model Booking {
   bookingId        Int      @id @default(autoincrement())
   userId           Int?
-  userFullName     String
-  userEmail        String
+  telegramId       String?
+  userName         String
+  userSurname      String
   userPhoneNumber  String
+  userEmail        String?
   userMessage      String?
+  bookingDateTime  DateTime @db.Timestamptz
   doctorId         Int?
   diagnosticId     Int?
   locationId       Int
   slotId           Int?     @unique
-  bookingTime      DateTime @db.Timestamptz
-  status           String
+  status           String?
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
   deletedAt        DateTime?
@@ -161,8 +163,8 @@ model Booking {
   slot             Slot?    @relation(fields: [slotId], references: [slotId])
   results          DiagnosticResult[]
 
-  @@unique([doctorId, locationId, bookingTime], name: "unique_doctor_location_time")
-  @@unique([diagnosticId, locationId, bookingTime], name: "unique_diagnostic_location_time")
+  @@unique([doctorId, locationId, bookingDateTime], name: "unique_doctor_location_time")
+  @@unique([diagnosticId, locationId, bookingDateTime], name: "unique_diagnostic_location_time")
 
   @@map("bookings")
 }

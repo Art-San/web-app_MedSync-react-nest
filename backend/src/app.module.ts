@@ -16,8 +16,8 @@ import { BookingModule } from './booking/booking.module'
 import { SpecialtyModule } from './specialty/specialty.module'
 import { LocationModule } from './location/location.module'
 import { DoctorModule } from './doctor/doctor.module'
-import { WorkingHoursModule } from './working_hours/working_hours.module';
-import { SlotsModule } from './slots/slots.module';
+import { WorkingHoursModule } from './working_hours/working_hours.module'
+import { SlotsModule } from './slots/slots.module'
 
 @Module({
 	imports: [
@@ -38,12 +38,12 @@ import { SlotsModule } from './slots/slots.module';
 	providers: [AppService],
 })
 export class AppModule {
-	// configure(consumer: MiddlewareConsumer) {
-	// 	consumer
-	// 		.apply(ValidateTelegramDataMiddleware)
-	// 		.forRoutes({ path: '*', method: RequestMethod.ALL }) // Или конкретные пути, если требуется
-	// 	consumer
-	// 		.apply(RoleMiddleware)
-	// 		.forRoutes({ path: '*', method: RequestMethod.ALL })
-	// }
+	configure(consumer: MiddlewareConsumer) {
+		consumer
+			.apply(ValidateTelegramDataMiddleware)
+			.forRoutes({ path: '*', method: RequestMethod.ALL }) // Или конкретные пути, если требуется
+		consumer
+			.apply(RoleMiddleware)
+			.forRoutes({ path: '*', method: RequestMethod.ALL })
+	}
 }

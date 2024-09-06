@@ -126,6 +126,9 @@ const DoctorSelection = () => {
       <button onClick={() => toast.success('Event has not been created')}>
         success
       </button>
+      <button onClick={() => toast.warning('Event has not been created')}>
+        warning
+      </button>
       <button onClick={() => toast.error('Event has not been created')}>
         error
       </button>

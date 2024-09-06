@@ -6,6 +6,7 @@ import {
 	Patch,
 	Param,
 	Delete,
+	BadRequestException,
 } from '@nestjs/common'
 import { BookingService } from './booking.service'
 import { CreateBookingDto } from './dto/create-booking.dto'
@@ -18,15 +19,16 @@ export class BookingController {
 		// private readonly telegramService: TelegramService, // для отправки уведомлений в Telegram
 	) {}
 
-	@Post('doctor')
+	@Post('doctors')
 	create(@Body() createBookingDto: CreateBookingDto) {
-		return this.bookingService.create(createBookingDto)
+		return this.bookingService.bookSlot(createBookingDto)
 	}
 
-	// @Get()
-	// findAll() {
-	//   return this.bookingService.findAll();
-	// }
+	@Get()
+	findAll() {
+		return { msg: 'все гуд' }
+		// return this.bookingService.findAll()
+	}
 
 	// @Get(':id')
 	// findOne(@Param('id') id: string) {

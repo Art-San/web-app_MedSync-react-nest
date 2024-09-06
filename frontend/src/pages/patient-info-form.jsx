@@ -70,7 +70,7 @@ const PatientInformation = () => {
       const savedPhone = savedUserDataObject
         ? savedUserDataObject.userPhone
         : null
-      // Telegram Data may be not available if ran from Inline mode or KeyboardButton
+      // Данные Telegram могут быть недоступны при запуске из встроенного режима или с помощью KeyboardButton.
 
       setFormData((prevFormData) => ({
         ...prevFormData,
@@ -125,7 +125,6 @@ const PatientInformation = () => {
     //   notificationOccurred('success')
     // })
     storage.setItem('user_data', JSON.stringify(formData))
-    // navigate('/')
     navigate(`/booking/confirmation/${itemType}`)
     notificationOccurred('success')
   }
@@ -146,7 +145,7 @@ const PatientInformation = () => {
               className="form"
             >
               <label htmlFor="user_name" className="form__label">
-                Name
+                Имя
                 <input
                   className="form__input"
                   id="userName"
@@ -161,7 +160,7 @@ const PatientInformation = () => {
               </label>
 
               <label htmlFor="user_surname" className="form__label">
-                Surname
+                Фамилия
                 <input
                   className="form__input"
                   id="userSurname"
@@ -176,7 +175,7 @@ const PatientInformation = () => {
               </label>
 
               <label htmlFor="user_phone" className="form__label">
-                Phone number
+                Номер телефона
                 <input
                   className="form__input"
                   id="userPhone"
@@ -191,7 +190,7 @@ const PatientInformation = () => {
               </label>
 
               <label htmlFor="user_email" className="form__label">
-                Your E-Mail
+                Почта
                 <input
                   className="form__input"
                   id="userEmail"
@@ -206,7 +205,7 @@ const PatientInformation = () => {
               </label>
 
               <label htmlFor="textarea" className="form__label">
-                Additional information
+                Дополнительная информация
                 <textarea
                   className="form__textarea"
                   id="userMessage"

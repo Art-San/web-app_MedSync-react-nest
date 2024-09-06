@@ -21,16 +21,15 @@ const FullSummary = () => {
   const webApp = window.Telegram?.WebApp
   const [impactOccurred, notificationOccurred, selectionChanged] =
     useHapticFeedback()
-  // const [InitDataUnsafe, InitData] = useInitData()
-  var InitData =
+  const [InitDataUnsafe, InitData] = useInitData()
+  var fakeInitData =
     'query_id=AAHMWgYrAAAAAMxaBiuJKfOE&user=%7B%22id%22%3A721836748%2C%22first_name%22%3A%22%D0%90%D0%BB%D0%B5%D0%BA%D1%81%D0%B0%D0%BD%D0%B4%D1%80%22%2C%22last_name%22%3A%22%D0%90%22%2C%22username%22%3A%22gruzz70tomsk%22%2C%22language_code%22%3A%22ru%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1725548886&hash=cbeaa9674db6fa974784fa15e7297892baa1e8609a354ff9ea47cce7637a7a27'
-  console.log(888, 'FullSummary InitData', InitData)
-  // console.log(889, 'FullSummary InitDataUnsafe', InitDataUnsafe)
+
   const [doctorData, setDoctorData] = useState(null)
-  console.log(23, 'doctorData', doctorData)
   const [diagnosticData, setDiagnosticData] = useState(null)
   const [userData, setUserData] = useState(null)
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(null)
+
   const [workingHours, setWorkingHours] = useState(null)
   const [selectedLocation, setSelectedLocation] = useState(null)
 
@@ -67,7 +66,7 @@ const FullSummary = () => {
       fetchDoctorData().then((doctor) => {
         fetchUserDataAndLocationInfo(storage).then((data) => {
           if (data.error) {
-            console.log(9999, 'Извините, некоторые данные отсутствуют!')
+            toast.warning('Извините, некоторые данные отсутствуют!')
           }
           // if (data.error) {
           //   showPopup({ message: 'Sorry, some data is missing!' }).then(() =>
@@ -163,6 +162,33 @@ const FullSummary = () => {
       //     userInitData: InitData
       //   }
       // )
+
+      const formattedBookingDateTime = new Date(selectedTimeSlot).toISOString()
+
+      const data = {
+        telegramId: String(InitDataUnsafe?.user?.id || 721836748),
+        userName: userData.userName,
+        userSurname: userData.userSurname,
+        userPhoneNumber: userData.userPhone,
+        userEmail: userData.userEmail,
+        userMessage: userData.userMessage,
+        bookingDateTime: new Date(selectedTimeSlot).toISOString(),
+        doctorId: doctorData?.doctorId,
+        diagnosticId: diagnosticData?.diagnosticId,
+        locationId: selectedLocation?.locationId,
+        userInitData: InitData || fakeInitData
+      }
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/booking/${itemType}`,
+        data
+      )
+
+      console.log(8889, response.data)
+      // console.log(
+      //   8888,
+      //   'JSON.parse',
+      //   JSON.parse(await storage.getItem('user_data'))
+      // )
       notificationOccurred('success')
       toast.success('Ваша запись подтверждена!')
       // await showPopup({ message: 'Ваша запись подтверждена!' })
@@ -172,13 +198,15 @@ const FullSummary = () => {
       //     booking_id: response.data.booking_id
       //   })
       // )
+
       navigate('/')
       // navigate('/successful_booking')
     } catch (err) {
-      toast.error('Ваша запись подтверждена!')
+      toast.error('Извините, что-то пошло не так!')
       notificationOccurred('error')
       // await showPopup({ message: 'Извините, что-то пошло не так!' })
       console.error(err)
+      navigate(-1)
     }
   }
 

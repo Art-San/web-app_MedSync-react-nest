@@ -37,14 +37,13 @@ export class SlotsService extends BaseService {
 					doctorId: dto.doctorId,
 					// diagnosticId: dto.diagnosticId,
 					startTime: dto.startTime,
-					dayNumber: dto.dayNumber,
 					monthNumber: dto.monthNumber,
 				},
 			})
 
 			if (existingAppointmentTime) {
 				throw new BadRequestException(
-					`Время приема к специалисту c id ${dto.doctorId} в ${dto.startTime}:00 ${dto.dayNumber}/${dto.monthNumber} уже существуют.`
+					`Время приема к специалисту c id ${dto.doctorId} в ${dto.startTime}:00 ${dto.monthNumber} уже существуют.`
 				)
 			}
 

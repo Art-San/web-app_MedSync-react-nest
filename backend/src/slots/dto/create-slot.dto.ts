@@ -24,12 +24,6 @@ export class CreateSlotDto {
 	@IsString()
 	startTime: string
 
-	@IsString()
-	endTime: string
-
-	@IsNumber()
-	dayNumber: number
-
 	@IsNumber()
 	monthNumber: number
 
