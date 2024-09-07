@@ -37,17 +37,34 @@ const DoctorSelection = () => {
   const fetchSpecialties = async () => {
     try {
       const response = await specialtyService.getSpecialties()
-      // const response = await axios.get(
-      //   `${import.meta.env.VITE_API_URL}/api/specialties/`
+      // const response = axios.get(
+      //   `${import.meta.env.VITE_API_URL}/api/specialties`,
+      //   {
+      //     headers: {
+      //       initdata: JSON.stringify(tgInitDataUnsafe),
+      //       'ngrok-skip-browser-warning': '69420', // для ngrok не было предупреждения
+      //       'Content-Type': 'application/json'
+      //     }
+      //   }
       // )
       setSpecialties(response.data)
     } catch (error) {
-      console.error(error.message)
+      console.error('ОШИБКА стр-52', error.message)
     }
   }
   const fetchAllDoctors = async () => {
     try {
       const response = await doctorService.getDoctors()
+      // const response = axios.get(
+      //   `${import.meta.env.VITE_API_URL}/api/doctors`,
+      //   {
+      //     headers: {
+      //       initdata: JSON.stringify(tgInitDataUnsafe),
+      //       'ngrok-skip-browser-warning': '69420', // для ngrok не было предупреждения
+      //       'Content-Type': 'application/json'
+      //     }
+      //   }
+      // )
 
       setAllDoctors(response.data)
       setDisplayedDoctors(response.data) // Initially display all doctors

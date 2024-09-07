@@ -39,8 +39,10 @@ export class ValidateTelegramDataMiddleware implements NestMiddleware {
 			req.query.initData ??
 			req.query.initdata) as string
 		const botToken = process.env.TELEGRAM_BOT_TOKEN
-		console.log(123, telegramInitData)
-		console.log(123, botToken)
+
+		// console.log(123, req.headers)
+		console.log(125, telegramInitData)
+		// console.log(126, botToken)
 
 		if (!telegramInitData || !botToken) {
 			return res
@@ -59,7 +61,7 @@ export class ValidateTelegramDataMiddleware implements NestMiddleware {
 				? JSON.parse(urlParams.get('user'))
 				: urlParams.get('user')
 
-		console.log(1, 'ValidateTelegramDataMiddleware', user)
+		// console.log(1, 'ValidateTelegramDataMiddleware', user)
 
 		req.user = user
 

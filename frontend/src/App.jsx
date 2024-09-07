@@ -24,6 +24,7 @@ const App = () => {
 
   useEffect(() => {
     const tg = window.Telegram.WebApp
+
     tg.ready()
     if (tg.initDataUnsafe?.user?.id) {
       console.log(1, 'есть юзер c айди')

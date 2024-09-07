@@ -7,10 +7,12 @@ import {
 	Put,
 	Param,
 	Delete,
+	Req,
 } from '@nestjs/common'
 import { DoctorService } from './doctor.service'
 import { CreateDoctorDto } from './dto/create-doctor.dto'
 import { UpdateDoctorDto } from './dto/update-doctor.dto'
+import { Request, Response } from 'express'
 
 @Controller('doctors')
 export class DoctorController {
@@ -22,7 +24,11 @@ export class DoctorController {
 	}
 
 	@Get()
-	findAll() {
+	findAll(@Req() req: Request) {
+		// console.log('Request Headers:', req.headers)
+		// console.log('Request Query:', req.query)
+		// console.log('Request Params:', req.params)
+		// console.log('Request Body:', req.body)
 		return this.doctorService.findAll()
 	}
 

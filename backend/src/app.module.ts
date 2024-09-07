@@ -42,8 +42,13 @@ export class AppModule {
 		consumer
 			.apply(ValidateTelegramDataMiddleware)
 			.forRoutes({ path: '*', method: RequestMethod.ALL }) // Или конкретные пути, если требуется
-		consumer
-			.apply(RoleMiddleware)
-			.forRoutes({ path: '*', method: RequestMethod.ALL })
 	}
+	// configure(consumer: MiddlewareConsumer) {
+	// 	consumer
+	// 		.apply(ValidateTelegramDataMiddleware)
+	// 		.forRoutes({ path: '*', method: RequestMethod.ALL }) // Или конкретные пути, если требуется
+	// 	consumer
+	// 		.apply(RoleMiddleware)
+	// 		.forRoutes({ path: '*', method: RequestMethod.ALL })
+	// }
 }
