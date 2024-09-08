@@ -15,18 +15,19 @@ const About = () => {
   const [workingHours, setWorkingHours] = useState([])
 
   const navigate = useNavigate()
-  // let navigate = useNavigate()
+  // let navigate = useNavigate()f
 
   useEffect(() => {
     const fetchDoctorInfo = async () => {
       try {
-        const doc = await doctorService.getDoctorById(doctorId)
-
+        const doctor = await doctorService.getDoctorById(doctorId)
+        // const doctor = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/api/doctors/${doctor_id}`)
         const workingHours = await workingHoursService.getWorkingHours(
-          doc.data.locationId
+          // const workingHours = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/api/working_hours/${doctor.data.location_id}`)
+          doctor.data.locationId
         )
-
-        setDoctor(doc.data)
+        // console.log(456, 'workingHours.data', workingHours.data)
+        setDoctor(doctor.data)
         setWorkingHours(workingHours.data)
       } catch (err) {
         console.error(err)

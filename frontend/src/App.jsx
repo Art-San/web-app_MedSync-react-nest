@@ -41,7 +41,7 @@ const App = () => {
             setIsInvalidVersion(true)
           }
         }
-        // Alternatively to what can be set with react-telegram-web-app, you can directly set the following properties:
+        // В качестве альтернативы тому, что можно установить с помощью react-telegram-web-app, вы можете напрямую установить следующие свойства:
         try {
           window.Telegram.WebApp.requestWriteAccess()
         } catch (e) {

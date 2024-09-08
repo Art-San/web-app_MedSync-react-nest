@@ -16,10 +16,6 @@ const fetchUserDataAndLocationInfo = async (storage) => {
       locationInfo.locationId
     )
 
-    // const workingHours = await axios.get(
-    //   `${import.meta.env.VITE_API_URL}/api/working_hours/${locationInfo.location_id}`
-    // )
-
     // создать объект даты из строки внутри selectedTimeSlot
     selectedTimeSlot = new Date(selectedTimeSlot)
 

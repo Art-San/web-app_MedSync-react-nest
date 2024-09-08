@@ -15,14 +15,39 @@ export class WorkingHoursService extends BaseService {
 		const workingHours = await this.dbService.workingHour.findMany({
 			where: {
 				locationId,
+				startTime: {
+					// Условие для проверки, что startTime не равно null
+					not: null,
+				},
 			},
 			select: {
 				startTime: true,
 				endTime: true,
 				weekdayIndex: true,
 			},
+			orderBy: {
+				// weekdayIndex: 'asc',
+				weekdayIndex: 'desc',
+			},
 		})
 		return workingHours
+	}
+
+	async findAllByLocationId(locationId: number) {
+		const allHoursForLocation = await this.dbService.workingHour.findMany({
+			where: {
+				locationId,
+				startTime: {
+					// Условие для проверки, что startTime не равно null
+					not: null,
+				},
+			},
+			orderBy: {
+				// workingHourId: 'asc',
+				weekdayIndex: 'asc',
+			},
+		})
+		return allHoursForLocation
 	}
 
 	async byId(workingHourId: number) {
@@ -114,22 +139,5 @@ export class WorkingHoursService extends BaseService {
 
 	remove(id: number) {
 		return `This action removes a #${id} workingHour`
-	}
-
-	async findAllByLocationId(locationId: number) {
-		const allHoursForLocation = await this.dbService.workingHour.findMany({
-			where: {
-				locationId,
-				startTime: {
-					// Условие для проверки, что startTime не равно null
-					not: null,
-				},
-			},
-			orderBy: {
-				// workingHourId: 'asc',
-				weekdayIndex: 'asc',
-			},
-		})
-		return allHoursForLocation
 	}
 }

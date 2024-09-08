@@ -15,6 +15,7 @@ import fetchUserDataAndLocationInfo from '../utils/summaryData.js'
 import Resume from '../components/Resume/SummaryInfo.jsx'
 import storage from '../utils/localStorage.js'
 import { toast } from 'sonner'
+import { bookingService } from '../services/booking/booking.service.js'
 
 const FullSummary = () => {
   // const storage = useCloudStorage()
@@ -178,10 +179,11 @@ const FullSummary = () => {
         locationId: selectedLocation?.locationId,
         userInitData: InitData || fakeInitData
       }
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/booking/${itemType}`,
-        data
-      )
+      const response = await bookingService.createdBooking(itemType, data)
+      // const response = await axios.post(
+      //   `${import.meta.env.VITE_API_URL}/api/booking/${itemType}`,
+      //   data
+      // )
 
       console.log(8889, response.data)
       // console.log(

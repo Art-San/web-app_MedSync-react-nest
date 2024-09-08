@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import { workingHoursService } from '../services/working-hours/working-hours.service'
 
 export const useWorkingHours = (locationId) => {
@@ -10,7 +9,7 @@ export const useWorkingHours = (locationId) => {
       const fetchLocWorkingHours = async () => {
         try {
           const workingHoursLocation =
-            await workingHoursService.getWorkingHoursLoc(locationId)
+            await workingHoursService.getWorkingHours(locationId)
           setWorkingHours(workingHoursLocation.data)
         } catch (err) {
           console.error(err)
