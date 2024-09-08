@@ -135,7 +135,10 @@ const PatientInformation = () => {
       <button onClick={() => navigate(-1)}>назад</button>
       <button onClick={() => navigate('/')}>дом</button>
       <div className="patient-information">
-        <Header className="patient-information" title="Patient Information" />
+        <Header
+          className="patient-information"
+          title="Информация для пациентов"
+        />
         <div className="patient-information__form">
           {initDataUnsafe && (
             <form

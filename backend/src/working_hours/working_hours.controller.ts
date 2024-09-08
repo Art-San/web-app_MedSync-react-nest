@@ -16,6 +16,11 @@ import { UpdateWorkingHourDto } from './dto/update-working_hour.dto'
 export class WorkingHoursController {
 	constructor(private readonly workingHoursService: WorkingHoursService) {}
 
+	@Get('location/:id')
+	findAllLocationId(@Param('id') id: string) {
+		return this.workingHoursService.findAllByLocationId(+id)
+	}
+
 	@Get(':locationId')
 	async getWorkingHours(@Param('locationId') locationId: number) {
 		console.log(12, 'locationId:', locationId)
@@ -45,10 +50,5 @@ export class WorkingHoursController {
 	@Delete(':id')
 	remove(@Param('id') id: string) {
 		return this.workingHoursService.remove(+id)
-	}
-
-	@Get('location/:id')
-	findAllLocationId(@Param('id') id: string) {
-		return this.workingHoursService.findAllByLocationId(+id)
 	}
 }

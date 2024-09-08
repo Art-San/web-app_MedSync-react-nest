@@ -5,10 +5,18 @@ import { getWorkingHoursUrl } from '../../configs/api.config'
 // WorkingHour
 // workingHours
 // WorkingHours
+
+// "/working-hours/location/${id}"
+// "/working-hours/${locationInfo.locationId}"
 export const workingHoursService = {
-  async getWorkingHours(id) {
+  async getWorkingHoursLoc(id) {
     const res = await axiosClassic.get(getWorkingHoursUrl(`/location/${id}`))
-    // console.log(777, 'res', res)
+    // console.log(776, 'workingHoursService res', res)
+    return res
+  },
+  async getWorkingHours(id) {
+    const res = await axiosClassic.get(getWorkingHoursUrl(`/${id}`))
+    console.log(777, 'workingHoursService res', res)
     return res
   }
 

@@ -23,15 +23,15 @@ export class SlotsController {
 		@Param('locationId') locationId: number,
 		@Param('monthNumber') monthNumber: number
 	) {
-		console.log('слот дернулся doctorId', doctorId)
-		console.log('слот дернулся locationId', locationId)
-		console.log('слот дернулся monthNumber', monthNumber)
+		// console.log('слот дернулся doctorId', doctorId)
+		// console.log('слот дернулся locationId', locationId)
+		// console.log('слот дернулся monthNumber', monthNumber)
 		const res = this.slotsService.getAvailableSlotsForDoctor(
 			+doctorId,
 			+locationId,
 			+monthNumber
 		)
-		console.log('слот дернулся', res)
+		// console.log('слот дернулся', res)
 		return res
 	}
 

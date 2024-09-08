@@ -4,13 +4,13 @@ import { workingHoursService } from '../services/working-hours/working-hours.ser
 
 export const useWorkingHours = (locationId) => {
   const [workingHours, setWorkingHours] = useState([])
-  console.log(777, workingHours)
+
   useEffect(() => {
     if (locationId) {
       const fetchLocWorkingHours = async () => {
         try {
           const workingHoursLocation =
-            await workingHoursService.getWorkingHours(locationId)
+            await workingHoursService.getWorkingHoursLoc(locationId)
           setWorkingHours(workingHoursLocation.data)
         } catch (err) {
           console.error(err)

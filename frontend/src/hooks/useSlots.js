@@ -27,22 +27,22 @@ export const useSlots = (
             selectedDate.getMonth()
           )
 
-          let bookedSlots = response
-          console.log('bookedSlots', bookedSlots)
-          // const allPossibleSlots = generateAllSlotsForMonth(
-          //   workingHours,
-          //   selectedDate.getMonth(),
-          //   selectedDate.getFullYear()
-          // )
+          let bookedSlots = response.data
+          const allPossibleSlots = generateAllSlotsForMonth(
+            workingHours,
+            selectedDate.getMonth(),
+            selectedDate.getFullYear()
+          )
 
-          // const availableSlots = allPossibleSlots.filter(
-          //   (slot) => !isSlotBooked(slot, bookedSlots)
-          // )
-          // const availableDays = Array.from(
-          //   new Set(availableSlots.map((slot) => slot.toDateString()))
-          // )
-          // setAvailableDays(availableDays)
-          // setSlots(availableSlots)
+          const availableSlots = allPossibleSlots.filter(
+            (slot) => !isSlotBooked(slot, bookedSlots)
+          )
+
+          const availableDays = Array.from(
+            new Set(availableSlots.map((slot) => slot.toDateString()))
+          )
+          setAvailableDays(availableDays)
+          setSlots(availableSlots)
         } catch (error) {
           console.log('error msg', error)
           console.error(error)
@@ -99,7 +99,7 @@ export const useSlots = (
 //         .then((response) => {
 //           // let bookedSlots = data
 //           let bookedSlots = response.data
-
+//           console.log(12, 'bookedSlots', bookedSlots)
 //           const allPossibleSlots = generateAllSlotsForMonth(
 //             workingHours,
 //             selectedDate.getMonth(),

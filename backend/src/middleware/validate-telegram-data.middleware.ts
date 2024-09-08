@@ -41,7 +41,7 @@ export class ValidateTelegramDataMiddleware implements NestMiddleware {
 		const botToken = process.env.TELEGRAM_BOT_TOKEN
 
 		// console.log(123, req.headers)
-		console.log(125, telegramInitData)
+		// console.log(125, 'ValidateTelegramDataMiddleware', telegramInitData)
 		// console.log(126, botToken)
 
 		if (!telegramInitData || !botToken) {

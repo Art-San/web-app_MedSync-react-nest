@@ -18,14 +18,14 @@ export class BookingService extends BaseService {
 		try {
 			// Validate Telegram data
 			const initData = dto.userInitData
-			if (initData && !validateTelegramData(initData)) {
-				throw new BadRequestException('Неверные инициализационные данные')
-			}
+			// if (initData && !validateTelegramData(initData)) {
+			// 	throw new BadRequestException('Неверные инициализационные данные')
+			// }
 
 			// Разобрать исходные данные
-			const parsedData = parseInitData(initData)
+			// const parsedData = parseInitData(initData)
 
-			console.log(33, 'parsedData', parsedData)
+			console.log(33, 'parsedData', dto)
 
 			// Create the booking record in the database
 			// const booking = await this.dbService.booking.create({
@@ -45,11 +45,11 @@ export class BookingService extends BaseService {
 			// });
 
 			// Optionally send notification to user
-			if (parsedData && parsedData.user) {
-				const userId = JSON.parse(parsedData.user).id
-				// Предполагаем, что sendMessage — это метод отправки сообщения через Telegram
-				await this.sendMessage(userId, 'Booking confirmed')
-			}
+			// if (parsedData && parsedData.user) {
+			// 	const userId = JSON.parse(parsedData.user).id
+			// 	// Предполагаем, что sendMessage — это метод отправки сообщения через Telegram
+			// 	await this.sendMessage(userId, 'Booking confirmed')
+			// }
 
 			return { msg: 'telegram OK' }
 			// return booking
