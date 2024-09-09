@@ -179,6 +179,8 @@ const FullSummary = () => {
         locationId: selectedLocation?.locationId,
         userInitData: InitData || fakeInitData
       }
+
+      console.log(8888, data)
       const response = await bookingService.createdBooking(itemType, data)
       // const response = await axios.post(
       //   `${import.meta.env.VITE_API_URL}/api/booking/${itemType}`,

@@ -38,11 +38,11 @@ import { SlotsModule } from './slots/slots.module'
 	providers: [AppService],
 })
 export class AppModule {
-	configure(consumer: MiddlewareConsumer) {
-		consumer
-			.apply(ValidateTelegramDataMiddleware)
-			.forRoutes({ path: '*', method: RequestMethod.ALL }) // Или конкретные пути, если требуется
-	}
+	// configure(consumer: MiddlewareConsumer) {
+	// 	consumer
+	// 		.apply(ValidateTelegramDataMiddleware)
+	// 		.forRoutes({ path: '*', method: RequestMethod.ALL }) // Или конкретные пути, если требуется
+	// }
 	// configure(consumer: MiddlewareConsumer) {
 	// 	consumer
 	// 		.apply(ValidateTelegramDataMiddleware)

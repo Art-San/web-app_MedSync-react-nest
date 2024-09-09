@@ -14,7 +14,7 @@ export class BookingService extends BaseService {
 		super(BookingService.name)
 	}
 
-	async bookSlot(dto: CreateBookingDto) {
+	async creationSlotDoc(dto: CreateBookingDto) {
 		try {
 			// Validate Telegram data
 			const initData = dto.userInitData
@@ -25,36 +25,70 @@ export class BookingService extends BaseService {
 			// Разобрать исходные данные
 			// const parsedData = parseInitData(initData)
 
-			console.log(33, 'parsedData', dto)
+			// Вариант для размышления
+			const slot = await this.dbService.slot.findFirst({
+				where: {
+					startTime: dto.bookingDateTime,
+					doctorId: dto.doctorId,
+					locationId: dto.locationId,
+				},
+			})
+
+			const slotBook = await this.dbService.booking.findFirst({
+				where: {
+					locationId: dto.locationId,
+					bookingDateTime: dto.bookingDateTime,
+				},
+			})
+
+			const date = new Date(dto.bookingDateTime)
+			const hours = String(date.getHours()).padStart(2, '0')
+			const minutes = String(date.getMinutes()).padStart(2, '0')
+			const mount = date.getMonth()
+			// console.log(34, 'месяц', date.getMonth())
+			// console.log(34, 'год', date.getFullYear())
+			if (slotBook || slot) {
+				throw new BadRequestException(
+					`Время приема ${hours}:${minutes} у этого специалиста не доступно`
+				)
+			}
+
+			await this.dbService.slot.create({
+				data: {
+					doctorId: dto.doctorId,
+					locationId: dto.locationId,
+					startTime: dto.bookingDateTime,
+					monthNumber: mount,
+				},
+			})
 
 			// Create the booking record in the database
-			// const booking = await this.dbService.booking.create({
-			//   data: {
-			//     doctorId: dto.doctorId,
-			//     diagnosticId: dto.diagnosticId,
-			//     locationId: dto.locationId,
-			//     bookingDateTime: dto.bookingDateTime,
-			//     userName: dto.userName,
-			//     userSurname: dto.userSurname,
-			//     userPhoneNumber: dto.userPhoneNumber,
-			//     userEmail: dto.userEmail,
-			//     userMessage: dto.userMessage,
-			//     telegramId: dto.telegramId,
-			//     userInitData: initData,
-			//   },
-			// });
+			const booking = await this.dbService.booking.create({
+				data: {
+					telegramId: dto.telegramId,
+					userName: dto.userName,
+					userSurname: dto.userSurname,
+					userPhoneNumber: dto.userPhoneNumber,
+					userEmail: dto.userEmail,
+					userMessage: dto.userMessage,
+					bookingDateTime: dto.bookingDateTime,
+					doctorId: dto.doctorId,
+					diagnosticId: dto.diagnosticId,
+					locationId: dto.locationId,
+				},
+			})
 
-			// Optionally send notification to user
+			// При желании отправить уведомление пользователю
 			// if (parsedData && parsedData.user) {
 			// 	const userId = JSON.parse(parsedData.user).id
 			// 	// Предполагаем, что sendMessage — это метод отправки сообщения через Telegram
 			// 	await this.sendMessage(userId, 'Booking confirmed')
 			// }
 
-			return { msg: 'telegram OK' }
+			return booking
 			// return booking
 		} catch (error) {
-			console.error('Error creating booking:', error)
+			this.handleException(error, 'byId slots')
 			// throw new BadRequestException('Не удалось создать бронирование')
 		}
 	}

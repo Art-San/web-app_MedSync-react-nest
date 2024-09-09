@@ -20,8 +20,8 @@ export class BookingController {
 	) {}
 
 	@Post('doctors')
-	create(@Body() createBookingDto: CreateBookingDto) {
-		return this.bookingService.bookSlot(createBookingDto)
+	createBookingDoc(@Body() dto: CreateBookingDto) {
+		return this.bookingService.creationSlotDoc(dto)
 	}
 
 	@Get()
