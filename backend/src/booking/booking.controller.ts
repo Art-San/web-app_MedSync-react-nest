@@ -16,6 +16,7 @@ import { UpdateBookingDto } from './dto/update-booking.dto'
 export class BookingController {
 	constructor(
 		private readonly bookingService: BookingService
+
 		// private readonly telegramService: TelegramService, // для отправки уведомлений в Telegram
 	) {}
 
@@ -26,14 +27,14 @@ export class BookingController {
 
 	@Get()
 	findAll() {
-		return { msg: 'все гуд' }
-		// return this.bookingService.findAll()
+		return this.bookingService.findAll()
 	}
 
-	// @Get(':id')
-	// findOne(@Param('id') id: string) {
-	//   return this.bookingService.findOne(+id);
-	// }
+	@Get(':id')
+	findOne(@Param('id') id: string) {
+		return this.bookingService.getBookingNotificationText(+id)
+		// return this.bookingService.findByIdBookLoc(+id)
+	}
 
 	// @Patch(':id')
 	// update(@Param('id') id: string, @Body() updateBookingDto: UpdateBookingDto) {

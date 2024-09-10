@@ -1,3 +1,4 @@
+import { Booking } from './entities/booking.entity'
 import { Injectable, BadRequestException } from '@nestjs/common'
 import { CreateBookingDto } from './dto/create-booking.dto'
 import { UpdateBookingDto } from './dto/update-booking.dto'
@@ -7,13 +8,67 @@ import {
 	parseInitData,
 	validateTelegramData,
 } from 'src/utils/telegram-validation'
+import { BotService } from 'src/both/bot.service'
 
 @Injectable()
 export class BookingService extends BaseService {
-	constructor(private readonly dbService: DbService) {
+	constructor(
+		private readonly dbService: DbService,
+		private readonly botService: BotService
+	) {
 		super(BookingService.name)
 	}
 
+	async findByIdBookLoc(bookingId: number) {
+		try {
+			const booking = await this.dbService.booking.findUnique({
+				where: { bookingId: bookingId },
+				include: {
+					doctor: true,
+					location: true,
+					diagnostic: true,
+				},
+			})
+
+			if (!booking) {
+				throw new BadRequestException(
+					`бронирование с таким ID: ${bookingId} нет в БД`
+				)
+			}
+
+			return booking
+			// return { msg: 'findByIdBookLoc' }
+		} catch (error) {
+			this.handleException(error, 'findByIdBookLoc booking')
+		}
+	}
+
+	async getBookingNotificationText(bookingId: number) {
+		try {
+			const booking = await this.findByIdBookLoc(bookingId)
+			let fieldDoc: string
+			if (booking?.doctor.doctorId) {
+				fieldDoc = `👨‍⚕️ Doctor: ${booking?.doctor.fullName}\n`
+			} else if (booking?.diagnosticId) {
+				fieldDoc = `🔬 Diagnostic: ${booking?.diagnostic.typeName}\n`
+			} else {
+				fieldDoc = 'чет не то'
+			}
+
+			const notificationText = `
+			🎉 Поздравляем! Ваше бронирование подтверждено. 🎉\n\n
+			📋 Запись №: ${booking.bookingId}\n
+			${fieldDoc}
+			📍 Локация: ${booking.location.name}: ${booking.location.address}\n\n
+			Спасибо, что выбрали наш сервис! Если у вас есть какие-либо вопросы или вам нужно перенести встречу, свяжитесь с нами 📞.
+			`
+
+			return notificationText
+			// return booking
+		} catch (error) {
+			this.handleException(error, 'getBookingNotificationText booking')
+		}
+	}
 	async creationSlotDoc(dto: CreateBookingDto) {
 		try {
 			// Validate Telegram data
@@ -82,8 +137,13 @@ export class BookingService extends BaseService {
 			// if (parsedData && parsedData.user) {
 			// 	const userId = JSON.parse(parsedData.user).id
 			// 	// Предполагаем, что sendMessage — это метод отправки сообщения через Telegram
-			// 	await this.sendMessage(userId, 'Booking confirmed')
+			// 	await this.sendMessage(userId, 'Бронирование подтверждено')
 			// }
+			const fieldDoc = await this.getBookingNotificationText(booking.bookingId)
+			if (fieldDoc) {
+				await this.botService.sendMessage(booking.telegramId, fieldDoc)
+			}
+			// await this.sendMessage(booking.telegramId, 'Бронирование подтверждено')
 
 			return booking
 			// return booking
@@ -93,39 +153,22 @@ export class BookingService extends BaseService {
 		}
 	}
 
-	private async sendMessage(userId: string, text: string) {
+	private async sendMessage(userId: string, fieldDoc: string) {
 		// Реализация для отправки сообщения через Telegram
 		// Убедитесь, что идентификатор пользователя и текст имеют правильный тип (строка)
 	}
 
-	// create(createBookingDto: CreateBookingDto) {
-	// 	return 'This action adds a new booking'
-	// }
-
-	// findAll() {
-	// 	return `This action returns all booking`
-	// }
-
-	// findOne(id: number) {
-	// 	return `This action returns a #${id} booking`
-	// }
-
-	// update(id: number, updateBookingDto: UpdateBookingDto) {
-	// 	return `This action updates a #${id} booking`
-	// }
-
-	// remove(id: number) {
-	// 	return `This action removes a #${id} booking`
-	// }
+	async findAll() {
+		try {
+			const booking = await this.dbService.booking.findMany({
+				// include: {
+				// 	specialty: true,
+				// 	location: true,
+				// },
+			})
+			return booking
+		} catch (error) {
+			this.handleException(error, 'findAll bookings')
+		}
+	}
 }
-
-// import { Injectable, BadRequestException } from '@nestjs/common';
-// import { PrismaService } from '../prisma/prisma.service';
-// import { CreateBookingDto } from './dto/create-booking.dto';
-// import { validateTelegramData, parseInitData } from './utils/telegram-validation';
-
-// @Injectable()
-// export class DoctorService {
-//   constructor(private prisma: PrismaService) {}
-
-// }
