@@ -1,75 +1,3 @@
-// https://medsync.botfather.dev/api/working_hours/1
-
-const all1 = [
-	{
-		weekday_index: 0,
-		start_time: 11,
-		created_at: '2023-10-10T18:12:26.245697',
-		working_hour_id: 1,
-		end_time: 20,
-		location_id: 1,
-	},
-	{
-		weekday_index: 1,
-		start_time: 9,
-		created_at: '2023-10-10T18:12:26.245697',
-		working_hour_id: 2,
-		end_time: 18,
-		location_id: 1,
-	},
-	{
-		weekday_index: 2,
-		start_time: 10,
-		created_at: '2023-10-10T18:12:26.245697',
-		working_hour_id: 3,
-		end_time: 19,
-		location_id: 1,
-	},
-	{
-		weekday_index: 3,
-		start_time: 9,
-		created_at: '2023-10-10T18:12:26.245697',
-		working_hour_id: 4,
-		end_time: 18,
-		location_id: 1,
-	},
-	{
-		weekday_index: 4,
-		start_time: 9,
-		created_at: '2023-10-10T18:12:26.245697',
-		working_hour_id: 5,
-		end_time: 18,
-		location_id: 1,
-	},
-	{
-		weekday_index: 5,
-		start_time: 9,
-		created_at: '2023-10-10T18:12:26.245697',
-		working_hour_id: 6,
-		end_time: 18,
-		location_id: 1,
-	},
-]
-
-// https://medsync.botfather.dev/api/diagnostics/1/locations
-const allLocation = [
-	{
-		location_id: 2,
-		name: 'Serrano LLC',
-		address: 'Unit 6408 Box 4458\nDPO AA',
-	},
-	{
-		location_id: 3,
-		name: 'Carroll-Mcclain',
-		address: 'USNS Mcknight\nFPO AA 3894',
-	},
-	{
-		location_id: 1,
-		name: 'Key Ltd',
-		address: '05459 John Station\nNew Br',
-	},
-]
-
 // https://medsync.botfather.dev/api/diagnostics/
 
 const allDiagnostic = [
@@ -180,5 +108,76 @@ const allDiagnostic = [
 		price: 111.67,
 		photo_url: '/images/get-tested/colonoscopy.png',
 		clinics_count: 3,
+	},
+]
+
+// https://medsync.botfather.dev/api/working_hours/1
+const all1 = [
+	{
+		weekday_index: 0,
+		start_time: 11,
+		created_at: '2023-10-10T18:12:26.245697',
+		working_hour_id: 1,
+		end_time: 20,
+		location_id: 1,
+	},
+	{
+		weekday_index: 1,
+		start_time: 9,
+		created_at: '2023-10-10T18:12:26.245697',
+		working_hour_id: 2,
+		end_time: 18,
+		location_id: 1,
+	},
+	{
+		weekday_index: 2,
+		start_time: 10,
+		created_at: '2023-10-10T18:12:26.245697',
+		working_hour_id: 3,
+		end_time: 19,
+		location_id: 1,
+	},
+	{
+		weekday_index: 3,
+		start_time: 9,
+		created_at: '2023-10-10T18:12:26.245697',
+		working_hour_id: 4,
+		end_time: 18,
+		location_id: 1,
+	},
+	{
+		weekday_index: 4,
+		start_time: 9,
+		created_at: '2023-10-10T18:12:26.245697',
+		working_hour_id: 5,
+		end_time: 18,
+		location_id: 1,
+	},
+	{
+		weekday_index: 5,
+		start_time: 9,
+		created_at: '2023-10-10T18:12:26.245697',
+		working_hour_id: 6,
+		end_time: 18,
+		location_id: 1,
+	},
+]
+
+// https://medsync.botfather.dev/api/diagnostics/1/locations
+const allLocation = [
+	{
+		location_id: 2,
+		name: 'Serrano LLC',
+		address: 'Unit 6408 Box 4458\nDPO AA',
+	},
+	{
+		location_id: 3,
+		name: 'Carroll-Mcclain',
+		address: 'USNS Mcknight\nFPO AA 3894',
+	},
+	{
+		location_id: 1,
+		name: 'Key Ltd',
+		address: '05459 John Station\nNew Br',
 	},
 ]

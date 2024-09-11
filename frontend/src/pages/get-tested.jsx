@@ -9,14 +9,16 @@ import Header from '../components/Header.jsx'
 import SearchBar from '../components/DoctorsListing/SearchBar.jsx'
 import SpecializationCard from '../components/GetTested/DiagnosticType.jsx'
 import axios from 'axios'
+import storage from '../utils/localStorage.js'
 
 const GetTested = () => {
+  // const storage = useCloudStorage()
   let navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [diagnosticTypes, setDiagnosticTypes] = useState([])
+  console.log(345, 'diagnosticTypes', diagnosticTypes)
   const [impactOccurred, notificationOccurred, selectionChanged] =
     useHapticFeedback()
-  const storage = useCloudStorage()
 
   useEffect(() => {
     axios
@@ -26,7 +28,7 @@ const GetTested = () => {
         if (search) {
           const searchLower = search.toLowerCase()
           filteredDiagnosticTypes = response.data.filter((type) =>
-            type.type_name.toLowerCase().includes(searchLower)
+            type.typeName.toLowerCase().includes(searchLower)
           )
         }
         setDiagnosticTypes(filteredDiagnosticTypes)
@@ -45,7 +47,7 @@ const GetTested = () => {
         <main className="get-tested__main">
           {diagnosticTypes.map((type, index) => (
             <Link
-              to={`/booking/diagnostics/${type.diagnostic_id}`}
+              to={`/booking/diagnostics/${type.diagnosticId}`}
               key={index}
               className="get-tested__link"
               onClick={async () => {
@@ -56,13 +58,13 @@ const GetTested = () => {
                 notificationOccurred('success')
               }}
             >
-              <SpecializationCard
+              {/* <SpecializationCard
                 className="specialization-card"
-                imgSrc={type.photo_url}
-                title={type.type_name}
+                imgSrc={type.photoUrl}
+                title={type.typeName}
                 subtitle={`${type.clinics_count || 0} Clinics`}
                 price={type.price}
-              />
+              /> */}
             </Link>
           ))}
         </main>

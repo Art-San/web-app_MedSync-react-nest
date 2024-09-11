@@ -50,7 +50,7 @@
 
 // 6. Diagnostic: Добавление диагностических типов, которые могут быть привязаны к локациям.
 // {
-//   "diagnosticId": 1,
+
 //   "typeName": "MRI",
 //   "description": "Magnetic Resonance Imaging",
 //   "price": 300.00,
@@ -84,3 +84,5 @@
 //   "diagnosticId": 1,
 //   "locationId": 1
 // }
+
+// diagnostic-locations

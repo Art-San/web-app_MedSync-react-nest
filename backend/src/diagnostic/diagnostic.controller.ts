@@ -1,34 +1,43 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { DiagnosticService } from './diagnostic.service';
-import { CreateDiagnosticDto } from './dto/create-diagnostic.dto';
-import { UpdateDiagnosticDto } from './dto/update-diagnostic.dto';
+import {
+	Controller,
+	Get,
+	Post,
+	Body,
+	Patch,
+	Param,
+	Delete,
+	Put,
+} from '@nestjs/common'
+import { DiagnosticService } from './diagnostic.service'
+import { CreateDiagnosticDto } from './dto/create-diagnostic.dto'
+import { UpdateDiagnosticDto } from './dto/update-diagnostic.dto'
 
-@Controller('diagnostic')
+@Controller('diagnostics')
 export class DiagnosticController {
-  constructor(private readonly diagnosticService: DiagnosticService) {}
+	constructor(private readonly diagnosticService: DiagnosticService) {}
 
-  @Post()
-  create(@Body() createDiagnosticDto: CreateDiagnosticDto) {
-    return this.diagnosticService.create(createDiagnosticDto);
-  }
+	@Get()
+	async findAll() {
+		return this.diagnosticService.findAll()
+	}
 
-  @Get()
-  findAll() {
-    return this.diagnosticService.findAll();
-  }
+	@Post()
+	async create(@Body() dto: CreateDiagnosticDto) {
+		return this.diagnosticService.create(dto)
+	}
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.diagnosticService.findOne(+id);
-  }
+	@Get(':id')
+	async findOne(@Param('id') id: string) {
+		return this.diagnosticService.findById(+id)
+	}
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDiagnosticDto: UpdateDiagnosticDto) {
-    return this.diagnosticService.update(+id, updateDiagnosticDto);
-  }
+	@Put(':id')
+	async update(@Param('id') id: string, @Body() dto: UpdateDiagnosticDto) {
+		return this.diagnosticService.update(+id, dto)
+	}
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.diagnosticService.remove(+id);
-  }
+	@Delete(':id')
+	async remove(@Param('id') id: string) {
+		return this.diagnosticService.remove(+id)
+	}
 }

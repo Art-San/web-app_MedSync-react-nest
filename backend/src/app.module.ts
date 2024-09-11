@@ -18,6 +18,7 @@ import { LocationModule } from './location/location.module'
 import { DoctorModule } from './doctor/doctor.module'
 import { WorkingHoursModule } from './working_hours/working_hours.module'
 import { SlotsModule } from './slots/slots.module'
+import { DiagnosticLocationModule } from './diagnostic-location/diagnostic-location.module';
 
 @Module({
 	imports: [
@@ -33,16 +34,17 @@ import { SlotsModule } from './slots/slots.module'
 		LocationModule,
 		WorkingHoursModule,
 		SlotsModule,
+		DiagnosticLocationModule,
 	],
 	controllers: [AppController],
 	providers: [AppService],
 })
 export class AppModule {
-	configure(consumer: MiddlewareConsumer) {
-		consumer
-			.apply(ValidateTelegramDataMiddleware)
-			.forRoutes({ path: '*', method: RequestMethod.ALL }) // Или конкретные пути, если требуется
-	}
+	// configure(consumer: MiddlewareConsumer) {
+	// 	consumer
+	// 		.apply(ValidateTelegramDataMiddleware)
+	// 		.forRoutes({ path: '*', method: RequestMethod.ALL }) // Или конкретные пути, если требуется
+	// }
 	// configure(consumer: MiddlewareConsumer) {
 	// 	consumer
 	// 		.apply(ValidateTelegramDataMiddleware)
