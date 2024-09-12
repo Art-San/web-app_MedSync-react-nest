@@ -13,10 +13,52 @@ export class DiagnosticService extends BaseService {
 		super(DiagnosticService.name)
 	}
 
+	async findByIdAllLoc(diagnosticId: number) {
+		try {
+			const diagnostics = await this.dbService.diagnostic.findFirst({
+				where: { diagnosticId },
+				select: {
+					locations: {
+						select: {
+							location: {
+								select: {
+									locationId: true,
+									name: true,
+									address: true,
+								},
+							},
+						},
+					},
+				},
+			})
+			const locations = diagnostics.locations.map((item) => item.location)
+			return locations
+		} catch (error) {
+			this.handleException(error, 'findAll Diagnostics')
+		}
+	}
 	async findAll() {
 		try {
-			const diagnostics = await this.dbService.diagnostic.findMany()
-			return diagnostics
+			const diagnostics = await this.dbService.diagnostic.findMany({
+				include: {
+					locations: true,
+				},
+			})
+
+			// const transformedDiagnostics = diagnostics.map((diagnostic) => ({
+			// 	...diagnostic,
+			// 	clinicsCount: diagnostic.locations.length,
+			// }))
+			const transformedDiagnostics = diagnostics.map((diagnostic) => ({
+				diagnosticId: diagnostic.diagnosticId,
+				typeName: diagnostic.typeName,
+				slug: diagnostic.slug,
+				description: diagnostic.description,
+				price: diagnostic.price,
+				photoUrl: diagnostic.photoUrl,
+				clinicsCount: diagnostic.locations.length,
+			}))
+			return transformedDiagnostics
 		} catch (error) {
 			this.handleException(error, 'findAll Diagnostics')
 		}

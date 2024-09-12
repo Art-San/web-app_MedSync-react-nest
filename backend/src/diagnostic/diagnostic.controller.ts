@@ -30,6 +30,10 @@ export class DiagnosticController {
 	async findOne(@Param('id') id: string) {
 		return this.diagnosticService.findById(+id)
 	}
+	@Get(':id/locations')
+	async findAllLoc(@Param('id') id: string) {
+		return this.diagnosticService.findByIdAllLoc(+id)
+	}
 
 	@Put(':id')
 	async update(@Param('id') id: string, @Body() dto: UpdateDiagnosticDto) {

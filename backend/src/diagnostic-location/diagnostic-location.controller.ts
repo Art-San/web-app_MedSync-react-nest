@@ -27,10 +27,23 @@ export class DiagnosticLocationController {
 		return this.diagnosticLocationService.findAll()
 	}
 
-	@Get(':id')
-	findOne(@Param('id') id: string) {
-		return this.diagnosticLocationService.findOne(+id)
+	// @Get(':id')
+	// findOne(@Param('id') id: string) {
+	// 	return this.diagnosticLocationService.findOne(+id)
+	// }
+
+	@Get(':diagnosticId')
+	findOneByDiagnosticId(@Param('diagnosticId') diagnosticId: string) {
+		return this.diagnosticLocationService.findLocsRelatedDiag(+diagnosticId)
 	}
+
+	// @Get(':locationId')
+	// findOneByLocationId(
+	// 	@Param('locationId') locationId: string,
+	// 	@Body() dto: any
+	// ) {
+	// 	return this.diagnosticLocationService.findByLocIdDiagId(+locationId, dto)
+	// }
 
 	@Patch(':id')
 	update(

@@ -26,22 +26,25 @@ const SpecializationBlock = ({ title, subtitle, isActive }) => {
 const ClinicSelection = () => {
   const [search, setSearch] = useState('')
   const [clinics, setClinics] = useState(null)
-  const { diagnostic_id } = useParams()
+  const { diagnosticId } = useParams()
   const [selectedClinic, setSelectedClinic] = useState(null)
   const navigate = useNavigate()
   const storage = useCloudStorage()
   const [impactOccurred, notificationOccurred, selectionChanged] =
     useHapticFeedback()
-
   useEffect(() => {
     const fetchClinics = async () => {
       try {
         const clinics = await axios.get(
           `${
             import.meta.env.VITE_API_URL
-          }/api/diagnostics/${diagnostic_id}/locations`
+          }/api/diagnostics/${diagnosticId}/locations`
+          // `${import.meta.env.VITE_API_URL}/api/${diagnosticId}/locations`
         )
+        console.log(345, 'clinics', clinics.data)
+
         let filteredClinics = clinics.data
+
         if (search) {
           const searchLower = search.toLowerCase()
           filteredClinics = clinics.data.filter(
@@ -83,6 +86,8 @@ const ClinicSelection = () => {
   return (
     <>
       <BackButton onClick={() => navigate(-1)} />
+      <button onClick={() => navigate(-1)}>назад</button>
+      <button onClick={() => navigate('/')}>дом</button>
       <div className="specialization">
         <Header title="Choose Clinic" className="specialization" />
         <SearchBar search={search} setSearch={setSearch} />
@@ -93,11 +98,12 @@ const ClinicSelection = () => {
                 <SpecializationBlock
                   title={clinic.name}
                   subtitle={clinic.address}
-                  isActive={selectedClinic?.location_id === clinic.location_id}
+                  isActive={selectedClinic?.locationId === clinic.locationId}
                 />
               </div>
             ))}
         </main>
+        {selectedClinic && <button onClick={handleNext}>Next</button>}
         {selectedClinic && <MainButton text="Next" onClick={handleNext} />}
       </div>
     </>

@@ -16,7 +16,7 @@ const GetTested = () => {
   let navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [diagnosticTypes, setDiagnosticTypes] = useState([])
-  console.log(345, 'diagnosticTypes', diagnosticTypes)
+  // console.log(345, 'diagnosticTypes', diagnosticTypes)
   const [impactOccurred, notificationOccurred, selectionChanged] =
     useHapticFeedback()
 
@@ -58,13 +58,13 @@ const GetTested = () => {
                 notificationOccurred('success')
               }}
             >
-              {/* <SpecializationCard
+              <SpecializationCard
                 className="specialization-card"
                 imgSrc={type.photoUrl}
                 title={type.typeName}
-                subtitle={`${type.clinics_count || 0} Clinics`}
+                subtitle={`${type.clinicsCount || 0} Clinics`}
                 price={type.price}
-              /> */}
+              />
             </Link>
           ))}
         </main>

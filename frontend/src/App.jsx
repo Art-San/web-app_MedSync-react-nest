@@ -84,7 +84,7 @@ const App = () => {
               }
             />
             <Route
-              path="/booking/diagnostics/:diagnostic_id"
+              path="/booking/diagnostics/:diagnosticId"
               element={<ClinicSelection />}
             />
             <Route
