@@ -9,6 +9,7 @@ import {
   useCloudStorage,
   useHapticFeedback
 } from '@vkruglikov/react-telegram-web-app'
+import storage from '../utils/localStorage.js'
 
 const SpecializationBlock = ({ title, subtitle, isActive }) => {
   return (
@@ -24,12 +25,12 @@ const SpecializationBlock = ({ title, subtitle, isActive }) => {
 }
 
 const ClinicSelection = () => {
+  // const storage = useCloudStorage()
   const [search, setSearch] = useState('')
   const [clinics, setClinics] = useState(null)
   const { diagnosticId } = useParams()
   const [selectedClinic, setSelectedClinic] = useState(null)
   const navigate = useNavigate()
-  const storage = useCloudStorage()
   const [impactOccurred, notificationOccurred, selectionChanged] =
     useHapticFeedback()
   useEffect(() => {
@@ -67,19 +68,24 @@ const ClinicSelection = () => {
   }
 
   const handleChooseClinic = async (clinic) => {
+    // console.log(1, 'clinic', clinic)
     const isSameClinicSelected =
-      clinic.location_id === selectedClinic?.location_id
+      clinic.locationId === selectedClinic?.locationId
 
     if (isSameClinicSelected) {
+      console.log(2, 'isSameClinicSelected', isSameClinicSelected)
       setSelectedClinic(null)
       selectionChanged()
     } else {
       if (selectedClinic) {
+        console.log(3, 'selectedClinic', selectedClinic)
         selectionChanged()
       } else {
+        console.log(4, 'notificationOccurred', 'success')
         notificationOccurred('success')
       }
       setSelectedClinic(clinic)
+      console.log('fin для 3 или 4')
     }
   }
 

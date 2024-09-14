@@ -27,7 +27,8 @@
       }
 
       &--active {
-        background: $tg-theme-button;
+        background: rgb(245, 244, 244);
+        // background: $tg-theme-button;
         color: $tg-theme-button-text;
 
         .specialization-block__subtitle {
@@ -37,4 +38,3 @@
     }
   }
 }
-
