@@ -7,9 +7,9 @@ import { getSlotsUrl } from '../../configs/api.config'
 // slots
 // Slots
 export const slotService = {
-  async getSlots(doctorId, locationId, monthNumber) {
+  async getSlots(itemType, itemId, locationId, monthNumber) {
     return axiosClassic.get(
-      getSlotsUrl(`/doctors/${doctorId}/${locationId}/${monthNumber}`)
+      getSlotsUrl(`/${itemType}/${itemId}/${locationId}/${monthNumber}`)
     )
   }
 }

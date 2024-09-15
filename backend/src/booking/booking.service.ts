@@ -44,8 +44,11 @@ export class BookingService extends BaseService {
 	}
 
 	async getBookingNotificationText(bookingId: number) {
+		console.log(454, 'bookingId', bookingId)
 		try {
 			const booking = await this.findByIdBookLoc(bookingId)
+
+			console.log(455, 'booking', booking)
 			let fieldDoc: string
 			if (booking?.doctor.doctorId) {
 				fieldDoc = `👨‍⚕️ Doctor: ${booking?.doctor.fullName}\n`
@@ -80,14 +83,19 @@ export class BookingService extends BaseService {
 			// Разобрать исходные данные
 			// const parsedData = parseInitData(initData)
 
+			console.log(453, 'slot', dto)
 			// Вариант для размышления
+
 			const slot = await this.dbService.slot.findFirst({
 				where: {
 					startTime: dto.bookingDateTime,
+					diagnosticId: dto.diagnosticId,
 					doctorId: dto.doctorId,
 					locationId: dto.locationId,
 				},
 			})
+
+			console.log(454, 'slot', slot)
 
 			const slotBook = await this.dbService.booking.findFirst({
 				where: {
@@ -95,43 +103,43 @@ export class BookingService extends BaseService {
 					bookingDateTime: dto.bookingDateTime,
 				},
 			})
+			console.log(455, 'slotBook', slotBook)
 
 			const date = new Date(dto.bookingDateTime)
 			const hours = String(date.getHours()).padStart(2, '0')
 			const minutes = String(date.getMinutes()).padStart(2, '0')
 			const mount = date.getMonth()
-			// console.log(34, 'месяц', date.getMonth())
-			// console.log(34, 'год', date.getFullYear())
+
 			if (slotBook || slot) {
 				throw new BadRequestException(
 					`Время приема ${hours}:${minutes} у этого специалиста не доступно`
 				)
 			}
 
-			await this.dbService.slot.create({
-				data: {
-					doctorId: dto.doctorId,
-					locationId: dto.locationId,
-					startTime: dto.bookingDateTime,
-					monthNumber: mount,
-				},
-			})
+			// await this.dbService.slot.create({
+			// 	data: {
+			// 		doctorId: dto.doctorId,
+			// 		locationId: dto.locationId,
+			// 		startTime: dto.bookingDateTime,
+			// 		monthNumber: mount,
+			// 	},
+			// })
 
-			// Create the booking record in the database
-			const booking = await this.dbService.booking.create({
-				data: {
-					telegramId: dto.telegramId,
-					userName: dto.userName,
-					userSurname: dto.userSurname,
-					userPhoneNumber: dto.userPhoneNumber,
-					userEmail: dto.userEmail,
-					userMessage: dto.userMessage,
-					bookingDateTime: dto.bookingDateTime,
-					doctorId: dto.doctorId,
-					diagnosticId: dto.diagnosticId,
-					locationId: dto.locationId,
-				},
-			})
+			// Создайте запись о бронировании в базе данных
+			// const booking = await this.dbService.booking.create({
+			// 	data: {
+			// 		telegramId: dto.telegramId,
+			// 		userName: dto.userName,
+			// 		userSurname: dto.userSurname,
+			// 		userPhoneNumber: dto.userPhoneNumber,
+			// 		userEmail: dto.userEmail,
+			// 		userMessage: dto.userMessage,
+			// 		bookingDateTime: dto.bookingDateTime,
+			// 		doctorId: dto.doctorId,
+			// 		diagnosticId: dto.diagnosticId,
+			// 		locationId: dto.locationId,
+			// 	},
+			// })
 
 			// При желании отправить уведомление пользователю
 			// if (parsedData && parsedData.user) {
@@ -139,16 +147,18 @@ export class BookingService extends BaseService {
 			// 	// Предполагаем, что sendMessage — это метод отправки сообщения через Telegram
 			// 	await this.sendMessage(userId, 'Бронирование подтверждено')
 			// }
-			const fieldDoc = await this.getBookingNotificationText(booking.bookingId)
-			if (fieldDoc) {
-				await this.botService.sendMessage(booking.telegramId, fieldDoc)
-			}
+
+			// const fieldDoc = await this.getBookingNotificationText(booking.bookingId)
+			// if (fieldDoc) {
+			// 	await this.botService.sendMessage(booking.telegramId, fieldDoc)
+			// }
 			// await this.sendMessage(booking.telegramId, 'Бронирование подтверждено')
 
-			return booking
+			return { msg: 'cnm' }
+			// return booking
 			// return booking
 		} catch (error) {
-			this.handleException(error, 'byId slots')
+			this.handleException(error, 'creationSlotDoc bookings')
 			// throw new BadRequestException('Не удалось создать бронирование')
 		}
 	}

@@ -13,7 +13,7 @@ export const useSlots = (
 ) => {
   const [slots, setSlots] = useState(null)
   const [availableDays, setAvailableDays] = useState([])
-  const endpoint = `/api/slots/${itemType}`
+  // const endpoint = `/api/slots/${itemType}`
   // const endpoint = `/api/slots/doctors`
   // https://medsync.botfather.dev/api/slots/doctors/1/2/7
 
@@ -22,6 +22,7 @@ export const useSlots = (
       const fetchSlotsDocLoc = async () => {
         try {
           const response = await slotService.getSlots(
+            itemType,
             itemId,
             locationId,
             selectedDate.getMonth()
@@ -50,7 +51,7 @@ export const useSlots = (
       }
       fetchSlotsDocLoc()
     }
-  }, [itemId, locationId, selectedDate, workingHours, endpoint])
+  }, [itemId, locationId, selectedDate, workingHours, itemType])
   return { slots, availableDays }
 }
 

@@ -29,6 +29,24 @@ export class SlotsService extends BaseService {
 		})
 		return slots.map((slot) => slot.startTime)
 	}
+	async getAvailableSlotsForDiagnostic(
+		diagnosticId: number,
+		locationId: number,
+		monthNumber: number
+	) {
+		const slots = await this.dbService.slot.findMany({
+			where: {
+				diagnosticId,
+				locationId,
+				monthNumber,
+				isBooked: false,
+			},
+			select: {
+				startTime: true,
+			},
+		})
+		return slots.map((slot) => slot.startTime)
+	}
 
 	async checkingTimeAvailability(dto: UpdateSlotDto) {
 		try {

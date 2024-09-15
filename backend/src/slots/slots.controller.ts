@@ -18,7 +18,7 @@ export class SlotsController {
 
 	// doctors/1/1/8
 	@Get('doctors/:doctorId/:locationId/:monthNumber')
-	async getAvailableSlots(
+	async getAvailableSlotsDoc(
 		@Param('doctorId') doctorId: number,
 		@Param('locationId') locationId: number,
 		@Param('monthNumber') monthNumber: number
@@ -35,14 +35,18 @@ export class SlotsController {
 		return res
 	}
 
-	// @Get('diagnostics/:diagnosticId/:locationId/:monthNumber')
-	// async getAvailableSlotsForDiagnostic(
-	//   @Param('diagnosticId') diagnosticId: number,
-	//   @Param('locationId') locationId: number,
-	//   @Param('monthNumber') monthNumber: number,
-	// ) {
-	//   return this.slotsService.getAvailableSlotsForDiagnostic(diagnosticId, locationId, monthNumber);
-	// }
+	@Get('diagnostics/:diagnosticId/:locationId/:monthNumber')
+	async getAvailableSlotsDiag(
+		@Param('diagnosticId') diagnosticId: number,
+		@Param('locationId') locationId: number,
+		@Param('monthNumber') monthNumber: number
+	) {
+		return this.slotsService.getAvailableSlotsForDiagnostic(
+			+diagnosticId,
+			+locationId,
+			+monthNumber
+		)
+	}
 
 	@Post()
 	create(@Body() dto: CreateSlotDto) {

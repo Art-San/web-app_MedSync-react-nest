@@ -24,6 +24,10 @@ export class BookingController {
 	createBookingDoc(@Body() dto: CreateBookingDto) {
 		return this.bookingService.creationSlotDoc(dto)
 	}
+	@Post('diagnostics')
+	createBookingDiag(@Body() dto: CreateBookingDto) {
+		return this.bookingService.creationSlotDoc(dto)
+	}
 
 	@Get()
 	findAll() {
