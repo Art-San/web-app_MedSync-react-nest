@@ -14,6 +14,52 @@ export class BookingService extends BaseService {
 		super(BookingService.name)
 	}
 
+	async byId(bookingId: number) {
+		try {
+			const booking = await this.dbService.booking.findUnique({
+				where: { bookingId },
+			})
+
+			if (!booking) {
+				throw new BadRequestException(
+					`Запись с таким ID: ${bookingId} нет в БД `
+				)
+			}
+
+			return booking
+		} catch (error) {
+			this.handleException(error, 'byId booking')
+		}
+	}
+
+	async delete(bookingId: number) {
+		try {
+			const booking = await this.byId(bookingId)
+
+			const ids = await this.dbService.$transaction(
+				async (prisma: Prisma.TransactionClient) => {
+					const delSlot = await prisma.slot.delete({
+						where: { slotId: booking.slotId },
+					})
+
+					const delBooking = await prisma.booking.delete({
+						where: {
+							bookingId: booking.bookingId,
+						},
+					})
+
+					return { bookingId: delBooking.bookingId, slotId: delSlot.slotId }
+				}
+			)
+
+			return {
+				msg: `Запись с таким ID: ${ids.bookingId} и слот с таким ID: ${ids.slotId}`,
+			}
+		} catch (error) {
+			this.handleException(error, 'delete booking')
+		}
+	}
+
 	async findByIdBookLoc(bookingId: number) {
 		try {
 			const booking = await this.dbService.booking.findUnique({

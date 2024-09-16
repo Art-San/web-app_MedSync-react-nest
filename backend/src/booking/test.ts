@@ -1,59 +1,81 @@
-// model Slot {
-//   slotId       Int      @id @default(autoincrement())
-//   doctorId     Int?     // Слот может быть привязан к доктору
-//   diagnosticId Int?     // Или к диагностике
-//   locationId   Int      // И обязательно привязан к локации
-//   startTime    DateTime // Время начала слота в формате ISO 8601
-//   endTime      DateTime? // Время окончания слота в формате ISO 8601
-//   dayNumber    Int?
-//   monthNumber  Int      // Номер месяца (1-12) для фильтрации
-//   isBooked     Boolean  @default(false) // Флаг занятости слота
-//   createdAt    DateTime @default(now())
-//   updatedAt    DateTime @updatedAt
-//   bookingId    Int?     // Поле для связи со слотом
+// import { BadRequestException, InternalServerErrorException, Logger } from '@nestjs/common'
 
-//   doctor       Doctor?     @relation(fields: [doctorId], references: [doctorId])
-//   diagnostic   Diagnostic? @relation(fields: [diagnosticId], references: [diagnosticId])
-//   location     Location    @relation(fields: [locationId], references: [locationId])
-//   booking      Booking?    @relation(fields: [bookingId], references: [bookingId]) // Связь с бронированием
+// export class BaseService {
+// 	protected readonly logger: Logger
 
-//   @@map("slots")
+// 	constructor(serviceName: string) {
+// 		this.logger = new Logger(serviceName)
+// 	}
+
+// 	protected handleException(error: any, context: string) {
+// 		this.logger.error(`Ошибка в ${context}`, error.message, error.stack)
+
+// 		if (error instanceof BadRequestException) {
+// 			throw error
+// 		} else {
+// 			throw new InternalServerErrorException(`Ошибка в ${context}: ${error.message}`)
+// 		}
+// 	}
 // }
 
-// model Booking {
-//   bookingId        Int      @id @default(autoincrement())
-//   userId           Int?
-//   telegramId       String?
-//   userName         String
-//   userSurname      String
-//   userPhoneNumber  String
-//   userEmail        String?
-//   userMessage      String?
-//   bookingDateTime  DateTime @db.Timestamptz
-//   doctorId         Int?
-//   diagnosticId     Int?
-//   locationId       Int
-//   slotId           Int?     @unique
-//   status           BookingStatus // Используем enum для статусов
-//   createdAt        DateTime @default(now())
-//   updatedAt        DateTime @updatedAt
-//   deletedAt        DateTime?
+// @Injectable()
+// export class BookingService extends BaseService {
+// 	constructor(
+// 		private readonly dbService: DbService,
+// 		private readonly botService: BotService
+// 	) {
+// 		super(BookingService.name)
+// 	}
 
-//   user             User?     @relation(fields: [userId], references: [userId])
-//   doctor           Doctor?   @relation(fields: [doctorId], references: [doctorId])
-//   diagnostic       Diagnostic? @relation(fields: [diagnosticId], references: [diagnosticId])
-//   location         Location  @relation(fields: [locationId], references: [locationId])
-//   slot             Slot?    @relation(fields: [slotId], references: [slotId])
-//   results          DiagnosticResult[]
+// 	async byId(bookingId: number) {
+// 		try {
+// 			const booking = await this.dbService.booking.findUnique({
+// 				where: { bookingId },
+// 				include: {
+// 					doctor: true,
+// 					location: true,
+// 					diagnostic: true,
+// 					slot: true,
+// 				},
+// 			})
 
-//   @@unique([doctorId, locationId, bookingDateTime], name: "unique_doctor_location_time")
-//   @@unique([diagnosticId, locationId, bookingDateTime], name: "unique_diagnostic_location_time")
+// 			if (!booking) {
+// 				throw new BadRequestException(
+// 					`Запись с таким ID: ${bookingId} нет в БД`
+// 				)
+// 			}
 
-//   @@map("bookings")
-// }
+// 			return booking
+// 		} catch (error) {
+// 			this.handleException(error, 'byId booking')
+// 		}
+// 	}
 
-// enum BookingStatus {
-//   PENDING
-//   CONFIRMED
-//   CANCELLED
+// 	async delete(bookingId: number) {
+// 		try {
+// 			const booking = await this.byId(bookingId)
+
+// 			if (!booking.slotId) {
+// 				throw new BadRequestException(`Слот для записи с ID: ${bookingId} не найден`)
+// 			}
+
+// 			const ids = await this.dbService.$transaction(async (prisma: Prisma.TransactionClient) => {
+// 				const delSlot = await prisma.slot.delete({
+// 					where: { slotId: booking.slotId },
+// 				})
+
+// 				const delBooking = await prisma.booking.delete({
+// 					where: { bookingId: booking.bookingId },
+// 				})
+
+// 				return { bookingId: delBooking.bookingId, slotId: delSlot.slotId }
+// 			})
+
+// 			return {
+// 				msg: `Запись с ID: ${ids.bookingId} и слот с ID: ${ids.slotId} были успешно удалены`,
+// 			}
+// 		} catch (error) {
+// 			this.handleException(error, 'delete booking')
+// 		}
+// 	}
 // }

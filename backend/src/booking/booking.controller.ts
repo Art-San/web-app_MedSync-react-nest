@@ -36,7 +36,7 @@ export class BookingController {
 
 	@Get(':id')
 	findOne(@Param('id') id: string) {
-		return this.bookingService.getBookingNotificationText(+id)
+		return this.bookingService.byId(+id)
 		// return this.bookingService.findByIdBookLoc(+id)
 	}
 
@@ -45,8 +45,8 @@ export class BookingController {
 	//   return this.bookingService.update(+id, updateBookingDto);
 	// }
 
-	// @Delete(':id')
-	// remove(@Param('id') id: string) {
-	//   return this.bookingService.remove(+id);
-	// }
+	@Delete(':id')
+	remove(@Param('id') id: string) {
+		return this.bookingService.delete(+id)
+	}
 }
