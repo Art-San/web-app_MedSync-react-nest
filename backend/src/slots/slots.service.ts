@@ -27,6 +27,7 @@ export class SlotsService extends BaseService {
 				startTime: true,
 			},
 		})
+
 		return slots.map((slot) => slot.startTime)
 	}
 	async getAvailableSlotsForDiagnostic(

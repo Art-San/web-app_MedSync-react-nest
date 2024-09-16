@@ -18,7 +18,6 @@ export class WorkingHoursController {
 
 	@Get(':locationId')
 	async getWorkingHours(@Param('locationId') locationId: number) {
-		console.log(12, 'locationId:', locationId)
 		return this.workingHoursService.getWorkingHours(+locationId)
 	}
 

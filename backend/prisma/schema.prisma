@@ -132,7 +132,7 @@ model Slot {
   doctor       Doctor?     @relation(fields: [doctorId], references: [doctorId])
   diagnostic   Diagnostic? @relation(fields: [diagnosticId], references: [diagnosticId])
   location     Location    @relation(fields: [locationId], references: [locationId])
-  booking      Booking?    // Ссылка на бронирование, если слот занят
+  booking      Booking?
 
   @@map("slots")
 }
@@ -188,5 +188,6 @@ enum BookingStatus {
   PENDING
   FINISHED
   CANCELLED
+  DELETE
 }
 
