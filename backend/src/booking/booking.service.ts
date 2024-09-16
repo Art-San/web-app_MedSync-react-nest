@@ -278,21 +278,21 @@ export class BookingService extends BaseService {
 						)
 					}
 
-					const date = new Date(dto.bookingDateTime)
-					const hours = String(date.getHours()).padStart(2, '0')
-					const minutes = String(date.getMinutes()).padStart(2, '0')
-					const day = date.getDate()
-					const mount = date.getMonth()
+					// const date = new Date(dto.bookingDateTime)
+					// const hours = String(date.getHours()).padStart(2, '0')
+					// const minutes = String(date.getMinutes()).padStart(2, '0')
+					// const day = date.getDate()
+					// const mount = date.getMonth()
 
-					console.log(33, 'day', day)
-					console.log(34, 'day', new Date(dto.bookingDateTime).getDay())
+					// console.log(33, 'day', day)
+					// console.log(34, 'day', new Date(dto.bookingDateTime).getDay())
 					const slot = await prisma.slot.create({
 						data: {
 							doctorId: dto.doctorId,
 							diagnosticId: dto.diagnosticId,
 							locationId: dto.locationId,
 							startTime: dto.bookingDateTime,
-							dayNumber: new Date(dto.bookingDateTime).getDay(),
+							dayNumber: new Date(dto.bookingDateTime).getDate(),
 							monthNumber: new Date(dto.bookingDateTime).getMonth(),
 						},
 					})
@@ -311,6 +311,14 @@ export class BookingService extends BaseService {
 							locationId: dto.locationId,
 							slotId: slot.slotId,
 						},
+					})
+
+					await prisma.slot.update({
+						where: { slotId: slot.slotId },
+						data: {
+							bookingId: booking.bookingId,
+							isBooked: true,
+						}, // Заполняем поле booking в слоте
 					})
 
 					return booking

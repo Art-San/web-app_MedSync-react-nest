@@ -127,6 +127,7 @@ model Slot {
   isBooked     Boolean  @default(false) // Флаг занятости слота
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  bookingId    Int?     // Поле для связи со слотом
 
   doctor       Doctor?     @relation(fields: [doctorId], references: [doctorId])
   diagnostic   Diagnostic? @relation(fields: [diagnosticId], references: [diagnosticId])
@@ -151,7 +152,7 @@ model Booking {
   diagnosticId     Int?
   locationId       Int
   slotId           Int?     @unique
-  status           String?
+  status           BookingStatus @default(PENDING)
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
   deletedAt        DateTime?
@@ -182,3 +183,10 @@ model User {
 
   @@map("users")
 }
+
+enum BookingStatus {
+  PENDING
+  FINISHED
+  CANCELLED
+}
+
