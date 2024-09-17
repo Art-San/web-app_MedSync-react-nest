@@ -36,7 +36,7 @@ export class BookingController {
 
 	@Get(':id')
 	findOne(@Param('id') id: string) {
-		return this.bookingService.byId(+id)
+		return this.bookingService.findById(+id)
 		// return this.bookingService.findByIdBookLoc(+id)
 	}
 

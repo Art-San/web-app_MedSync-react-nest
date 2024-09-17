@@ -14,15 +14,35 @@ export class BookingService extends BaseService {
 		super(BookingService.name)
 	}
 
-	async byId(bookingId: number) {
+	async findAll() {
+		try {
+			const booking = await this.dbService.booking.findMany({
+				// include: {
+				// specialty: true,
+				// location: true,
+				// },
+			})
+			return booking
+		} catch (error) {
+			this.handleException(error, 'findAll bookings')
+		}
+	}
+
+	async findById(bookingId: number) {
 		try {
 			const booking = await this.dbService.booking.findUnique({
 				where: { bookingId },
+				include: {
+					doctor: true,
+					location: true,
+					diagnostic: true,
+					slot: true,
+				},
 			})
 
 			if (!booking) {
 				throw new BadRequestException(
-					`Запись с таким ID: ${bookingId} нет в БД `
+					`Бронирование с таким ID: ${bookingId} не найдено в БД `
 				)
 			}
 
@@ -34,7 +54,13 @@ export class BookingService extends BaseService {
 
 	async delete(bookingId: number) {
 		try {
-			const booking = await this.byId(bookingId)
+			const booking = await this.findById(bookingId)
+
+			if (!booking.slotId) {
+				throw new BadRequestException(
+					`Во время удаления слот для записи с ID: ${bookingId} не найден`
+				)
+			}
 
 			const ids = await this.dbService.$transaction(
 				async (prisma: Prisma.TransactionClient) => {
@@ -53,60 +79,10 @@ export class BookingService extends BaseService {
 			)
 
 			return {
-				msg: `Запись с таким ID: ${ids.bookingId} и слот с таким ID: ${ids.slotId}`,
+				msg: `Запись с таким ID: ${ids.bookingId} и слот с таким ID: ${ids.slotId} удалены`,
 			}
 		} catch (error) {
 			this.handleException(error, 'delete booking')
-		}
-	}
-
-	async findByIdBookLoc(bookingId: number) {
-		try {
-			const booking = await this.dbService.booking.findUnique({
-				where: { bookingId: bookingId },
-				include: {
-					doctor: true,
-					location: true,
-					diagnostic: true,
-				},
-			})
-
-			if (!booking) {
-				throw new BadRequestException(
-					`Бронирование с таким ID: ${bookingId} не найдено в БД`
-				)
-			}
-
-			return booking
-		} catch (error) {
-			this.handleException(error, 'findByIdBookLoc booking')
-			throw error // Пробрасываем исключение дальше
-		}
-	}
-
-	async getBookingNotificationText(bookingId: number) {
-		try {
-			const booking = await this.findByIdBookLoc(bookingId)
-			let fieldDoc: string
-			if (booking?.doctor?.doctorId) {
-				fieldDoc = `👨‍⚕️ Доктор: ${booking.doctor.fullName}\n`
-			} else if (booking?.diagnosticId) {
-				fieldDoc = `🔬 Диагностика: ${booking.diagnostic.typeName}\n`
-			} else {
-				fieldDoc = 'Ошибка данных'
-			}
-
-			const notificationText = `
-        🎉 Поздравляем! Ваше бронирование подтверждено. 🎉\n\n
-				📋 Запись №: ${booking.bookingId}\n
-				${fieldDoc}
-				📍 Локация:  ${booking.location.name}:  ${booking.location.address}\n\n
-				Спасибо, что выбрали наш сервис! Если у вас есть какие-либо вопросы или вам нужно перенести встречу, свяжитесь с нами 📞.
-      `
-
-			return notificationText
-		} catch (error) {
-			this.handleException(error, 'getBookingNotificationText booking')
 		}
 	}
 
@@ -175,12 +151,7 @@ export class BookingService extends BaseService {
 				}
 			)
 
-			const fieldDoc = await this.getBookingNotificationText(
-				existingSlot.bookingId
-			)
-			if (fieldDoc) {
-				await this.sendMessage(existingSlot.telegramId, fieldDoc)
-			}
+			await this.sendMessage(existingSlot.telegramId, existingSlot.bookingId)
 
 			return existingSlot
 		} catch (error) {
@@ -188,26 +159,67 @@ export class BookingService extends BaseService {
 		}
 	}
 
-	private async sendMessage(telegramId: string, fieldDoc: string) {
-		await this.botService.sendMessage(telegramId, fieldDoc)
-		// await this.botService.sendMessage(existingSlot.telegramId, fieldDoc)
-		// Реализация для отправки сообщения через Telegram
-		// Убедитесь, что идентификатор пользователя и текст имеют правильный тип (строка)
-	}
-
-	async findAll() {
+	async getBookingNotificationText(bookingId: number) {
 		try {
-			const booking = await this.dbService.booking.findMany({
-				// include: {
-				// specialty: true,
-				// location: true,
-				// },
-			})
-			return booking
+			const booking = await this.findById(bookingId)
+			let fieldDoc: string
+			if (booking?.doctor?.doctorId) {
+				fieldDoc = `👨‍⚕️ Доктор: ${booking.doctor.fullName}\n`
+			} else if (booking?.diagnosticId) {
+				fieldDoc = `🔬 Диагностика: ${booking.diagnostic.typeName}\n`
+			} else {
+				fieldDoc = 'Ошибка данных'
+			}
+
+			const notificationText = `
+        🎉 Поздравляем! Ваше бронирование подтверждено. 🎉\n\n
+				📋 Запись №: ${booking.bookingId}\n
+				${fieldDoc}
+				📍 Локация:  ${booking.location.name}:  ${booking.location.address}\n\n
+				Спасибо, что выбрали наш сервис! Если у вас есть какие-либо вопросы или вам нужно перенести встречу, свяжитесь с нами 📞.
+      `
+
+			return notificationText
 		} catch (error) {
-			this.handleException(error, 'findAll bookings')
+			this.handleException(error, 'getBookingNotificationText booking')
 		}
 	}
+
+	private async sendMessage(telegramId: string, bookingId: number) {
+		try {
+			const fieldDoc = await this.getBookingNotificationText(bookingId)
+
+			if (fieldDoc) {
+				await this.botService.sendMessage(telegramId, fieldDoc)
+			}
+		} catch (error) {
+			this.handleException(error, 'sendMessage bookings')
+		}
+	}
+
+	// async findByIdBookLoc(bookingId: number) {
+	// 	try {
+	// 		const booking = await this.dbService.booking.findUnique({
+	// 			where: { bookingId: bookingId },
+	// 			include: {
+	// 				doctor: true,
+	// 				location: true,
+	// 				diagnostic: true,
+	// 			},
+	// 		})
+
+	// 		if (!booking) {
+	// 			throw new BadRequestException(
+	// 				`Бронирование с таким ID: ${bookingId} не найдено в БД`
+	// 			)
+	// 		}
+
+	// 		return booking
+	// 	} catch (error) {
+	// 		this.handleException(error, 'findByIdBookLoc booking')
+	// 		throw error // Пробрасываем исключение дальше
+	// 	}
+	// }
 }
 
 // import { Booking } from './entities/booking.entity'
