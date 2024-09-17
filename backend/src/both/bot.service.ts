@@ -58,6 +58,8 @@ export class BotService implements OnModuleInit {
 			} = getUserDetailsFromTelegramContext(ctx)
 
 			const photoUrl1 = './uploads/userName.jpg'
+
+			const textIn = `Добро пожаловать в приложение MedSync!\n\nС помощью нашего веб-приложения вы можете записаться на прием к врачу или пройти тестирование в одной из наших клиник.`
 			if (text === '/start') {
 				if (!ctx.from?.username) {
 					const message = '*Имя пользователя отсутствует в профиле телеграмма*'
@@ -78,48 +80,58 @@ export class BotService implements OnModuleInit {
 
 					return
 				}
-				this.bot.sendMessage(chatId, 'привет')
+				this.bot.sendMessage(chatId, textIn)
 			}
 
 			if (text === '/site') {
-				await this.bot.sendMessage(
-					chatId,
-					'Для записи к специалисту нажмите кнопку',
-					{
-						reply_markup: {
-							inline_keyboard: [
-								[{ text: 'Записаться', web_app: { url: webAppUrl } }],
+				await this.bot.sendMessage(chatId, textIn, {
+					reply_markup: {
+						inline_keyboard: [
+							[{ text: 'Main Page', web_app: { url: webAppUrl } }],
+							[
+								{
+									text: '📅 Book an appointment',
+									web_app: { url: webAppUrl + '/see_a_doctor' },
+								},
+								{
+									text: '📝 Get tested',
+									web_app: { url: webAppUrl + '/get_tested' },
+								},
 							],
-						},
-					}
-				)
-				await this.bot.sendMessage(
-					chatId,
-					'Ниже появится кнопка, заполни форму',
-					{
-						reply_markup: {
-							keyboard: [
-								[
-									{
-										text: 'Создать заявку',
-										web_app: { url: webAppUrl + '/admin/add_order' },
-									},
-								],
-								[
-									{
-										text: 'Заказы',
-										web_app: { url: webAppUrl + '/admin/orders' },
-									},
-									{
-										text: 'Товары',
-										web_app: { url: webAppUrl + '/admin/test_2' },
-									},
-								],
+							[
+								{ text: '📋 My bookings', callback_data: 'my_bookings' },
+								{ text: '📝 Get tested', callback_data: 'my_results' },
 							],
-							resize_keyboard: true,
-						},
-					}
-				)
+						],
+					},
+				})
+				// await this.bot.sendMessage(
+				// 	chatId,
+				// 	'Ниже появится кнопка, заполни форму',
+				// 	{
+				// 		reply_markup: {
+				// 			keyboard: [
+				// 				[
+				// 					{
+				// 						text: 'Создать заявку',
+				// 						web_app: { url: webAppUrl + '/admin/add_order' },
+				// 					},
+				// 				],
+				// 				[
+				// 					{
+				// 						text: 'Заказы',
+				// 						web_app: { url: webAppUrl + '/admin/orders' },
+				// 					},
+				// 					{
+				// 						text: 'Товары',
+				// 						web_app: { url: webAppUrl + '/admin/test_2' },
+				// 					},
+				// 				],
+				// 			],
+				// 			resize_keyboard: true,
+				// 		},
+				// 	}
+				// )
 			}
 		})
 
