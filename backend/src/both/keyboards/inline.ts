@@ -1,28 +1,70 @@
-// const { InlineKeyboardButton, InlineKeyboardMarkup } = require('node-telegram-bot-api');
+export const textMainMenu = `Добро пожаловать в приложение MedSync!\n\nС помощью нашего веб-приложения вы можете записаться на прием к врачу или пройти обследование в одной из наших клиник.`
 
-// /**
-//  * Creates the main menu inline keyboard with web app buttons and callback data buttons.
-//  * @param {string} domain - The domain URL for the web apps.
-//  * @returns {InlineKeyboardMarkup} - The inline keyboard markup.
-//  */
-// function mainMenu(domain) {
-//   const keyboard = [
-//     [new InlineKeyboardButton({ text: "Main Page", web_app: { url: domain } })],
-//     [new InlineKeyboardButton({ text: "📅 Book an appointment", web_app: { url: `${domain}/see_a_doctor` } })],
-//     [new InlineKeyboardButton({ text: "📝 Get tested", web_app: { url: `${domain}/get_tested` } })],
-//     [new InlineKeyboardButton({ text: "📋 My bookings", callback_data: "my_bookings" })],
-//     [new InlineKeyboardButton({ text: "📋 My Results", callback_data: "my_results" })]
-//   ];
+export function mainMenuInlineKeyboard(domain: string) {
+	const keyboard = [
+		[{ text: 'Главная страница', web_app: { url: domain } }],
+		[
+			{
+				text: '📅 Записаться на прием',
+				web_app: { url: domain + '/see_a_doctor' },
+			},
+		],
+		[
+			{
+				text: '📝 Пройти обследование',
+				web_app: { url: domain + '/get_tested' },
+			},
+		],
+		[{ text: '📋 Мои бронирования', callback_data: 'my_bookings' }],
+		[{ text: '📝 Результаты', callback_data: 'my_results' }],
+	]
 
-//   return {
-//     inline_keyboard: [
-//       keyboard[0],
-//       [keyboard[1][0], keyboard[2][0]],
-//       [keyboard[3][0], keyboard[4][0]]
-//     ]
-//   };
-// }
+	return {
+		reply_markup: {
+			inline_keyboard: [
+				keyboard[0],
+				[keyboard[1][0], keyboard[2][0]],
+				[keyboard[3][0], keyboard[4][0]],
+			],
+		},
+	}
+}
 
-// module.exports = {
-//   mainMenu
-// };
+export function mainMenuInlineKeyboard1(webAppUrl: string) {
+	return {
+		reply_markup: {
+			inline_keyboard: [
+				[{ text: 'Main Page', web_app: { url: webAppUrl } }],
+				[
+					{
+						text: '📅 Book an appointment',
+						web_app: { url: webAppUrl + '/see_a_doctor' },
+					},
+					{
+						text: '📝 Get tested',
+						web_app: { url: webAppUrl + '/get_tested' },
+					},
+				],
+				[
+					{ text: '📋 My bookings', callback_data: 'my_bookings' },
+					{ text: '📝 Get tested', callback_data: 'my_results' },
+				],
+			],
+		},
+	}
+}
+
+// const TelegramBot = require('node-telegram-bot-api');
+// const { mainMenu } = require('./path_to_your_mainMenu_file'); // укажите правильный путь к файлу mainMenu
+
+// const token = process.env.TELEGRAM_BOT_TOKEN; // Замените на ваш токен
+// const bot = new TelegramBot(token, { polling: true });
+
+// bot.onText(/\/start/, (msg) => {
+//   const chatId = msg.chat.id;
+//   const domain = 'https://yourdomain.com'; // Замените на ваш домен
+
+//   bot.sendMessage(chatId, 'Welcome! Please choose an option:', {
+//     reply_markup: mainMenu(domain)
+//   });
+// });

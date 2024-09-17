@@ -4,6 +4,7 @@ import {
 	extractInfoCallbackQueryCTX,
 	getUserDetailsFromTelegramContext,
 } from './utils/context-helpers'
+import { mainMenuInlineKeyboard, textMainMenu } from './keyboards/inline'
 
 export interface Telegram {
 	chatId: string
@@ -42,8 +43,17 @@ export class BotService implements OnModuleInit {
 
 			const { data, telegramId, chatId, executorId } =
 				extractInfoCallbackQueryCTX(ctx)
+
+			if (data === 'my_bookings') {
+				this.bot.sendMessage(chatId, 'bookings')
+			}
+			if (data === 'my_results') {
+				this.bot.sendMessage(chatId, 'tested')
+			}
 		})
 
+		// my_bookings
+		// my_results
 		this.bot.on('message', async (ctx) => {
 			// console.log(11, 'message ctx', ctx)
 
@@ -59,7 +69,7 @@ export class BotService implements OnModuleInit {
 
 			const photoUrl1 = './uploads/userName.jpg'
 
-			const textIn = `Добро пожаловать в приложение MedSync!\n\nС помощью нашего веб-приложения вы можете записаться на прием к врачу или пройти тестирование в одной из наших клиник.`
+			const textIn = `Добро пожаловать в приложение MedSync!\n\nС помощью нашего веб-приложения вы можете записаться на прием к врачу или пройти обследование в одной из наших клиник.`
 			if (text === '/start') {
 				if (!ctx.from?.username) {
 					const message = '*Имя пользователя отсутствует в профиле телеграмма*'
@@ -80,31 +90,16 @@ export class BotService implements OnModuleInit {
 
 					return
 				}
-				this.bot.sendMessage(chatId, textIn)
+				this.bot.sendMessage(chatId, textMainMenu)
 			}
 
 			if (text === '/site') {
-				await this.bot.sendMessage(chatId, textIn, {
-					reply_markup: {
-						inline_keyboard: [
-							[{ text: 'Main Page', web_app: { url: webAppUrl } }],
-							[
-								{
-									text: '📅 Book an appointment',
-									web_app: { url: webAppUrl + '/see_a_doctor' },
-								},
-								{
-									text: '📝 Get tested',
-									web_app: { url: webAppUrl + '/get_tested' },
-								},
-							],
-							[
-								{ text: '📋 My bookings', callback_data: 'my_bookings' },
-								{ text: '📝 Get tested', callback_data: 'my_results' },
-							],
-						],
-					},
-				})
+				await this.bot.sendMessage(
+					chatId,
+					textMainMenu,
+					mainMenuInlineKeyboard(webAppUrl)
+				)
+
 				// await this.bot.sendMessage(
 				// 	chatId,
 				// 	'Ниже появится кнопка, заполни форму',
