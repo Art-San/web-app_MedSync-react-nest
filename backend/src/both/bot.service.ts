@@ -27,6 +27,7 @@ export class BotService implements OnModuleInit {
 	bot: TelegramBot
 	options: Telegram
 	botState: BotState
+
 	constructor() {
 		this.bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, {
 			polling: true,
@@ -95,7 +96,7 @@ export class BotService implements OnModuleInit {
 			)
 		)
 
-		this.bot.onText(/\/replyKeyboard/i, async (msg) => {
+		this.bot.onText(/\.кузднЛунищфкв/i, async (msg) => {
 			const messageOptions: TelegramBot.SendMessageOptions = {
 				reply_markup: replyKeyboard.getMarkup(),
 			}
@@ -121,10 +122,11 @@ export class BotService implements OnModuleInit {
 		})
 
 		this.bot.onText(/\/inlineKeyboard/i, (msg) => {
-			console.log(23, msg)
 			const options: TelegramBot.SendMessageOptions = {
 				reply_markup: inlineKeyboard.getMarkup(),
 			}
+
+			console.log(23, 'options', options)
 
 			this.bot.sendMessage(
 				msg.from.id,
