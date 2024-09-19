@@ -5,34 +5,23 @@ import {
 	getUserDetailsFromTelegramContext,
 } from './utils/context-helpers'
 import { mainMenuInlineKeyboard, textMainMenu } from './keyboards/inline'
-import {
-	ReplyKeyboard,
-	InlineKeyboard,
-	InlineKeyboardButton,
-	KeyboardButton,
-	Row,
-	ForceReply,
-} from 'node-telegram-keyboard-wrapper'
+import { dataBok } from './utils/data'
+import { format } from 'date-fns'
 
 export interface Telegram {
 	chatId: string
 	token: string
-}
-export interface BotState {
-	isReplyKeyboardOpen: boolean
 }
 
 @Injectable()
 export class BotService implements OnModuleInit {
 	bot: TelegramBot
 	options: Telegram
-	botState: BotState
-
 	constructor() {
 		this.bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, {
 			polling: true,
 		})
-		this.botState = {
+		const BotState = {
 			isReplyKeyboardOpen: false,
 		}
 	}
@@ -48,123 +37,104 @@ export class BotService implements OnModuleInit {
 		}
 	}
 
-	async hasBotCommands(entities: TelegramBot.MessageEntity[]) {
-		// console.log(23, !entities)
-		// console.log(23, !(entities instanceof Array))
-		if (!entities || !(entities instanceof Array)) {
-			return false
-		}
+	async startHandler(msg) {
+		const chatId = msg.chat.id
+		await this.sendMessage(chatId, 'Welcome! Please choose an option:', {
+			reply_markup: {
+				inline_keyboard: [
+					[{ text: '📋 My bookings', callback_data: 'my_bookings' }],
+					[{ text: '📋 My Results', callback_data: 'my_results' }],
+				],
+			},
+		})
+	}
 
-		return entities.some((e) => e.type === 'bot_command')
+	async callbackQueryHandler(callbackQuery) {
+		const chatId = callbackQuery.message.chat.id
+		const data = callbackQuery.data
+
+		if (data === 'my_bookings') {
+			this.sendMessage(chatId, 'my_bookings')
+			await this.showBookings(chatId)
+		} else if (data.startsWith('show_booking_')) {
+			const bookingId = data.split('_')[2]
+			this.sendMessage(chatId, `show_booking_ с ID: ${bookingId}`)
+			// await this.showBookingDetails(chatId, bookingId)
+		}
+	}
+
+	async showBookings(chatId) {
+		// const bookings = await this.requestsRepo.getUserBookings(chatId)
+		const bookings = dataBok
+
+		const buttons = bookings.map((booking) => {
+			const description = booking.doctor
+				? `👨‍⚕️ ${format(booking.bookingDateTime, 'dd MMM')} - ${booking.doctor.fullName}`
+				: `🔬 ${format(booking.bookingDateTime, 'dd MMM')} - ${booking.diagnostic.typeName}`
+			console.log(34, 'buttons', description)
+			return [
+				{
+					text: description,
+					callback_data: `show_booking_${booking.bookingId}`,
+				},
+			]
+		})
+
+		await this.bot.sendMessage(
+			chatId,
+			'Вот ваш список бронирования. Выберите один, чтобы увидеть подробности:',
+			{
+				reply_markup: {
+					inline_keyboard: buttons,
+				},
+			}
+		)
 	}
 
 	async onModuleInit() {
-		const replyKeyboard = new ReplyKeyboard()
-		const inlineKeyboard = new InlineKeyboard()
+		const webAppUrl = process.env.NGROK_URL
 
-		const firstReplyKeyboardRowToShowConstructor = new Row<KeyboardButton>(
-			new KeyboardButton('1:1 Button'),
-			new KeyboardButton('1:2 Button')
+		this.bot.onText(/\/start/, (msg) => this.startHandler(msg))
+
+		this.bot.on('callback_query', (callbackQuery) =>
+			this.callbackQueryHandler(callbackQuery)
 		)
 
-		const secondReplyKeyboardRowToShowRowAsArray = new Row<KeyboardButton>()
+		// my_bookings
+		// my_results
+		this.bot.on('message', async (ctx) => {
+			// console.log(11, 'message ctx', ctx)
 
-		secondReplyKeyboardRowToShowRowAsArray.push(
-			new KeyboardButton('2:1 Button'),
-			new KeyboardButton('2:2 Button')
-		)
+			const {
+				text,
+				telegramId,
+				chatId,
+				userName,
+				firstLastName,
+				nameButton,
+				dataButton,
+			} = getUserDetailsFromTelegramContext(ctx)
 
-		replyKeyboard.push(
-			firstReplyKeyboardRowToShowConstructor,
-			secondReplyKeyboardRowToShowRowAsArray
-		)
+			const photoUrl1 = './uploads/userName.jpg'
 
-		inlineKeyboard.push(
-			/**
-			 * Принудительный универсальный тип здесь из-за универсального InlineKeyboardButton
-			 * См. файл Роу для лучшего объяснения машинописного текста.
-			 */
+			const textIn = `Добро пожаловать в приложение MedSync!\n\nС помощью нашего веб-приложения вы можете записаться на прием к врачу или пройти обследование в одной из наших клиник.`
+			if (text === '/start') {
+				if (!ctx.from?.username) {
+					const message = '*Имя пользователя отсутствует в профиле телеграмма*'
 
-			new Row<InlineKeyboardButton>(
-				new InlineKeyboardButton('1:2 Button', 'url', 'https://www.google.com'),
-				new InlineKeyboardButton('1:1 Button', 'callback_data', 'Works 1!'),
-				new InlineKeyboardButton('1:2 Button', 'callback_data', 'Works 2!')
-			),
-			new Row<InlineKeyboardButton>(
-				new InlineKeyboardButton('2:1 Button', 'callback_data', 'Works 3!'),
-				new InlineKeyboardButton('2:2 Button', 'callback_data', 'Works 4!')
-			)
-		)
-
-		this.bot.onText(/\.кузднЛунищфкв/i, async (msg) => {
-			const messageOptions: TelegramBot.SendMessageOptions = {
-				reply_markup: replyKeyboard.getMarkup(),
-			}
-			console.log(23, 'messageOptions', messageOptions)
-			await this.bot.sendMessage(
-				msg.from.id,
-				'Это сообщение с клавиатурой ответа. Нажмите на одну из кнопок, чтобы закрыть ее.',
-				messageOptions
-			)
-			this.botState.isReplyKeyboardOpen = true
-		})
-
-		this.bot.onText(/\/forceReply/i, (msg) => {
-			const options: TelegramBot.SendMessageOptions = {
-				reply_markup: ForceReply.getMarkup(),
-			}
-
-			this.bot.sendMessage(
-				msg.from.id,
-				'Эй, это вынужденный ответ. Ответь мне. Да ладно. Попробуй.',
-				options
-			)
-		})
-
-		this.bot.onText(/\/inlineKeyboard/i, (msg) => {
-			const options: TelegramBot.SendMessageOptions = {
-				reply_markup: inlineKeyboard.getMarkup(),
-			}
-
-			console.log(23, 'options', options)
-
-			this.bot.sendMessage(
-				msg.from.id,
-				'Это сообщение с встроенной клавиатурой.',
-				options
-			)
-		})
-
-		this.bot.on('message', async (msg) => {
-			if (!this.hasBotCommands(msg.entities)) {
-				if (this.botState.isReplyKeyboardOpen) {
-					const options: TelegramBot.SendMessageOptions = {
-						reply_markup: replyKeyboard.remove(),
-					}
-
-					await this.bot.sendMessage(
-						msg.from.id,
-						'Сообщение получено. Закрываю ответ Клавиатура.',
-						options
-					)
-					this.botState.isReplyKeyboardOpen = false
-				} else if (!!msg.reply_to_message) {
-					await this.bot.sendMessage(
-						msg.from.id,
-						'КАК ТЫ ПОСМЕЛ! Но силовой ответ сработал.'
-					)
+					await this.sendMessage(chatId, message)
+					return
 				}
+				this.sendMessage(chatId, textMainMenu)
 			}
-		})
 
-		this.bot.on('callback_query', async (query) => {
-			await this.bot.answerCallbackQuery(query.id, {
-				text: 'Действие получено!',
-			})
-			await this.bot.sendMessage(
-				query.from.id,
-				'Привет! Вы нажали на встроенную кнопку! ;) Итак, как вы видели, библиотека поддержки работает!'
-			)
+			if (text === '/site') {
+				await this.bot.sendMessage(
+					chatId,
+					textMainMenu,
+					mainMenuInlineKeyboard(webAppUrl)
+				)
+			}
 		})
 
 		this.bot.on('polling_error', (err) =>
@@ -172,6 +142,7 @@ export class BotService implements OnModuleInit {
 		)
 	}
 }
+
 // import { BadRequestException, Injectable, OnModuleInit } from '@nestjs/common'
 // import * as TelegramBot from 'node-telegram-bot-api'
 // import {
