@@ -28,6 +28,40 @@ export class BookingService extends BaseService {
 		}
 	}
 
+	async findByTelegramId(telegramId: string) {
+		try {
+			const booking = await this.dbService.booking.findMany({
+				where: { telegramId },
+				select: {
+					bookingId: true,
+					telegramId: true,
+					bookingDateTime: true,
+					doctor: {
+						select: {
+							doctorId: true,
+							fullName: true,
+						},
+					},
+					diagnostic: {
+						select: {
+							diagnosticId: true,
+							typeName: true,
+						},
+					},
+				},
+			})
+
+			// if (!booking) {
+			// 	throw new BadRequestException(
+			// 		`Бронирования для пользователя ID: ${telegramId} не найдено в БД `
+			// 	)
+			// }
+
+			return booking
+		} catch (error) {
+			this.handleException(error, 'findByTelegramId booking')
+		}
+	}
 	async findById(bookingId: number) {
 		try {
 			const booking = await this.dbService.booking.findUnique({

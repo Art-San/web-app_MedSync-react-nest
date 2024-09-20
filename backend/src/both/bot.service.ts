@@ -7,6 +7,7 @@ import {
 import { mainMenuInlineKeyboard, textMainMenu } from './keyboards/inline'
 import { dataBok } from './utils/data'
 import { format } from 'date-fns'
+import { DbService } from 'src/db/db.service'
 
 export interface Telegram {
 	chatId: string
@@ -17,7 +18,7 @@ export interface Telegram {
 export class BotService implements OnModuleInit {
 	bot: TelegramBot
 	options: Telegram
-	constructor() {
+	constructor(private readonly dbService: DbService) {
 		this.bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, {
 			polling: true,
 		})
@@ -58,6 +59,10 @@ export class BotService implements OnModuleInit {
 			await this.showBookings(chatId)
 		} else if (data.startsWith('show_booking_')) {
 			const bookingId = data.split('_')[2]
+			await this.bot.deleteMessage(
+				callbackQuery.message.chat.id,
+				callbackQuery.message.message_id
+			)
 			this.sendMessage(chatId, `show_booking_ с ID: ${bookingId}`)
 			// await this.showBookingDetails(chatId, bookingId)
 		}
@@ -65,13 +70,34 @@ export class BotService implements OnModuleInit {
 
 	async showBookings(chatId) {
 		// const bookings = await this.requestsRepo.getUserBookings(chatId)
-		const bookings = dataBok
+
+		// const bookings = dataBok
+		const bookings = await this.dbService.booking.findMany({
+			where: { telegramId: String(chatId) },
+			select: {
+				bookingId: true,
+				telegramId: true,
+				bookingDateTime: true,
+				doctor: {
+					select: {
+						doctorId: true,
+						fullName: true,
+					},
+				},
+				diagnostic: {
+					select: {
+						diagnosticId: true,
+						typeName: true,
+					},
+				},
+			},
+		})
 
 		const buttons = bookings.map((booking) => {
 			const description = booking.doctor
 				? `👨‍⚕️ ${format(booking.bookingDateTime, 'dd MMM')} - ${booking.doctor.fullName}`
 				: `🔬 ${format(booking.bookingDateTime, 'dd MMM')} - ${booking.diagnostic.typeName}`
-			console.log(34, 'buttons', description)
+
 			return [
 				{
 					text: description,
