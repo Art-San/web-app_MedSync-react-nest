@@ -34,15 +34,14 @@ export class BookingController {
 		return this.bookingService.findAll()
 	}
 
-	@Get(':id')
-	findOne(@Param('id') id: string) {
-		return this.bookingService.findByTelegramId(id)
-	}
 	// @Get(':id')
 	// findOne(@Param('id') id: string) {
-	// 	return this.bookingService.findById(+id)
-
+	// 	return this.bookingService.findByTelegramId(id)
 	// }
+	@Get(':id')
+	findOne(@Param('id') id: string) {
+		return this.bookingService.findById(+id)
+	}
 
 	// @Patch(':id')
 	// update(@Param('id') id: string, @Body() updateBookingDto: UpdateBookingDto) {

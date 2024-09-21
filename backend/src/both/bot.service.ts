@@ -8,6 +8,8 @@ import { mainMenuInlineKeyboard, textMainMenu } from './keyboards/inline'
 import { dataBok } from './utils/data'
 import { format } from 'date-fns'
 import { DbService } from 'src/db/db.service'
+import { BookingService } from 'src/booking/booking.service'
+import { BotDopService } from './bot.dop.service'
 
 export interface Telegram {
 	chatId: string
@@ -18,7 +20,10 @@ export interface Telegram {
 export class BotService implements OnModuleInit {
 	bot: TelegramBot
 	options: Telegram
-	constructor(private readonly dbService: DbService) {
+	constructor(
+		private readonly dbService: DbService,
+		private readonly botDopService: BotDopService
+	) {
 		this.bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, {
 			polling: true,
 		})
@@ -63,35 +68,13 @@ export class BotService implements OnModuleInit {
 				callbackQuery.message.chat.id,
 				callbackQuery.message.message_id
 			)
-			this.sendMessage(chatId, `show_booking_ с ID: ${bookingId}`)
-			// await this.showBookingDetails(chatId, bookingId)
+			// this.sendMessage(chatId, `show_booking_ с ID: ${bookingId}`)
+			await this.showBookingDetails(chatId, bookingId)
 		}
 	}
 
-	async showBookings(chatId) {
-		// const bookings = await this.requestsRepo.getUserBookings(chatId)
-
-		// const bookings = dataBok
-		const bookings = await this.dbService.booking.findMany({
-			where: { telegramId: String(chatId) },
-			select: {
-				bookingId: true,
-				telegramId: true,
-				bookingDateTime: true,
-				doctor: {
-					select: {
-						doctorId: true,
-						fullName: true,
-					},
-				},
-				diagnostic: {
-					select: {
-						diagnosticId: true,
-						typeName: true,
-					},
-				},
-			},
-		})
+	async showBookings(chatId: number) {
+		const bookings = await this.botDopService.getBookings(chatId)
 
 		const buttons = bookings.map((booking) => {
 			const description = booking.doctor
@@ -115,6 +98,28 @@ export class BotService implements OnModuleInit {
 				},
 			}
 		)
+	}
+
+	async showBookingDetails(chatId: number, bookingId: string) {
+		const bookingInfo = await this.botDopService.getBookingDetails(bookingId)
+		// console.log(
+		// 	23,
+		// 	format(bookingInfo.bookingDateTime, 'dd MMM yyyy')
+		// )
+		const bookingTime = format(
+			new Date(bookingInfo.bookingDateTime),
+			'dd MMM yyyy'
+		)
+		console.log(23, bookingTime)
+		// const appointmentTypeText = bookingInfo.doctor
+		// 	? `👨‍⚕️ Doctor: ${bookingInfo.doctor.fullName}\n`
+		// 	: `🔬 Diagnostic: ${bookingInfo.diagnostic.typeName}\n`
+		// const message = `📋 Booking ID: ${bookingInfo.bookingId}\n${appointmentTypeText}📆 Date & Time: ${bookingTime}\n\n📍 Location: ${bookingInfo.location.name}: ${bookingInfo.location.address}\n\nThank you for choosing our service! If you have any questions or need to reschedule, feel free to reach out. 📞`
+		// await this.bot.sendMessage(chatId, message, {
+		// 	reply_markup: {
+		// 		inline_keyboard: [[{ text: 'Back', callback_data: 'my_bookings' }]],
+		// 	},
+		// })
 	}
 
 	async onModuleInit() {
