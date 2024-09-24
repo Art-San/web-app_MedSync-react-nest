@@ -197,27 +197,12 @@ export class BookingService extends BaseService {
 	async getBookingNotificationText(bookingId: number) {
 		try {
 			const booking = await this.findById(bookingId)
-			// let fieldDoc: string
-			// if (booking?.doctor?.doctorId) {
-			// 	fieldDoc = `👨‍⚕️ Доктор: ${booking.doctor.fullName}\n`
-			// } else if (booking?.diagnosticId) {
-			// 	fieldDoc = `🔬 Диагностика: ${booking.diagnostic.typeName}\n`
-			// } else {
-			// 	fieldDoc = 'Ошибка данных'
-			// }
-
-			// const notificationText = `
-			//   🎉 Поздравляем! Ваше бронирование подтверждено. 🎉\n\n
-			// 	📋 Запись №: ${booking.bookingId}\n
-			// 	${fieldDoc}
-			// 	📍 Локация:  ${booking.location.name}:  ${booking.location.address}\n\n
-			// 	Спасибо, что выбрали наш сервис! Если у вас есть какие-либо вопросы или вам нужно перенести встречу, свяжитесь с нами 📞.
-			// `
 
 			const mes = getNotificationText(booking)
 
 			const notificationText =
 				`🎉 Поздравляем! Ваше бронирование подтверждено. 🎉\n\n` + mes
+
 			return notificationText
 		} catch (error) {
 			this.handleException(error, 'getBookingNotificationText booking')

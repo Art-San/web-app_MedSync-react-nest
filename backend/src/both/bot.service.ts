@@ -102,21 +102,8 @@ export class BotService implements OnModuleInit {
 
 	async showBookingDetails(chatId: number, bookingId: string) {
 		const bookingInfo = await this.botDopService.getBookingDetails(bookingId)
-		// console.log(
-		// 	23,
-		// 	format(bookingInfo.bookingDateTime, 'dd MMM yyyy')
-		// )
-		// const bookingTime = format(
-		// 	new Date(bookingInfo.bookingDateTime),
-		// 	'dd MMMM yyyy, kk:mm'
-		// )
-		// console.log(23, bookingTime)
-		// const appointmentTypeText = bookingInfo.doctor
-		// 	? `👨‍⚕️ Врач: ${bookingInfo.doctor.fullName}\n`
-		// 	: `🔬 Процедура: ${bookingInfo.diagnostic.typeName}\n`
-		// const message = `Вот данные вашего бронирования\n\n📋 Запись ID: ${bookingInfo.bookingId}\n${appointmentTypeText}📆 Дата & Время: ${bookingTime}\n\n📍 Локация:  ${bookingInfo.location.name}: ${bookingInfo.location.address}\n\nСпасибо, что выбрали наш сервис! Если у вас есть какие-либо вопросы или вам нужно перенести встречу, свяжитесь с нами. 📞`
 
-		const mes = await getNotificationText(bookingInfo)
+		const mes = getNotificationText(bookingInfo)
 		const message = `🍓Вот данные вашего бронирования🍓\n\n` + mes
 
 		await this.bot.sendMessage(chatId, message, {
