@@ -1,3 +1,40 @@
+import { format } from 'date-fns'
+
+export function getNotificationText(data: any) {
+	const bookingTime = format(
+		new Date(data.bookingDateTime),
+		'dd MMMM yyyy, kk:mm'
+	)
+
+	let typeText: string
+	if (data?.doctor) {
+		typeText = `👨‍⚕️ Доктор: ${data.doctor.fullName}\n`
+	} else if (data?.diagnosticId) {
+		typeText = `🔬 Диагностика: ${data.diagnostic.typeName}\n`
+	} else {
+		typeText = 'Ошибка данных'
+	}
+	const message = `📋Запись ID: ${data.bookingId}\n${typeText}📆 Дата & Время: ${bookingTime}\n\n📍 Локация:  ${data.location.name}: ${data.location.address}\n\nСпасибо, что выбрали наш сервис! Если у вас есть какие-либо вопросы или вам нужно перенести встречу, свяжитесь с нами. 📞`
+	return message
+}
+
+// export function getNotificationText(data: any) {
+// 	const bookingTime = format(
+// 		new Date(data.bookingDateTime),
+// 		'dd MMMM yyyy, kk:mm'
+// 	)
+// 	const appointmentTypeText = data.doctor
+// 		? `👨‍⚕️ Врач: ${data.doctor.fullName}\n`
+// 		: `🔬 Процедура: ${data.diagnostic.typeName}\n`
+// 	// bookingId
+// 	// appointmentTypeText
+// 	// bookingTime
+// 	// location.name
+// 	// location.address
+// 	const message = `📋Запись ID: ${data.bookingId}\n${appointmentTypeText}📆 Дата & Время: ${bookingTime}\n\n📍 Локация:  ${data.location.name}: ${data.location.address}\n\nСпасибо, что выбрали наш сервис! Если у вас есть какие-либо вопросы или вам нужно перенести встречу, свяжитесь с нами. 📞`
+// 	return message
+// }
+
 export const dataBok = [
 	{
 		bookingId: 1,

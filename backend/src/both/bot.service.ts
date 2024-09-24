@@ -5,7 +5,7 @@ import {
 	getUserDetailsFromTelegramContext,
 } from './utils/context-helpers'
 import { mainMenuInlineKeyboard, textMainMenu } from './keyboards/inline'
-import { dataBok } from './utils/data'
+import { getNotificationText } from './utils/data'
 import { format } from 'date-fns'
 import { DbService } from 'src/db/db.service'
 import { BookingService } from 'src/booking/booking.service'
@@ -78,8 +78,8 @@ export class BotService implements OnModuleInit {
 
 		const buttons = bookings.map((booking) => {
 			const description = booking.doctor
-				? `👨‍⚕️ ${format(booking.bookingDateTime, 'dd MMM')} - ${booking.doctor.fullName}`
-				: `🔬 ${format(booking.bookingDateTime, 'dd MMM')} - ${booking.diagnostic.typeName}`
+				? `👨‍⚕️ ${format(booking.bookingDateTime, 'dd MMMM')} - ${booking.doctor.fullName}`
+				: `🔬 ${format(booking.bookingDateTime, 'dd MMMM')} - ${booking.diagnostic.typeName}`
 
 			return [
 				{
@@ -106,20 +106,24 @@ export class BotService implements OnModuleInit {
 		// 	23,
 		// 	format(bookingInfo.bookingDateTime, 'dd MMM yyyy')
 		// )
-		const bookingTime = format(
-			new Date(bookingInfo.bookingDateTime),
-			'dd MMM yyyy'
-		)
-		console.log(23, bookingTime)
+		// const bookingTime = format(
+		// 	new Date(bookingInfo.bookingDateTime),
+		// 	'dd MMMM yyyy, kk:mm'
+		// )
+		// console.log(23, bookingTime)
 		// const appointmentTypeText = bookingInfo.doctor
-		// 	? `👨‍⚕️ Doctor: ${bookingInfo.doctor.fullName}\n`
-		// 	: `🔬 Diagnostic: ${bookingInfo.diagnostic.typeName}\n`
-		// const message = `📋 Booking ID: ${bookingInfo.bookingId}\n${appointmentTypeText}📆 Date & Time: ${bookingTime}\n\n📍 Location: ${bookingInfo.location.name}: ${bookingInfo.location.address}\n\nThank you for choosing our service! If you have any questions or need to reschedule, feel free to reach out. 📞`
-		// await this.bot.sendMessage(chatId, message, {
-		// 	reply_markup: {
-		// 		inline_keyboard: [[{ text: 'Back', callback_data: 'my_bookings' }]],
-		// 	},
-		// })
+		// 	? `👨‍⚕️ Врач: ${bookingInfo.doctor.fullName}\n`
+		// 	: `🔬 Процедура: ${bookingInfo.diagnostic.typeName}\n`
+		// const message = `Вот данные вашего бронирования\n\n📋 Запись ID: ${bookingInfo.bookingId}\n${appointmentTypeText}📆 Дата & Время: ${bookingTime}\n\n📍 Локация:  ${bookingInfo.location.name}: ${bookingInfo.location.address}\n\nСпасибо, что выбрали наш сервис! Если у вас есть какие-либо вопросы или вам нужно перенести встречу, свяжитесь с нами. 📞`
+
+		const mes = await getNotificationText(bookingInfo)
+		const message = `🍓Вот данные вашего бронирования🍓\n\n` + mes
+
+		await this.bot.sendMessage(chatId, message, {
+			reply_markup: {
+				inline_keyboard: [[{ text: 'Back', callback_data: 'my_bookings' }]],
+			},
+		})
 	}
 
 	async onModuleInit() {

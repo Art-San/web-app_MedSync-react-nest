@@ -31,6 +31,7 @@ export class BotDopService extends BaseService {
 					},
 				},
 			})
+
 			return bookings
 		} catch (error) {
 			this.handleException(error, 'getBookings bot')
@@ -41,11 +42,25 @@ export class BotDopService extends BaseService {
 		try {
 			const booking = await this.dbService.booking.findUnique({
 				where: { bookingId: +bookingId },
-				include: {
-					doctor: true,
-					location: true,
-					diagnostic: true,
-					slot: true,
+				select: {
+					bookingId: true,
+					bookingDateTime: true,
+					doctor: {
+						select: {
+							fullName: true,
+						},
+					},
+					diagnostic: {
+						select: {
+							typeName: true,
+						},
+					},
+					location: {
+						select: {
+							name: true,
+							address: true,
+						},
+					},
 				},
 			})
 
@@ -55,6 +70,7 @@ export class BotDopService extends BaseService {
 				)
 			}
 
+			console.log(12, booking)
 			return booking
 		} catch (error) {
 			this.handleException(error, 'byId booking')
