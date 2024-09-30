@@ -12,7 +12,7 @@ export function extractInfoCallbackQueryCTX(ctx) {
 export function getUserDetailsFromTelegramContext(ctx) {
 	const text = ctx?.text
 	const telegramId = String(ctx?.from?.id)
-	const chatId = String(ctx?.chat?.id)
+	const chatId = ctx?.chat?.id
 	const nameButton = ctx?.web_app_data?.button_text
 	const dataButton = ctx?.web_app_data?.data
 	const userName = ctx?.from.username ? `@${ctx.from.username}` : null

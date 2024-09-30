@@ -11,12 +11,12 @@ export function mainMenuInlineKeyboard(domain: string) {
 		],
 		[
 			{
-				text: '📝 Пройти обследование',
+				text: '📝 Запись на обследование',
 				web_app: { url: domain + '/get_tested' },
 			},
 		],
 		[{ text: '📋 Мои бронирования', callback_data: 'my_bookings' }],
-		[{ text: '📝 Результаты', callback_data: 'my_results' }],
+		[{ text: '📋 Результаты', callback_data: 'my_results' }],
 	]
 
 	return {
@@ -34,20 +34,20 @@ export function mainMenuInlineKeyboard1(webAppUrl: string) {
 	return {
 		reply_markup: {
 			inline_keyboard: [
-				[{ text: 'Main Page', web_app: { url: webAppUrl } }],
+				[{ text: 'Главная страница', web_app: { url: webAppUrl } }],
 				[
 					{
-						text: '📅 Book an appointment',
+						text: '📅 Записаться на прием',
 						web_app: { url: webAppUrl + '/see_a_doctor' },
 					},
 					{
-						text: '📝 Get tested',
+						text: '📝 Запись на обследование',
 						web_app: { url: webAppUrl + '/get_tested' },
 					},
 				],
 				[
-					{ text: '📋 My bookings', callback_data: 'my_bookings' },
-					{ text: '📝 Get tested', callback_data: 'my_results' },
+					{ text: '📋 Мои бронирования', callback_data: 'my_bookings' },
+					{ text: '📋 Результаты', callback_data: 'my_results' },
 				],
 			],
 		},

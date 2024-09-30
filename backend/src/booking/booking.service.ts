@@ -15,6 +15,28 @@ export class BookingService extends BaseService {
 		super(BookingService.name)
 	}
 
+	async findPagination(telegramId: string, page: number, pageSize: number) {
+		console.log(23, 'findPagination', telegramId)
+		console.log(23, 'findPagination', page)
+		console.log(23, 'findPagination', pageSize)
+		try {
+			const offset = (page - 1) * pageSize
+
+			const bookings = await this.dbService.booking.findMany({
+				where: { telegramId: telegramId },
+				orderBy: {
+					createdAt: 'desc',
+				},
+				skip: offset,
+				take: pageSize,
+			})
+
+			return bookings
+		} catch (error) {
+			this.handleException(error, 'getBookings bot')
+		}
+	}
+
 	async findAll() {
 		try {
 			const booking = await this.dbService.booking.findMany({
@@ -214,7 +236,7 @@ export class BookingService extends BaseService {
 			const fieldDoc = await this.getBookingNotificationText(bookingId)
 
 			if (fieldDoc) {
-				await this.botService.sendMessage(telegramId, fieldDoc)
+				await this.botService.sendMessage(+telegramId, fieldDoc)
 			}
 		} catch (error) {
 			this.handleException(error, 'sendMessage bookings')

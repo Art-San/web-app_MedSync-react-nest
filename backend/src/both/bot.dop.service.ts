@@ -9,6 +9,22 @@ export class BotDopService extends BaseService {
 		super(BotDopService.name)
 	}
 
+	async findPagination(
+		telegramId: number,
+		page: number,
+		pageSize: number = 10
+	) {
+		try {
+			const bookings = await this.dbService.booking.findMany({
+				where: { telegramId: String(telegramId) },
+			})
+
+			return bookings
+		} catch (error) {
+			this.handleException(error, 'getBookings bot')
+		}
+	}
+
 	async getBookings(telegramId: number) {
 		try {
 			const bookings = await this.dbService.booking.findMany({

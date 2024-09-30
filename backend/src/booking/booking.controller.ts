@@ -6,7 +6,7 @@ import {
 	Patch,
 	Param,
 	Delete,
-	BadRequestException,
+	Query,
 } from '@nestjs/common'
 import { BookingService } from './booking.service'
 import { CreateBookingDto } from './dto/create-booking.dto'
@@ -19,6 +19,21 @@ export class BookingController {
 
 		// private readonly telegramService: TelegramService, // для отправки уведомлений в Telegram
 	) {}
+
+	// booking/pagination/?telegramId=721836748&page=1&pageSize=5
+	@Get('pagination')
+	async getOPagination(
+		@Query('telegramId') telegramId: string,
+		@Query('page') page: number = 1,
+		@Query('pageSize') pageSize: number = 10
+	) {
+		const res = await this.bookingService.findPagination(
+			telegramId,
+			+page,
+			+pageSize
+		)
+		return res
+	}
 
 	@Post('doctors')
 	createBookingDoc(@Body() dto: CreateBookingDto) {
