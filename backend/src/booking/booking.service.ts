@@ -16,14 +16,28 @@ export class BookingService extends BaseService {
 	}
 
 	async findPagination(telegramId: string, page: number, pageSize: number) {
-		console.log(23, 'findPagination', telegramId)
-		console.log(23, 'findPagination', page)
-		console.log(23, 'findPagination', pageSize)
 		try {
 			const offset = (page - 1) * pageSize
 
 			const bookings = await this.dbService.booking.findMany({
 				where: { telegramId: telegramId },
+				select: {
+					bookingId: true,
+					telegramId: true,
+					bookingDateTime: true,
+					doctor: {
+						select: {
+							doctorId: true,
+							fullName: true,
+						},
+					},
+					diagnostic: {
+						select: {
+							diagnosticId: true,
+							typeName: true,
+						},
+					},
+				},
 				orderBy: {
 					createdAt: 'desc',
 				},

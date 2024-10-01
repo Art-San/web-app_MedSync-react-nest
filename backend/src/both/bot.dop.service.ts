@@ -10,19 +10,52 @@ export class BotDopService extends BaseService {
 	}
 
 	async findPagination(
-		telegramId: number,
-		page: number,
+		chatId: number,
+		page: number = 1,
 		pageSize: number = 10
 	) {
 		try {
+			const offset = (page - 1) * pageSize
+
 			const bookings = await this.dbService.booking.findMany({
-				where: { telegramId: String(telegramId) },
+				where: { telegramId: String(chatId) },
+				select: {
+					bookingId: true,
+					telegramId: true,
+					bookingDateTime: true,
+					doctor: {
+						select: {
+							doctorId: true,
+							fullName: true,
+						},
+					},
+					diagnostic: {
+						select: {
+							diagnosticId: true,
+							typeName: true,
+						},
+					},
+				},
+				orderBy: {
+					bookingDateTime: 'asc',
+				},
+				skip: offset,
+				take: pageSize,
 			})
 
 			return bookings
 		} catch (error) {
 			this.handleException(error, 'getBookings bot')
 		}
+		// try {
+		// 	const bookings = await this.dbService.booking.findMany({
+		// 		where: { telegramId: String(telegramId) },
+		// 	})
+
+		// 	return bookings
+		// } catch (error) {
+		// 	this.handleException(error, 'getBookings bot')
+		// }
 	}
 
 	async getBookings(telegramId: number) {
@@ -86,7 +119,7 @@ export class BotDopService extends BaseService {
 				)
 			}
 
-			console.log(12, booking)
+			// console.log(12, booking)
 			return booking
 		} catch (error) {
 			this.handleException(error, 'byId booking')
