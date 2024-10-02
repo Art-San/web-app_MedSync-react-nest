@@ -41,14 +41,7 @@ export class BotService implements OnModuleInit {
 		}
 	}
 
-	async startHandler(msg) {
-		const chatId = msg.chat.id
-		this.userStates[chatId] = 'main_menu'
-
-		await this.sendMessage(
-			chatId,
-			'Вот ваш список бронирования. Выберите один, чтобы увидеть подробности'
-		)
+	async startHandler(chatId) {
 		await this.sendMessage(
 			chatId,
 			textMainMenu,
@@ -61,8 +54,6 @@ export class BotService implements OnModuleInit {
 		const data = callbackQuery.data
 
 		if (data === 'my_bookings') {
-			this.userStates[chatId] = 'show_list'
-
 			await this.bot.deleteMessage(
 				callbackQuery.message.chat.id,
 				callbackQuery.message.message_id
@@ -74,45 +65,75 @@ export class BotService implements OnModuleInit {
 				callbackQuery.message.chat.id,
 				callbackQuery.message.message_id
 			)
-			this.userStates[chatId] = 'show_booking'
 
 			await this.showBookingDetails(chatId, bookingId)
 		} else if (data === 'exit_show_bookings') {
-			this.userStates[chatId] = 'main_menu'
 			await this.bot.deleteMessage(
 				callbackQuery.message.chat.id,
 				callbackQuery.message.message_id
 			)
+
+			await this.startHandler(chatId)
 		}
 	}
 
 	async showBookings(chatId: number) {
 		const bookings = await this.botDopService.findPagination(chatId)
-		const buttons = bookings.map((booking) => {
-			const description = booking.doctor
-				? `👨‍⚕️ ${format(booking.bookingDateTime, 'dd MMMM')} - ${booking.doctor.fullName}`
-				: `🔬 ${format(booking.bookingDateTime, 'dd MMMM')} - ${booking.diagnostic.typeName}`
 
-			return [
-				{
-					text: description,
-					callback_data: `show_booking_${booking.bookingId}`,
-				},
-			]
+		let messageText: string
+		let buttons: any[] = []
+
+		if (bookings.length === 0) {
+			messageText = 'У вас нет записей'
+		} else {
+			buttons = bookings.map((booking) => {
+				const description = booking.doctor
+					? `👨‍⚕️ ${format(booking.bookingDateTime, 'dd MMMM')} - ${booking.doctor.fullName}`
+					: `🔬 ${format(booking.bookingDateTime, 'dd MMMM')} - ${booking.diagnostic.typeName}`
+				return [
+					{
+						text: description,
+						callback_data: `show_booking_${booking.bookingId}`,
+					},
+				]
+			})
+
+			messageText =
+				'Вот ваш список бронирования. Выберите один, чтобы увидеть подробности:'
+		}
+
+		buttons.push([{ text: 'Exit', callback_data: 'exit_show_bookings' }])
+
+		await this.sendMessage(chatId, messageText, {
+			reply_markup: {
+				inline_keyboard: [...buttons],
+			},
 		})
 
-		await this.sendMessage(
-			chatId,
-			'Вот ваш список бронирования. Выберите один, чтобы увидеть подробности:',
-			{
-				reply_markup: {
-					inline_keyboard: [
-						...buttons,
-						[{ text: 'Exit', callback_data: 'exit_show_bookings' }],
-					],
-				},
-			}
-		)
+		// const buttons = bookings.map((booking) => {
+		// 	const description = booking.doctor
+		// 		? `👨‍⚕️ ${format(booking.bookingDateTime, 'dd MMMM')} - ${booking.doctor.fullName}`
+		// 		: `🔬 ${format(booking.bookingDateTime, 'dd MMMM')} - ${booking.diagnostic.typeName}`
+		// 	return [
+		// 		{
+		// 			text: description,
+		// 			callback_data: `show_booking_${booking.bookingId}`,
+		// 		},
+		// 	]
+		// })
+
+		// await this.sendMessage(
+		// 	chatId,
+		// 	'Вот ваш список бронирования. Выберите один, чтобы увидеть подробности:',
+		// 	{
+		// 		reply_markup: {
+		// 			inline_keyboard: [
+		// 				...buttons,
+		// 				[{ text: 'Exit', callback_data: 'exit_show_bookings' }],
+		// 			],
+		// 		},
+		// 	}
+		// )
 	}
 
 	async showBookingDetails(chatId: number, bookingId: string) {
@@ -129,7 +150,7 @@ export class BotService implements OnModuleInit {
 	}
 
 	async onModuleInit() {
-		this.bot.onText(/\/start/, (msg) => this.startHandler(msg))
+		this.bot.onText(/\/start/, (msg) => this.startHandler(msg.chat.id))
 
 		this.bot.on('callback_query', (callbackQuery) =>
 			this.callbackQueryHandler(callbackQuery)

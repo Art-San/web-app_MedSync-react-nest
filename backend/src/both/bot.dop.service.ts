@@ -14,11 +14,18 @@ export class BotDopService extends BaseService {
 		page: number = 1,
 		pageSize: number = 10
 	) {
+		const today = new Date()
+		today.setHours(0, 0, 0, 0) // Устанавливаем время на начало текущего дня
 		try {
 			const offset = (page - 1) * pageSize
 
 			const bookings = await this.dbService.booking.findMany({
-				where: { telegramId: String(chatId) },
+				where: {
+					telegramId: String(chatId),
+					bookingDateTime: {
+						gte: today, // Больше или равно текущей дате
+					},
+				},
 				select: {
 					bookingId: true,
 					telegramId: true,
@@ -37,11 +44,36 @@ export class BotDopService extends BaseService {
 					},
 				},
 				orderBy: {
-					bookingDateTime: 'asc',
+					bookingDateTime: 'asc', // Сортируем по возрастанию, чтобы показывать ближайшие бронирования первыми
 				},
 				skip: offset,
 				take: pageSize,
 			})
+			// const bookings = await this.dbService.booking.findMany({
+			// 	where: { telegramId: String(chatId) },
+			// 	select: {
+			// 		bookingId: true,
+			// 		telegramId: true,
+			// 		bookingDateTime: true,
+			// 		doctor: {
+			// 			select: {
+			// 				doctorId: true,
+			// 				fullName: true,
+			// 			},
+			// 		},
+			// 		diagnostic: {
+			// 			select: {
+			// 				diagnosticId: true,
+			// 				typeName: true,
+			// 			},
+			// 		},
+			// 	},
+			// 	orderBy: {
+			// 		bookingDateTime: 'desc',
+			// 	},
+			// 	skip: offset,
+			// 	take: pageSize,
+			// })
 
 			return bookings
 		} catch (error) {
