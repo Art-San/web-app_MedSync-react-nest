@@ -184,10 +184,22 @@ model User {
   @@map("users")
 }
 
+model Card {
+  id     Int    @id @default(autoincrement())
+  amount String
+  time   String
+  link   String
+  logo   String
+
+   @@map("cards")
+}
+
 enum BookingStatus {
   PENDING
   FINISHED
   CANCELLED
   DELETE
 }
+
+
 
