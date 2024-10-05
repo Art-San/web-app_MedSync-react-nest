@@ -161,11 +161,11 @@ export class BotDopService extends BaseService {
 	setBotCommands(bot: TelegramBot) {
 		bot.setMyCommands([
 			{ command: '/start', description: 'Запускает бота' },
-			{ command: '/info', description: 'Получить информацию о пользователе' },
-			{ command: '/createorder', description: 'добавить заказ, вопросы' },
-			{ command: '/help', description: 'пример HTML тегов' },
-			{ command: '/end', description: 'Останавливает бота' },
-			{ command: '/add_order', description: 'Создание заказа через форму' },
+			{ command: '/site', description: 'Записаться' },
+			// { command: '/createorder', description: 'добавить заказ, вопросы' },
+			// { command: '/help', description: 'пример HTML тегов' },
+			// { command: '/end', description: 'Останавливает бота' },
+			// { command: '/add_order', description: 'Создание заказа через форму' },
 		])
 	}
 }

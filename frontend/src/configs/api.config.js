@@ -8,6 +8,8 @@ export const getWorkingHoursUrl = (string) => `/working-hours${string}`
 
 export const getBookingUrl = (string) => `/booking${string}`
 
+export const getDiagnosticsUrl = (string) => `/diagnostics${string}`
+
 // https://medsync.botfather.dev/api/slots/doctors/1/2/7
 // 'slots/doctors/:doctorId/:locationId/:monthNumber'
 export const getSlotsUrl = (string) => `/slots${string}`

@@ -1,3 +1,4 @@
+// https://www.youtube.com/watch?v=9MJjPVddTKo
 // const TelegramBot = require('node-telegram-bot-api')
 // const axios = require('axios')
 // require('dotenv').config()
@@ -177,119 +178,119 @@
 //   }
 // }
 
-const TelegramBot = require('node-telegram-bot-api')
-const prisma = require('./prismaClient')
-require('dotenv').config()
+// const TelegramBot = require('node-telegram-bot-api')
+// const prisma = require('./prismaClient')
+// require('dotenv').config()
 
-const token = process.env.TG_TOKEN
-const bot = new TelegramBot(token, { polling: true })
+// const token = process.env.TG_TOKEN
+// const bot = new TelegramBot(token, { polling: true })
 
-const getPagination = (current, maxpage, data) => {
-	let keys = []
+// const getPagination = (current, maxpage, data) => {
+// 	let keys = []
 
-	if (current == 1) keys.push({ text: `⛔️`, callback_data: 'prev' })
-	if (current > 1)
-		keys.push({ text: `⬅️`, callback_data: (current - 1).toString() })
-	keys.push({
-		text: `${current}/${maxpage}`,
-		callback_data: current.toString(),
-	})
-	if (current == maxpage) keys.push({ text: `⛔️`, callback_data: 'last' })
-	if (current < maxpage)
-		keys.push({ text: `➡️`, callback_data: (current + 1).toString() })
+// 	if (current == 1) keys.push({ text: `⛔️`, callback_data: 'prev' })
+// 	if (current > 1)
+// 		keys.push({ text: `⬅️`, callback_data: (current - 1).toString() })
+// 	keys.push({
+// 		text: `${current}/${maxpage}`,
+// 		callback_data: current.toString(),
+// 	})
+// 	if (current == maxpage) keys.push({ text: `⛔️`, callback_data: 'last' })
+// 	if (current < maxpage)
+// 		keys.push({ text: `➡️`, callback_data: (current + 1).toString() })
 
-	return {
-		reply_markup: JSON.stringify({
-			inline_keyboard: [
-				[{ text: `🔗 Оформить займ`, url: data.cards[0].link }],
-				keys,
-			],
-		}),
-	}
-}
+// 	return {
+// 		reply_markup: JSON.stringify({
+// 			inline_keyboard: [
+// 				[{ text: `🔗 Оформить займ`, url: data.cards[0].link }],
+// 				keys,
+// 			],
+// 		}),
+// 	}
+// }
 
-const messageText = (data) => {
-	const info = data.cards[0]
-	const message =
-		`💸ЗАЙМ НА ЛЮБЫЕ НУЖДЫ💸` +
-		`\n\nДля Всех стран СНГ!🇷🇺🇺🇦🇰🇿 ` +
-		`\n\n📝Без справок!` +
-		`\n🙋🏻‍♂️Без поручителей!` +
-		`\n💰От ${info.amount} ${info.time}.` +
-		`\n📃Только по паспорту! ` +
-		`\n🙌🏻 С ЛЮБОЙ кредитной историей!` +
-		`\n💳Займ прямо на КАРТУ💳` +
-		`\n\n\n👇🏻👇🏻👇🏻👇🏻👇🏻👇🏻👇🏻👇🏻👇🏻👇🏻`
-	return message
-}
+// const messageText = (data) => {
+// 	const info = data.cards[0]
+// 	const message =
+// 		`💸ЗАЙМ НА ЛЮБЫЕ НУЖДЫ💸` +
+// 		`\n\nДля Всех стран СНГ!🇷🇺🇺🇦🇰🇿 ` +
+// 		`\n\n📝Без справок!` +
+// 		`\n🙋🏻‍♂️Без поручителей!` +
+// 		`\n💰От ${info.amount} ${info.time}.` +
+// 		`\n📃Только по паспорту! ` +
+// 		`\n🙌🏻 С ЛЮБОЙ кредитной историей!` +
+// 		`\n💳Займ прямо на КАРТУ💳` +
+// 		`\n\n\n👇🏻👇🏻👇🏻👇🏻👇🏻👇🏻👇🏻👇🏻👇🏻👇🏻`
+// 	return message
+// }
 
-bot.onText(/\/start/, async function (msg) {
-	try {
-		const cards = await prisma.card.findMany({
-			skip: 0,
-			take: 5,
-		})
-		const data = {
-			cards,
-			from: 1,
-			last_page: Math.ceil((await prisma.card.count()) / 5), // Получение количества страниц
-		}
-		const messageEnter = Object.assign(
-			{},
-			getPagination(data.from, data.last_page, data),
-			{ caption: messageText(data) }
-		)
-		bot.sendPhoto(msg.chat.id, data.cards[0].logo, messageEnter)
-	} catch (error) {
-		console.log(error)
-	}
-})
+// bot.onText(/\/start/, async function (msg) {
+// 	try {
+// 		const cards = await prisma.card.findMany({
+// 			skip: 0,
+// 			take: 5,
+// 		})
+// 		const data = {
+// 			cards,
+// 			from: 1,
+// 			last_page: Math.ceil((await prisma.card.count()) / 5), // Получение количества страниц
+// 		}
+// 		const messageEnter = Object.assign(
+// 			{},
+// 			getPagination(data.from, data.last_page, data),
+// 			{ caption: messageText(data) }
+// 		)
+// 		bot.sendPhoto(msg.chat.id, data.cards[0].logo, messageEnter)
+// 	} catch (error) {
+// 		console.log(error)
+// 	}
+// })
 
-bot.on('callback_query', async function (message) {
-	const msg = message.message
+// bot.on('callback_query', async function (message) {
+// 	const msg = message.message
 
-	if (message.data == 'prev') {
-		bot.answerCallbackQuery(message.id, {
-			text: 'Вы уже на первой странице!',
-			show_alert: true,
-		})
-		return
-	} else if (message.data == 'last') {
-		bot.answerCallbackQuery(message.id, {
-			text: 'Вы уже на последней странице!',
-			show_alert: true,
-		})
-		return
-	}
+// 	if (message.data == 'prev') {
+// 		bot.answerCallbackQuery(message.id, {
+// 			text: 'Вы уже на первой странице!',
+// 			show_alert: true,
+// 		})
+// 		return
+// 	} else if (message.data == 'last') {
+// 		bot.answerCallbackQuery(message.id, {
+// 			text: 'Вы уже на последней странице!',
+// 			show_alert: true,
+// 		})
+// 		return
+// 	}
 
-	try {
-		const page = parseInt(message.data)
-		const cards = await prisma.card.findMany({
-			skip: (page - 1) * 5,
-			take: 5,
-		})
-		const data = {
-			cards,
-			from: page,
-			last_page: Math.ceil((await prisma.card.count()) / 5), // Получение количества страниц
-		}
-		const editOptions = Object.assign(
-			{},
-			getPagination(page, data.last_page, data),
-			{
-				chat_id: msg.chat.id,
-				message_id: msg.message_id,
-			}
-		)
-		bot.editMessageMedia(
-			{
-				type: 'photo',
-				media: data.cards[0].logo.toString(),
-				caption: messageText(data),
-			},
-			editOptions
-		)
-	} catch (error) {
-		console.log(error)
-	}
-})
+// 	try {
+// 		const page = parseInt(message.data)
+// 		const cards = await prisma.card.findMany({
+// 			skip: (page - 1) * 5,
+// 			take: 5,
+// 		})
+// 		const data = {
+// 			cards,
+// 			from: page,
+// 			last_page: Math.ceil((await prisma.card.count()) / 5), // Получение количества страниц
+// 		}
+// 		const editOptions = Object.assign(
+// 			{},
+// 			getPagination(page, data.last_page, data),
+// 			{
+// 				chat_id: msg.chat.id,
+// 				message_id: msg.message_id,
+// 			}
+// 		)
+// 		bot.editMessageMedia(
+// 			{
+// 				type: 'photo',
+// 				media: data.cards[0].logo.toString(),
+// 				caption: messageText(data),
+// 			},
+// 			editOptions
+// 		)
+// 	} catch (error) {
+// 		console.log(error)
+// 	}
+// })
