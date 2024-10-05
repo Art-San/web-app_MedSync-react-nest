@@ -206,8 +206,8 @@ const FullSummary = () => {
       //   })
       // )
 
-      navigate('/')
-      // navigate('/successful_booking')
+      // navigate('/')
+      navigate('/successful_booking')
     } catch (err) {
       toast.error('Извините, что-то пошло не так!')
       notificationOccurred('error')

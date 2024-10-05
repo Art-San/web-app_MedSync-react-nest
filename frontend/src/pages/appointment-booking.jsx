@@ -98,4 +98,5 @@ const SlotSelection = ({ storageKey, itemType }) => {
   )
 }
 
+// your appointment has been confirmed
 export default SlotSelection

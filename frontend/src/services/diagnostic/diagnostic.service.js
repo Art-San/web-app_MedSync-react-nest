@@ -9,5 +9,8 @@ import { getDiagnosticsUrl } from '../../configs/api.config'
 export const diagnosticService = {
   async getDiagnostics() {
     return axiosClassic.get(getDiagnosticsUrl(``))
+  },
+  async getLocsForDiagnostic(diagnosticId) {
+    return axiosClassic.get(getDiagnosticsUrl(`/${diagnosticId}/locations`))
   }
 }
