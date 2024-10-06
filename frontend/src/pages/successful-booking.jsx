@@ -19,12 +19,12 @@ function RegistrationConfirmation() {
   return (
     <div className="registration-confirmation">
       <img className="logo" src={logo} alt="MedSync logo" />
-      <p className="registration-confirmation__title">Successful</p>
+      <p className="registration-confirmation__title">Успешный</p>
       <p className="registration-confirmation__text">
-        You have successfully booked your appointment with MedSync.
+        Вы успешно записались на прием в MedSync..
         <br />
         <br />
-        You can close now or book another appointment!
+        Вы можете закрыть сейчас или записаться на другую встречу!
       </p>
       <div
         className="button arrow-button"
@@ -40,7 +40,7 @@ function RegistrationConfirmation() {
           navigate(`/`)
         }}
       >
-        Book another Appointment
+        Запишитесь на другую встречу
       </button>
       {/* <a href="/" className="button button-second">
         Book another Appointment

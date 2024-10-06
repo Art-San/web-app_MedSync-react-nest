@@ -23,8 +23,6 @@ const FullSummary = () => {
   const [impactOccurred, notificationOccurred, selectionChanged] =
     useHapticFeedback()
   const [InitDataUnsafe, InitData] = useInitData()
-  var fakeInitData =
-    'query_id=AAHMWgYrAAAAAMxaBiuJKfOE&user=%7B%22id%22%3A721836748%2C%22first_name%22%3A%22%D0%90%D0%BB%D0%B5%D0%BA%D1%81%D0%B0%D0%BD%D0%B4%D1%80%22%2C%22last_name%22%3A%22%D0%90%22%2C%22username%22%3A%22gruzz70tomsk%22%2C%22language_code%22%3A%22ru%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1725548886&hash=cbeaa9674db6fa974784fa15e7297892baa1e8609a354ff9ea47cce7637a7a27'
 
   const [doctorData, setDoctorData] = useState(null)
   const [diagnosticData, setDiagnosticData] = useState(null)
@@ -67,10 +65,12 @@ const FullSummary = () => {
       fetchDoctorData().then((doctor) => {
         fetchUserDataAndLocationInfo(storage).then((data) => {
           if (data.error) {
-            toast.warning('Извините, некоторые данные отсутствуют!')
+            toast
+              .warning('Извините, некоторые данные отсутствуют!')
+              .then(() => navigate(-1))
           }
           // if (data.error) {
-          //   showPopup({ message: 'Sorry, some data is missing!' }).then(() =>
+          //   showPopup({ message: 'Извините, некоторые данные отсутствуют!' }).then(() =>
           //     navigate(-1)
           //   )
           // }
@@ -91,10 +91,12 @@ const FullSummary = () => {
       fetchDiagnosticData().then((diagnostic) => {
         fetchUserDataAndLocationInfo(storage).then((data) => {
           if (data.error) {
-            toast.warning('Извините, некоторые данные отсутствуют!')
+            toast
+              .warning('Извините, некоторые данные отсутствуют!')
+              .then(() => navigate(-1))
           }
           // if (data.error) {
-          //   showPopup({ message: 'Sorry, some data is missing!' }).then(() =>
+          //   showPopup({ message: 'Извините, некоторые данные отсутствуют!' }).then(() =>
           //     navigate(-1)
           //   )
           // }
@@ -180,7 +182,8 @@ const FullSummary = () => {
         doctorId: doctorData?.doctorId,
         diagnosticId: diagnosticData?.diagnosticId,
         locationId: selectedLocation?.locationId,
-        userInitData: InitData || fakeInitData
+        userInitData: InitData || import.meta.env.VITE_API_URL
+        // userInitData: InitData || fakeInitData
       }
 
       console.log(8888, data)
@@ -191,6 +194,7 @@ const FullSummary = () => {
       // )
 
       console.log(8889, response.data)
+
       // console.log(
       //   8888,
       //   'JSON.parse',
@@ -209,9 +213,9 @@ const FullSummary = () => {
       // navigate('/')
       navigate('/successful_booking')
     } catch (err) {
-      toast.error('Извините, что-то пошло не так!')
+      toast.error('Извините, что-то пошло не так в handleSubmit!')
       notificationOccurred('error')
-      // await showPopup({ message: 'Извините, что-то пошло не так!' })
+      // await showPopup({ message: 'Извините, что-то пошло не так в handleSubmit!' })
       console.error(err)
       navigate(-1)
     }

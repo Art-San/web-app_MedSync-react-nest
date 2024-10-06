@@ -34,7 +34,7 @@ const App = () => {
           if (window.Telegram.WebApp.isVersionAtLeast('6.2')) {
             showPopup({
               message:
-                'Please update your Telegram app to the latest version to use this app.'
+                'Пожалуйста, обновите приложение Telegram до последней версии, чтобы использовать это приложение.'
             })
           } else {
             console.log('the version is not supported')
@@ -59,10 +59,10 @@ const App = () => {
       {isInvalidVersion && (
         <div className="invalid-version">
           <div className="invalid-version__content">
-            <h1>Sorry but this version is outdated!</h1>
+            <h1>Извините, но эта версия устарела!</h1>
             <h1>
-              Please update your Telegram app to the latest version to use this
-              app.
+              Пожалуйста, обновите приложение Telegram до последней версии,
+              чтобы использовать это приложение.
             </h1>
           </div>
         </div>
