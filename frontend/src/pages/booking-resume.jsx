@@ -158,6 +158,7 @@ const FullSummary = () => {
       {!userData && (
         <div className="">
           <button onClick={() => navigate('/')}>дом</button>
+          <button onClick={() => navigate(-1)}>назад</button>
           <div className="">некоторые данные отсутствуют вернись назад</div>
         </div>
       )}
@@ -165,6 +166,10 @@ const FullSummary = () => {
       <div className="resume">
         {userData && (
           <div className="resume__blocks">
+            <div className="">
+              <button onClick={() => navigate('/')}>дом</button>
+              <button onClick={() => navigate(-1)}>назад</button>
+            </div>
             <Header className="resume" title="Краткое содержание" />
             <Resume
               userData={userData}

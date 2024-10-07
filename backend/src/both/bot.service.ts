@@ -138,7 +138,6 @@ export class BotService implements OnModuleInit {
 
 	async showBookingDetails(chatId: number, bookingId: string) {
 		const bookingInfo = await this.botDopService.getBookingDetails(bookingId)
-
 		const mes = getNotificationText(bookingInfo)
 		const message = `🍓Вот данные вашего бронирования🍓\n\n` + mes
 

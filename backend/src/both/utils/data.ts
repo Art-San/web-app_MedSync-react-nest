@@ -9,7 +9,7 @@ export function getNotificationText(data: any) {
 	let typeText: string
 	if (data?.doctor) {
 		typeText = `👨‍⚕️ Доктор: ${data.doctor.fullName}\n`
-	} else if (data?.diagnosticId) {
+	} else if (data?.diagnostic) {
 		typeText = `🔬 Диагностика: ${data.diagnostic.typeName}\n`
 	} else {
 		typeText = 'Ошибка данных'
