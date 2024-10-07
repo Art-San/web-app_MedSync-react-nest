@@ -13,11 +13,11 @@ import Header from '../components/Header.jsx'
 import { doctorService } from '../services/doctor/doctor.service.js'
 import { specialtyService } from '../services/specialty/specialty.service.js'
 import { locationService } from '../services/location/location.service.js'
-import storage from '../utils/localStorage.js'
+// import storage from '../utils/localStorage.js'
 import { toast } from 'sonner'
 
 const DoctorSelection = () => {
-  // const storage = useCloudStorage()
+  const storage = useCloudStorage()
   const navigate = useNavigate()
   const [impactOccurred, notificationOccurred, selectionChanged] =
     useHapticFeedback()
@@ -110,18 +110,6 @@ const DoctorSelection = () => {
       <BackButton onClick={() => navigate('/')} />
       <button onClick={() => navigate(-1)}>назад</button>
       <button onClick={() => navigate('/')}>дом</button>
-      <button onClick={() => toast.info('Event has not been created')}>
-        info
-      </button>
-      <button onClick={() => toast.success('Event has not been created')}>
-        success
-      </button>
-      <button onClick={() => toast.warning('Event has not been created')}>
-        warning
-      </button>
-      <button onClick={() => toast.error('Event has not been created')}>
-        error
-      </button>
       <div className="doctor-selection">
         <Header title="Select a Doctor" className="header doctor-selection" />
         <SearchBar search={search} setSearch={setSearch} />

@@ -9,7 +9,7 @@ import {
   useHapticFeedback
 } from '@vkruglikov/react-telegram-web-app'
 import { diagnosticService } from '../services/diagnostic/diagnostic.service.js'
-import storage from '../utils/localStorage.js'
+// import storage from '../utils/localStorage.js'
 
 const SpecializationBlock = ({ title, subtitle, isActive }) => {
   return (
@@ -25,7 +25,7 @@ const SpecializationBlock = ({ title, subtitle, isActive }) => {
 }
 
 const ClinicSelection = () => {
-  // const storage = useCloudStorage()
+  const storage = useCloudStorage()
   const [search, setSearch] = useState('')
   const [clinics, setClinics] = useState([])
   const [filteredClinics, setFilteredClinics] = useState([])
@@ -109,8 +109,9 @@ const ClinicSelection = () => {
 
   return (
     <>
-      <BackButton onClick={() => navigate(-1)} />
+      <button onClick={() => navigate(-1)}>назад</button>
       <button onClick={() => navigate('/')}>дом</button>
+      <BackButton onClick={() => navigate(-1)} />
       <div className="specialization">
         <Header title="Choose Clinic" className="specialization" />
         <SearchBar search={search} setSearch={setSearch} />

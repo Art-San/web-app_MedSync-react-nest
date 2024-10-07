@@ -9,10 +9,10 @@ import Header from '../components/Header.jsx'
 import SearchBar from '../components/DoctorsListing/SearchBar.jsx'
 import SpecializationCard from '../components/GetTested/DiagnosticType.jsx'
 import { diagnosticService } from '../services/diagnostic/diagnostic.service.js'
-import storage from '../utils/localStorage.js'
+// import storage from '../utils/localStorage.js'
 
 const GetTested = () => {
-  // const storage = useCloudStorage()
+  const storage = useCloudStorage()
   let navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [diagnosticTypes, setDiagnosticTypes] = useState([])
@@ -45,6 +45,8 @@ const GetTested = () => {
   return (
     <>
       <BackButton onClick={() => navigate('/')} />
+      <button onClick={() => navigate(-1)}>назад</button>
+      <button onClick={() => navigate('/')}>дом</button>
       <div className="get-tested">
         <Header className={'get-tested__header'} title={'Get Tested'} />
         <SearchBar search={search} setSearch={setSearch} />

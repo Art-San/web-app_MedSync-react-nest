@@ -13,12 +13,12 @@ import axios from 'axios'
 import { ResumeBlock } from '../components/Resume/ResumeBlock.jsx'
 import fetchUserDataAndLocationInfo from '../utils/summaryData.js'
 import Resume from '../components/Resume/SummaryInfo.jsx'
-import storage from '../utils/localStorage.js'
 import { toast } from 'sonner'
 import { bookingService } from '../services/booking/booking.service.js'
+// import storage from '../utils/localStorage.js'
 
 const FullSummary = () => {
-  // const storage = useCloudStorage()
+  const storage = useCloudStorage()
   const webApp = window.Telegram?.WebApp
   const [impactOccurred, notificationOccurred, selectionChanged] =
     useHapticFeedback()
@@ -61,16 +61,16 @@ const FullSummary = () => {
     if (itemType === 'doctors') {
       fetchDoctorData().then((doctor) => {
         fetchUserDataAndLocationInfo(storage).then((data) => {
-          if (data.error) {
-            toast
-              .warning('Извините, некоторые данные отсутствуют!')
-              .then(() => navigate(-1))
-          }
           // if (data.error) {
-          //   showPopup({ message: 'Извините, некоторые данные отсутствуют!' }).then(() =>
-          //     navigate(-1)
-          //   )
+          //   toast
+          //     .warning('Извините, некоторые данные отсутствуют!')
+          //     .then(() => navigate(-1))
           // }
+          if (data.error) {
+            showPopup({
+              message: 'Извините, некоторые данные отсутствуют!'
+            }).then(() => navigate(-1))
+          }
           setUserData(data.userData)
           setSelectedTimeSlot(data.selectedTimeSlot)
           setDoctorData(doctor)
@@ -87,16 +87,16 @@ const FullSummary = () => {
     } else {
       fetchDiagnosticData().then((diagnostic) => {
         fetchUserDataAndLocationInfo(storage).then((data) => {
-          if (data.error) {
-            toast
-              .warning('Извините, некоторые данные отсутствуют!')
-              .then(() => navigate(-1))
-          }
           // if (data.error) {
-          //   showPopup({ message: 'Извините, некоторые данные отсутствуют!' }).then(() =>
-          //     navigate(-1)
-          //   )
+          //   toast
+          //     .warning('Извините, некоторые данные отсутствуют!')
+          //     .then(() => navigate(-1))
           // }
+          if (data.error) {
+            showPopup({
+              message: 'Извините, некоторые данные отсутствуют!'
+            }).then(() => navigate(-1))
+          }
 
           setUserData(data.userData)
           setSelectedTimeSlot(data.selectedTimeSlot)
@@ -134,19 +134,21 @@ const FullSummary = () => {
 
       notificationOccurred('success')
       toast.success('Ваша запись подтверждена!')
-      // await showPopup({ message: 'Ваша запись подтверждена!' })
-      // await webApp.sendData(
-      //   JSON.stringify({
-      //     action: 'booking_confirmed',
-      //     booking_id: response.data.booking_id
-      //   })
-      // )
+      await showPopup({ message: 'Ваша запись подтверждена!' })
+      await webApp.sendData(
+        JSON.stringify({
+          action: 'booking_confirmed',
+          booking_id: response.data.booking_id
+        })
+      )
 
       navigate('/successful_booking')
     } catch (err) {
       toast.error('Извините, что-то пошло не так в handleSubmit!')
       notificationOccurred('error')
-      // await showPopup({ message: 'Извините, что-то пошло не так в handleSubmit!' })
+      await showPopup({
+        message: 'Извините, что-то пошло не так в handleSubmit!'
+      })
       console.error(err)
       navigate(-1)
     }
@@ -157,7 +159,9 @@ const FullSummary = () => {
       <BackButton onClick={() => navigate(-1)} />
       {!userData && (
         <div className="">
+          <button onClick={() => navigate(-1)}>назад</button>
           <button onClick={() => navigate('/')}>дом</button>
+
           <div className="">некоторые данные отсутствуют вернись назад</div>
         </div>
       )}

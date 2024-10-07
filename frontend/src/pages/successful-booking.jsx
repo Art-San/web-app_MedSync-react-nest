@@ -1,11 +1,11 @@
 import logo from '../assets/images/landing-page/medsync-logo.svg'
 import { useCloudStorage } from '@vkruglikov/react-telegram-web-app'
 import { useEffect } from 'react'
-import storage from '../utils/localStorage.js'
+// import storage from '../utils/localStorage.js'
 import { useNavigate } from 'react-router-dom'
 
 function RegistrationConfirmation() {
-  // const storage = useCloudStorage()
+  const storage = useCloudStorage()
   const navigate = useNavigate()
   window.Telegram.WebApp.disableClosingConfirmation()
 

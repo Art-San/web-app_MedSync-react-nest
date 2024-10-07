@@ -11,10 +11,10 @@ import { useSlots } from '../hooks/useSlots.js'
 import TimeSlot from '../components/Booking/TimeSlot.jsx'
 import Calendar from '../components/Booking/Calendar.jsx'
 import Header from '../components/Header.jsx'
-import storage from '../utils/localStorage.js'
+// import storage from '../utils/localStorage.js'
 
 const SlotSelection = ({ storageKey, itemType }) => {
-  // const storage = useCloudStorage()
+  const storage = useCloudStorage()
   const navigate = useNavigate()
   const [selectedItem, setParsedItem] = useState(null)
   const [selectedDate, setSelectedDate] = useState(new Date())
@@ -66,6 +66,7 @@ const SlotSelection = ({ storageKey, itemType }) => {
 
   return (
     <>
+      <button onClick={() => navigate(-1)}>назад</button>
       <button onClick={() => navigate('/')}>дом</button>
       <BackButton onClick={() => navigate(-1)} />
       <div className="time-details">
