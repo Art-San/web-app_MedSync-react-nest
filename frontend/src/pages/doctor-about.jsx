@@ -13,20 +13,15 @@ const About = () => {
   const { doctorId } = useParams()
   const [doctor, setDoctor] = useState(null)
   const [workingHours, setWorkingHours] = useState([])
-
   const navigate = useNavigate()
-  // let navigate = useNavigate()f
 
   useEffect(() => {
     const fetchDoctorInfo = async () => {
       try {
         const doctor = await doctorService.getDoctorById(doctorId)
-        // const doctor = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/api/doctors/${doctor_id}`)
         const workingHours = await workingHoursService.getWorkingHours(
-          // const workingHours = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/api/working_hours/${doctor.data.location_id}`)
           doctor.data.locationId
         )
-        // console.log(456, 'workingHours.data', workingHours.data)
         setDoctor(doctor.data)
         setWorkingHours(workingHours.data)
       } catch (err) {

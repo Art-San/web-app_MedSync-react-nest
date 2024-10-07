@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import {
   BackButton,
@@ -23,12 +22,9 @@ const DoctorSelection = () => {
   const [impactOccurred, notificationOccurred, selectionChanged] =
     useHapticFeedback()
   const [specialties, setSpecialties] = useState([])
-
   const [search, setSearch] = useState('')
   const [allDoctors, setAllDoctors] = useState([])
-
   const [displayedDoctors, setDisplayedDoctors] = useState([])
-  // console.log(13, displayedDoctors[0]?.photoUrl)
   const [specialty, setSpecialty] = useState('')
   const [selectedDoctor, setSelectedDoctor] = useState(null)
 
@@ -37,7 +33,6 @@ const DoctorSelection = () => {
   const fetchSpecialties = async () => {
     try {
       const response = await specialtyService.getSpecialties()
-      // const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/api/specialties/`)
       setSpecialties(response.data)
     } catch (error) {
       console.error('ОШИБКА стр-52', error.message)
@@ -46,7 +41,6 @@ const DoctorSelection = () => {
   const fetchAllDoctors = async () => {
     try {
       const response = await doctorService.getDoctors()
-      // const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/api/doctors/`)
       setAllDoctors(response.data)
       setDisplayedDoctors(response.data) // Initially display all doctors
     } catch (error) {
@@ -57,10 +51,8 @@ const DoctorSelection = () => {
   const fetchLocationInfo = async (locationId) => {
     try {
       const response = await locationService.getLocation(locationId)
-      // const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/api/locations/${location_id}`)
       await storage.setItem('selectedLocation', JSON.stringify(response.data))
     } catch (error) {
-      console.log('Ошибка', error.message)
       console.error(error.message)
     }
   }

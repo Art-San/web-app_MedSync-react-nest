@@ -23,15 +23,12 @@ const FullSummary = () => {
   const [impactOccurred, notificationOccurred, selectionChanged] =
     useHapticFeedback()
   const [InitDataUnsafe, InitData] = useInitData()
-
   const [doctorData, setDoctorData] = useState(null)
   const [diagnosticData, setDiagnosticData] = useState(null)
   const [userData, setUserData] = useState(null)
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(null)
-
   const [workingHours, setWorkingHours] = useState(null)
   const [selectedLocation, setSelectedLocation] = useState(null)
-
   const showPopup = useShowPopup()
   const navigate = useNavigate()
   const { itemType } = useParams()
@@ -117,60 +114,8 @@ const FullSummary = () => {
     }
   }, [])
 
-  /*TODO: от GPT с обработкой ошибок*/
-  // useEffect(() => {
-  //   fetchDoctorData(storage).then((doctor) => {
-  //     if (!doctor) {
-  //       showPopup({ message: 'Sorry, doctor data is missing!' }).then(() =>
-  //         navigate(-1)
-  //       )
-  //       return
-  //     }
-
-  //     fetchUserDataAndLocationInfo(storage).then((data) => {
-  //       if (data.error) {
-  //         showPopup({ message: 'Sorry, some data is missing!' }).then(() =>
-  //           navigate(-1)
-  //         )
-  //         return
-  //       }
-
-  //       setUserData(data.userData)
-  //       setSelectedTimeSlot(data.selectedTimeSlot)
-  //       setDoctorData(doctor)
-  //       setWorkingHours(data.hoursArray)
-  //       setSelectedLocation(data.selectedLocation)
-
-  //       storage.getItem('save_data').then((toSave) => {
-  //         if (!JSON.parse(toSave)) {
-  //           storage.removeItem('user_data')
-  //         }
-  //       })
-  //     })
-  //   })
-  // }, [])
-
   const handleSubmit = async () => {
     try {
-      // const response = await axios.post(
-      //   `${import.meta.env.VITE_API_URL}/api/booking/${itemType}`,
-      //   // `${import.meta.env.VITE_API_URL}/api/${itemType}/book_slot`,
-      //   {
-      //     doctor_id: doctorData?.doctor_id,
-      //     diagnostic_id: diagnosticData?.diagnostic_id,
-      //     booking_date_time: selectedTimeSlot,
-      //     location_id: selectedLocation?.location_id,
-      //     user_name: userData.userName,
-      //     user_surname: userData.userSurname,
-      //     user_phone: userData.userPhone,
-      //     user_email: userData.userEmail,
-      //     user_message: userData.userMessage,
-      //     userInitData: InitData
-      //   }
-      // )
-
-      const formattedBookingDateTime = new Date(selectedTimeSlot).toISOString()
-
       const data = {
         telegramId: String(InitDataUnsafe?.user?.id || 721836748),
         userName: userData.userName,
@@ -183,23 +128,10 @@ const FullSummary = () => {
         diagnosticId: diagnosticData?.diagnosticId,
         locationId: selectedLocation?.locationId,
         userInitData: InitData || import.meta.env.VITE_API_URL
-        // userInitData: InitData || fakeInitData
       }
 
-      console.log(8888, data)
       const response = await bookingService.createdBooking(itemType, data)
-      // const response = await axios.post(
-      //   `${import.meta.env.VITE_API_URL}/api/booking/${itemType}`,
-      //   data
-      // )
 
-      console.log(8889, response.data)
-
-      // console.log(
-      //   8888,
-      //   'JSON.parse',
-      //   JSON.parse(await storage.getItem('user_data'))
-      // )
       notificationOccurred('success')
       toast.success('Ваша запись подтверждена!')
       // await showPopup({ message: 'Ваша запись подтверждена!' })
@@ -210,7 +142,6 @@ const FullSummary = () => {
       //   })
       // )
 
-      // navigate('/')
       navigate('/successful_booking')
     } catch (err) {
       toast.error('Извините, что-то пошло не так в handleSubmit!')
@@ -226,7 +157,6 @@ const FullSummary = () => {
       <BackButton onClick={() => navigate(-1)} />
       {!userData && (
         <div className="">
-          <button onClick={() => navigate(-1)}>назад</button>
           <button onClick={() => navigate('/')}>дом</button>
           <div className="">некоторые данные отсутствуют вернись назад</div>
         </div>

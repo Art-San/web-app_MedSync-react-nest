@@ -23,9 +23,7 @@ const PatientInformation = () => {
 
   const navigate = useNavigate()
   const { itemType } = useParams()
-
   const [initDataUnsafe, initData] = useInitData()
-
   const [impactOccurred, notificationOccurred, selectionChanged] =
     useHapticFeedback()
   const [isFormValid, setIsFormValid] = useState(false)
@@ -70,7 +68,6 @@ const PatientInformation = () => {
       const savedPhone = savedUserDataObject
         ? savedUserDataObject.userPhone
         : null
-      // Данные Telegram могут быть недоступны при запуске из встроенного режима или с помощью KeyboardButton.
 
       setFormData((prevFormData) => ({
         ...prevFormData,

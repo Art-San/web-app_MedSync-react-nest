@@ -35,10 +35,7 @@ const SlotSelection = ({ storageKey, itemType }) => {
     })
   }, [storage])
 
-  const workingHours = useWorkingHours(selectedLocation?.locationId) // Тут айди надо поправить
-
-  // console.log(44566, workingHours)
-  // const endpoint1 = `/api/slots/doctors/itemId/locationId/electedDate.getMonth()`
+  const workingHours = useWorkingHours(selectedLocation?.locationId)
 
   const { slots, availableDays } = useSlots(
     itemType === 'doctors'
@@ -50,10 +47,7 @@ const SlotSelection = ({ storageKey, itemType }) => {
     itemType
   )
 
-  // console.log('1-? - slots', slots) // -----
-  // console.log('2-? - availableDays', availableDays) // ----
   const handleDateChange = (date) => {
-    // console.log(456, 'handleDateChange data', data)
     selectionChanged()
     setSelectedDate(date)
   }
@@ -72,7 +66,6 @@ const SlotSelection = ({ storageKey, itemType }) => {
 
   return (
     <>
-      <button onClick={() => navigate(-1)}>назад</button>
       <button onClick={() => navigate('/')}>дом</button>
       <BackButton onClick={() => navigate(-1)} />
       <div className="time-details">
@@ -98,5 +91,4 @@ const SlotSelection = ({ storageKey, itemType }) => {
   )
 }
 
-// your appointment has been confirmed
 export default SlotSelection
