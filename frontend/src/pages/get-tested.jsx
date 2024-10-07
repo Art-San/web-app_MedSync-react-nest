@@ -19,19 +19,28 @@ const GetTested = () => {
   const [filteredDiagnosticTypes, setFilteredDiagnosticTypes] = useState([])
   const [impactOccurred, notificationOccurred, selectionChanged] =
     useHapticFeedback()
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   const fetchAllDiagnostics = async () => {
+    setLoading(true)
     try {
       const response = await diagnosticService.getDiagnostics()
       setDiagnosticTypes(response.data)
       setFilteredDiagnosticTypes(response.data)
     } catch (error) {
       console.error(error.message)
+      setError('Ошибка при загрузке процедур')
+    } finally {
+      setLoading(false)
     }
   }
 
   useEffect(() => {
-    fetchAllDiagnostics()
+    const fetchData = async () => {
+      fetchAllDiagnostics()
+    }
+    fetchData()
   }, [])
 
   useEffect(() => {
@@ -42,9 +51,19 @@ const GetTested = () => {
     setFilteredDiagnosticTypes(filtered)
   }, [search, diagnosticTypes])
 
+  if (loading) {
+    return <div>Загрузка...</div>
+  }
+
+  if (error) {
+    return <div>{error}</div>
+  }
+
   return (
     <>
       <BackButton onClick={() => navigate('/')} />
+      <button onClick={() => navigate(-1)}>назад</button>
+      <button onClick={() => navigate('/')}>дом</button>
       <div className="get-tested">
         <Header className={'get-tested__header'} title={'Get Tested'} />
         <SearchBar search={search} setSearch={setSearch} />

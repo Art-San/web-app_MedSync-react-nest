@@ -37,7 +37,7 @@ const SlotSelection = ({ storageKey, itemType }) => {
 
   const workingHours = useWorkingHours(selectedLocation?.locationId)
 
-  const { slots, availableDays } = useSlots(
+  const { slots, availableDays, loading, error } = useSlots(
     itemType === 'doctors'
       ? selectedItem?.doctorId
       : selectedItem?.diagnosticId,
@@ -66,8 +66,9 @@ const SlotSelection = ({ storageKey, itemType }) => {
 
   return (
     <>
-      <button onClick={() => navigate('/')}>дом</button>
       <BackButton onClick={() => navigate(-1)} />
+      <button onClick={() => navigate(-1)}>назад</button>
+      <button onClick={() => navigate('/')}>дом</button>
       <div className="time-details">
         <Header className="time-details" title="Time Details" />
         <main className="time-details__main">
@@ -81,8 +82,11 @@ const SlotSelection = ({ storageKey, itemType }) => {
               selectedTimeSlot={selectedTimeSlot}
               setSelectedTimeSlot={handleSlotSelection}
               selectedDate={selectedDate}
+              loading={loading}
+              error={error}
             />
           )}
+
           {selectedTimeSlot && <button onClick={handleNext}>Жми</button>}
           {selectedTimeSlot && <MainButton onClick={handleNext}></MainButton>}
         </main>

@@ -13,6 +13,8 @@ export const useSlots = (
 ) => {
   const [slots, setSlots] = useState(null)
   const [availableDays, setAvailableDays] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   // const endpoint = `/api/slots/${itemType}`
   // const endpoint = `/api/slots/doctors`
   // https://medsync.botfather.dev/api/slots/doctors/1/2/7
@@ -20,6 +22,7 @@ export const useSlots = (
   useEffect(() => {
     if (itemId && locationId && selectedDate && workingHours.length > 0) {
       const fetchSlotsDocLoc = async () => {
+        setLoading(true)
         try {
           const response = await slotService.getSlots(
             itemType,
@@ -45,14 +48,17 @@ export const useSlots = (
           setAvailableDays(availableDays)
           setSlots(availableSlots)
         } catch (error) {
-          console.log('error msg', error)
+          setError('Ошибка при загрузке useSlots')
           console.error(error)
+        } finally {
+          setLoading(false)
         }
       }
       fetchSlotsDocLoc()
     }
   }, [itemId, locationId, selectedDate, workingHours, itemType])
-  return { slots, availableDays }
+
+  return { slots, availableDays, loading, error }
 }
 
 // import { useEffect, useState } from 'react'

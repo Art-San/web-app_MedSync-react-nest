@@ -110,6 +110,7 @@ const ClinicSelection = () => {
   return (
     <>
       <BackButton onClick={() => navigate(-1)} />
+      <button onClick={() => navigate(-1)}>назад</button>
       <button onClick={() => navigate('/')}>дом</button>
       <div className="specialization">
         <Header title="Choose Clinic" className="specialization" />
